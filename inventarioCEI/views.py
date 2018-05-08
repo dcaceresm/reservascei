@@ -7,7 +7,7 @@ def index(request):
 
 
 class LandingAdmin(TemplateView):
-    template_name = "landingPageAdmin.html"
+    template_name = "inventarioCEI/landingPageAdmin.html"
 
     def get_context_data(self, **kwargs):
         return {}
