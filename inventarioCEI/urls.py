@@ -7,6 +7,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
 
+app_name = 'inventario'
 urlpatterns = [
     path('', views.index, name='index'),
     url(r'^profile/$', views.showProfile, name='profile'),
