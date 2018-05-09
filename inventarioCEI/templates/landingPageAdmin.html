@@ -1,5 +1,59 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class="container">
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Rut</th>
+                <th scope="col">Fecha inicio</th>
+                <th scope="col">Fecha termino</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Tipo de objeto</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for reserv in reservas %}
+                <tr>
+                  <th scope="row"> <input name="fila" type="checkbox" value="{{ reserv.id }}">  </th>
+                  <td>{{ reserv.rut }}</td>
+                  <td>{{ reserv.fh_ini_reserva }}</td>
+                  <td>{{ reserv.fh_fin_reserva }}</td>
+                    <td>{{ reserv.estado_reserva }}</td>
+                    <td>{{ reserv.tipo_objeto }}</td>
+                </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+    </div>
+<script>
+
+    checkboxes = document.getElementsByTagName("fila");
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        var checkbox = checkboxes[i];
+        checkbox.onclick = function() {
+            var currentRow = this.parentNode.parentNode;
+            var secondColumn = currentRow.getElementsByTagName("td")[1];
+        };
+    }
+
+</script>
+{#    <table>#}
+{#        {% for reserv in reservas %}#}
+{#            <tr>#}
+{#                <td>#}
+{#                    {{ reserv.rut }}#}
+{#                </td>#}
+{#                <td>#}
+{#                    {{ reserv.estado_reserva }}#}
+{#                </td>#}
+{#            </tr>#}
+{##}
+{#        {% endfor %}#}
+{##}
+{#    </table>#}
 
 {% endblock %}
