@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+
 class Profile(models.Model):
     user = models.OneToOneField(
         User,
@@ -13,8 +14,7 @@ class Profile(models.Model):
     rut = models.CharField(max_length=15, null=True, blank=True, unique=True)
     mail = models.CharField(max_length=200, blank=True)
     isAdmin = models.BooleanField(default=False)
-    hab = models.BooleanField(default = 1)
-
+    hab = models.BooleanField(default=1)
 
     bio = models.TextField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
@@ -43,6 +43,7 @@ class Espacio(models.Model):
     def __str__(self):
         return self.nombre
 
+
 class Reserva(models.Model):
     rut = models.CharField(max_length=100)
     fh_reserva = models.DateTimeField()
@@ -55,15 +56,17 @@ class Reserva(models.Model):
     def __str__(self):
         return self.rut
 
+
 class Articulo(models.Model):
-    nombre = models.CharField(max_length=100)
-    URLfoto = models.CharField(max_length=100)
-    descripcion = models.CharField(max_length=200)
-    estado = models.CharField(max_length=100)
-    lista_tags = models.CharField(max_length=200)
+    name = models.CharField(max_length=50)
+    photo = models.ImageField(upload_to='../img/articulos')
+    text = models.CharField(max_length=200)
+    status = models.CharField(max_length=20)
+    tags = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.nombre
+        return self.name
+
 
 class Prestamo(models.Model):
     rut = models.CharField(max_length=100)
