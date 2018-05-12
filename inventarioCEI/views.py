@@ -405,3 +405,10 @@ def verPrestamo(request):
 
 def crearPrestamo(request):
     return redirect('inventario:landingAdmin')
+
+def RechazarReservas(request):
+    id_elemento = request.POST["fila"]
+    reserva = get_object_or_404(Reserva, pk=id_elemento)
+    reserva.estado_reserva = "Rechazado"
+    reserva.save()
+    return redirect('inventario:landingAdmin')
