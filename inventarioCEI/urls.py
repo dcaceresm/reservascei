@@ -6,6 +6,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('update_articulo', views.update_articulo, name='update_articulo'),
     path('landingAdmin/', views.LandingAdmin.as_view(), name='landingAdmin'),
     re_path(r'ficha/(?P<id>[0-9]*)/$', views.ficha, name='ficha'),
 ]
