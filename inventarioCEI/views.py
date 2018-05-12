@@ -34,7 +34,7 @@ def ficha(request, id):
                 context = {'id': id}
                 return render(request, 'articulo.html', context)
     else:  # USER IS NOT LOGGED IN
-        return render(request, '')  # REDIRECT TO INDEX (LOGIN) PAGE
+        return redirect('/')  # REDIRECT TO INDEX (LOGIN) PAGE
 
 def update_articulo(request):
     if request.method == 'POST':
