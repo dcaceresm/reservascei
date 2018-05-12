@@ -10,28 +10,36 @@
 </head>
 <body>
 {%  if articulo %}
-
-    Name: {{ articulo.name }} <br>
+    <form method="post" action="{% url 'update_articulo' %}">
+    {% csrf_token %}
+    <input type="hidden" value="{{ articulo.id }}" name="id"/>
+    Name: <input type="text" size="32" value="{{ articulo.name }}" name="name" /> <br>
     ID: {{ articulo.id }} <br>
-    Photo: <img src="{{ articulo.photo.url }}"> <br>
-    Text: {{ articulo.text }} <br>
-    Estado: {{ articulo.status }} <br>
-    Status: {% if articulo.status == Disponible %} <span class="label label-success">Disponible</span> {% endif %}{% if articulo.status == Prestamo %} <span class="label label-warning">En Préstamo</span> {% endif %}{% if articulo.status == Reparacion %} <span class="label label-warning">En Reparación</span> {% endif %}{% if articulo.status == Perdido %} <span class="label label-danger">Perdido</span> {% endif %} <br>
-    Tags: {{ articulo.tags }} <br>
-    <span class="label label-default">Disponible</span>
+    Photo: <img src="{{ articulo.photo.url }}" style="max-width: 40%"> <br>
+    Text: <textarea name='description'>{{ articulo.text }}</textarea> <br>
+    Estado: <br>
+    <input type="radio" name="status" value="Disponible" {% if articulo.status == 'Disponible' %}checked{% endif %}> Disponible<br>
+    <input type="radio" name="status" value="Prestamo" {% if articulo.status == 'Prestamo' %}checked{% endif %}> En Préstamo<br>
+    <input type="radio" name="status" value="Reparacion" {% if articulo.status == 'Reparacion' %}checked{% endif %}> En Reparación<br>
+    <input type="radio" name="status" value="Perdido" {% if articulo.status == 'Perdido' %}checked{% endif %}> Perdido<br><br>
+    Tags: <input type="text" size="32" value="{{ articulo.tags }}" name="tags" /> <br>
+    <input type="submit"> <br>
+    </form>
 
 
 {% else %}
-    <h2>No item with id = {{ id }}</h2>
-
+    <h2>No existe artículo con id {{ id }}</h2>
 {% endif %}
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+<script>
+    {# Check update and send alert #}
+    if (window.location.search.substring(1).split("&")[0].split("=")[1] === "True"){
+        alert('Articulo Actualizado!')
+    }
+</script>
 </body>
-
-
-
 </html>
