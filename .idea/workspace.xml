@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="77c295a2-eef1-49c0-b664-f00f8432fff0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/calendario.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/T3_INGSW/settings.py" afterPath="$PROJECT_DIR$/T3_INGSW/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inventarioCEI/static/inventarioCEI/css/inventarioCEI.css" afterPath="$PROJECT_DIR$/inventarioCEI/static/inventarioCEI/css/inventarioCEI.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/buscar.html" afterPath="$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/buscar.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inventarioCEI/urls.py" afterPath="$PROJECT_DIR$/inventarioCEI/urls.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/calendario.html" afterPath="$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/calendario.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inventarioCEI/views.py" afterPath="$PROJECT_DIR$/inventarioCEI/views.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,11 +16,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/inventarioCEI/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="22" column="44" lean-forward="false" selection-start-line="22" selection-start-column="44" selection-end-line="22" selection-end-column="44" />
+            <state relative-caret-position="389">
+              <caret line="55" column="43" lean-forward="true" selection-start-line="55" selection-start-column="43" selection-end-line="55" selection-end-column="43" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -42,11 +38,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="calendario.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="calendario.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/calendario.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="27" column="25" lean-forward="false" selection-start-line="27" selection-start-column="25" selection-end-line="27" selection-end-column="25" />
+            <state relative-caret-position="330">
+              <caret line="22" column="30" lean-forward="false" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -75,8 +71,8 @@
       <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/inventarioCEI/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="509">
-              <caret line="69" column="4" lean-forward="true" selection-start-line="69" selection-start-column="4" selection-end-line="69" selection-end-column="19" />
+            <state relative-caret-position="569">
+              <caret line="73" column="15" lean-forward="false" selection-start-line="73" selection-start-column="4" selection-end-line="73" selection-end-column="15" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -560,7 +556,14 @@
       <option name="project" value="LOCAL" />
       <updated>1526095600938</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Cambios en estructura template">
+      <created>1526142239396</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1526142239396</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -713,14 +716,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/inventarioCEI/static/inventarioCEI/css/inventarioCEI.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="41" column="13" lean-forward="true" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/inventarioCEI/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -731,10 +726,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/calendario.html">
+    <entry file="file://$PROJECT_DIR$/inventarioCEI/static/inventarioCEI/css/inventarioCEI.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="25" lean-forward="false" selection-start-line="27" selection-start-column="25" selection-end-line="27" selection-end-column="25" />
+        <state relative-caret-position="254">
+          <caret line="41" column="13" lean-forward="true" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -749,8 +744,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/inventarioCEI/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="509">
-          <caret line="69" column="4" lean-forward="true" selection-start-line="69" selection-start-column="4" selection-end-line="69" selection-end-column="19" />
+        <state relative-caret-position="569">
+          <caret line="73" column="15" lean-forward="false" selection-start-line="73" selection-start-column="4" selection-end-line="73" selection-end-column="15" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
@@ -759,11 +754,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/inventarioCEI/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="22" column="44" lean-forward="false" selection-start-line="22" selection-start-column="44" selection-end-line="22" selection-end-column="44" />
+        <state relative-caret-position="389">
+          <caret line="55" column="43" lean-forward="true" selection-start-line="55" selection-start-column="43" selection-end-line="55" selection-end-column="43" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/calendario.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="30" lean-forward="false" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
+          <folding />
         </state>
       </provider>
     </entry>
