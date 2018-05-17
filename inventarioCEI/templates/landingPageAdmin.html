@@ -41,19 +41,47 @@
     }
 
 </script>
-{#    <table>#}
-{#        {% for reserv in reservas %}#}
-{#            <tr>#}
-{#                <td>#}
-{#                    {{ reserv.rut }}#}
-{#                </td>#}
-{#                <td>#}
-{#                    {{ reserv.estado_reserva }}#}
-{#                </td>#}
-{#            </tr>#}
-{##}
-{#        {% endfor %}#}
-{##}
-{#    </table>#}
+    <div class="container">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Articulo</th>
+                    <th scope="col">Usuario</th>
+                    <th scope="col">Fecha prestamo</th>
+                    <th scope="col">Fecha fin prestamo</th>
+                    <th scope="col">Estado
+                        <select id="filtro_estado">
+                            <option value="todos">---</option>
+                            <option value="vigente">Vigentes</option>
+                            <option value="caducado">Caducados</option>
+                            <option value="perdido">Perdidos</option>
+                        </select>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for prest in prestamos %}
+                    <tr class="{{ prest.estado_prestamo }} todos">
+                        <th scope="row"> <input name="cosas" type="checkbox" value="{{ prest.id }}">  </th>
+                        <td> {{ prest.tipo_objeto }}</td>
+                        <td> {{ prest.rut }}</td>
+                        <td> {{ prest.fh_ini_prestamo }}</td>
+                        <td> {{ prest.fh_fin_prestamo }}</td>
+                        <td> {{ prest.estado_prestamo }}</td>
 
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        $("#filtro_estado").change(function(){
+            $(".todos").hide();
+            $("."+$(this).val()).show();
+        })
+    </script>
 {% endblock %}

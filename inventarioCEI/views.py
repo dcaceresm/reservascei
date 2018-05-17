@@ -14,6 +14,7 @@ class LandingAdmin(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(LandingAdmin, self).get_context_data(**kwargs)
         context['reservas'] = Reserva.objects.all().order_by("-pk")
+        context['prestamos'] = Prestamo.objects.all().order_by("-pk")
         prestamos = Prestamo.objects.all().order_by("-pk")
         articulos = Articulo.objects.all().order_by("-pk")
         espacios = Espacio.objects.all().order_by("-pk")
