@@ -53,9 +53,9 @@
                     <th scope="col">Estado
                         <select id="filtro_estado">
                             <option value="todos">---</option>
-                            <option value="vigente">Vigentes</option>
-                            <option value="caducado">Caducados</option>
-                            <option value="perdido">Perdidos</option>
+                            {% for estado,valor in estados_prestamo %}
+                                <option value="{{ valor }}">{{ valor }}</option>
+                            {% endfor %}
                         </select>
                     </th>
                 </tr>

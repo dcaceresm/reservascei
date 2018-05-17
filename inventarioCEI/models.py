@@ -66,10 +66,16 @@ class Articulo(models.Model):
         return self.nombre
 
 class Prestamo(models.Model):
+    ESTADO_CHOICES=(
+        ('Vigente', 'Vigente'),
+        ('Caducado','Caducado'),
+        ('Perdido', 'Perdido'),
+    )
+
     rut = models.CharField(max_length=100)
     fh_ini_prestamo = models.DateTimeField()
     fh_fin_prestamo = models.DateTimeField()
-    estado_prestamo = models.CharField(max_length=100)
+    estado_prestamo = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Vigente')
     id_objeto = models.IntegerField()
     tipo_objeto = models.CharField(max_length=100)
 
