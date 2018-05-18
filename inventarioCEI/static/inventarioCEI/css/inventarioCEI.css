@@ -68,7 +68,7 @@ p {
 }
 
 .activeButton {
-    background-color: #D3D3D3;
+    background-color: #4CAF50;
     border: none;
     color: white;
     padding: 8px 32px;
@@ -81,7 +81,7 @@ p {
 }
 
 .unactiveButton {
-    background-color: #4CAF50;
+    background-color: #D3D3D3;
     border: none;
     color: white;
     padding: 8px 32px;

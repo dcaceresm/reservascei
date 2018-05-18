@@ -25,7 +25,6 @@
             {% csrf_token %}
             <button class="activeButton">Articulos</button>
         </form>
-
         <button class="unactiveButton">Espacios</button>
     </div>
 
@@ -58,7 +57,8 @@
     </table>
 
    <ul>
-       <a href="https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg">
+
+       <a href="{% url 'calendar' 1 anterior%}">
         <li>
             <div class="triangle-left1"></div>
         </li>
@@ -68,19 +68,19 @@
          </a>
         <li>
             <div>
-               <a href="https://www.w3schools.com/howto/howto_css_shapes.asp">
+               <a href="{% url 'calendar' 2 anterior%}">
                    <div class="triangle-left"></div>
                 </a>
             </div>
         </li>
         <li>
             <div>
-               <a href="https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg">
+               <a href="{% url 'calendar' 3 anterior%}">
                    <div class="triangle-right"></div>
                 </a>
             </div>
         </li>
-       <a href="https://www.cesarsway.com/sites/newcesarsway/files/styles/large_article_preview/public/Common-dog-behaviors-explained.jpg?itok=FSzwbBoi">
+       <a href="{% url 'calendar' 4 anterior%}">
         <li>
             <div class="triangle-right1"></div>
         </li>

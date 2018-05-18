@@ -12,8 +12,13 @@
 <body>
 
     <div align="center">
-    <button class="activeButton">Articulos</button>
-    <button class="unactiveButton">Espacios</button>
+
+        <button class="unactiveButton">Articulos</button>
+        <form action="{% url 'goToEspacios' %}" method="post">
+            {% csrf_token %}
+            <button class="activeButton">Espacios</button>
+        </form>
+
     </div>
 
     <form action="{% url 'buscar' %}" align="middle" method="post">

@@ -10,16 +10,68 @@ from .models import *
 def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 
+def dateChange(date, cant, anterior, signo):
+    months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-def calendar(request, default = 0):
+    val = 0
+
+    if cant == 1:
+        val = -4
+    elif cant == 2:
+        val = -1
+    elif cant == 3:
+        val = 1
+    elif cant == 4:
+        val = 4
+
+    day = date.day
+
+    if signo == 0:
+        anterior = anterior*-1
+
+    return date.replace(day=day + (val + anterior)*7)#+ (val + anterior)*7)
+
+def calendar(request, cant=0, anterior=0, signo = 1):
+    #signo 1 positivo 0 negativo
     # fechas de prestamos se guardan f = datetime.datetime(2018, 5, 7, 15, 0, tzinfo=<UTC>) año mes día hora y min en utc
     # f.year =2018
     # d = date.today()
     # d.weekday() = 0 -> lunes
+
     today = date.today()
+    today = dateChange(today, cant, anterior, signo)
     day = today.day
     weekday = today.weekday()
     week = []
+
+    if cant == 1:
+        if(anterior-4 < 0):
+            anterior = abs(anterior-4)
+            signo = 0
+        else:
+            anterior = abs(anterior - 4)
+            signo = 1
+    elif cant == 2:
+        if (anterior - 1 < 0):
+            anterior = abs(anterior - 1)
+            signo = 0
+        else:
+            anterior = abs(anterior - 1)
+            signo = 1
+    elif cant == 3:
+        if (anterior + 1 < 0):
+            anterior = abs(anterior + 1)
+            signo = 0
+        else:
+            anterior = abs(anterior + 1)
+            signo = 1
+    elif cant == 4:
+        if (anterior + 4 < 0):
+            anterior = abs(anterior + 4)
+            signo = 0
+        else:
+            anterior = abs(anterior + 4)
+            signo = 1
 
     for i in range(day - weekday, day - weekday + 7):
         week.append(i)
@@ -54,7 +106,8 @@ def calendar(request, default = 0):
                             matrix[i][j] = element
 
         ini_time += 1
-    return render(request, 'inventarioCEI/calendario.html', {'Mon': week[0], 'Tue': week[1],'Wed': week[2],'Thu': week[3],'Fri': week[4], 'month': month, 'prestamos': prestamos, 'matrix': matrix})
+
+    return render(request, 'inventarioCEI/calendario.html', {'anterior': anterior, 'Mon': week[0], 'Tue': week[1],'Wed': week[2],'Thu': week[3],'Fri': week[4], 'month': month, 'prestamos': prestamos, 'matrix': matrix})
 
 
 def buscar(request):
@@ -68,7 +121,17 @@ def buscar(request):
 
 
 def goToArticulos(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    if request.method == "POST":
+        return redirect('buscar')
+    else:
+        return render(request, 'inventarioCEI/calendario.html')
+
+def goToEspacios(request):
+    if request.method == "POST":
+        return redirect('calendar')
+    else:
+        return render(request, 'inventarioCEI/buscar.html')
+
 
 
 class LandingAdmin(TemplateView):
