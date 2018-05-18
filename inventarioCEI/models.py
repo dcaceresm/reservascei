@@ -34,21 +34,31 @@ class Profile(models.Model):
 
 
 class Espacio(models.Model):
+    ESTADO_CHOICES = (
+        ('Disponible', 'Disponible'),
+        ('En préstamo', 'En préstamo'),
+        ('En reparación', 'En resparación'),
+    )
     nombre = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=200)
     URLfoto = models.CharField(max_length=100)
-    estado = models.CharField(max_length=20)
+    estado = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Disponible')
     capacidad = models.IntegerField(default=0)
 
     def __str__(self):
         return self.nombre
 
 class Reserva(models.Model):
+    ESTADO_CHOICES = (
+        ('Pediente', 'Pendiente'),
+        ('Aceptada', 'Aceptada'),
+        ('Rechazada', 'Rechazada'),
+    )
     rut = models.CharField(max_length=100)
     fh_reserva = models.DateTimeField()
     fh_ini_reserva = models.DateTimeField()
     fh_fin_reserva = models.DateTimeField()
-    estado_reserva = models.CharField(max_length=100)
+    estado_reserva = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Pendiente')
     id_objeto = models.IntegerField()
     tipo_objeto = models.CharField(max_length=100)
 
@@ -56,10 +66,16 @@ class Reserva(models.Model):
         return self.rut
 
 class Articulo(models.Model):
+    ESTADO_CHOICES = (
+        ('Disponible', 'Disponible'),
+        ('En préstamo', 'En préstamo'),
+        ('En reparación', 'En resparación'),
+        ('Perdido', 'Perdido'),
+    )
     nombre = models.CharField(max_length=100)
     URLfoto = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=200)
-    estado = models.CharField(max_length=100)
+    estado = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Disponible')
     lista_tags = models.CharField(max_length=200)
 
     def __str__(self):

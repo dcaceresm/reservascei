@@ -1,4 +1,21 @@
 .thead-dark th {
-    background-color: #ff43ac !important;
-    border-color: aqua;
+    background-color: #79BCB5 !important;
+    border-color: #79BCB5 !important;
 }
+.nav-pills > li > a.active {
+    background-color: #B95933 !important;
+    color: #ffffff !important;
+}
+.nav-pills > li > a:hover {
+    background-color: #E8B059 !important;
+    color: #ffffff !important;
+}
+.nav-link {
+    color: #6DDCBD !important;
+}
+/*colores cei:
+verde: #79BCB5
+marron: #B95933
+naranjo: #D0793E
+amarillo: #E8B059
+ */

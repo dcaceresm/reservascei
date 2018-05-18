@@ -1,81 +1,194 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container">
-        <table class="table">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Rut</th>
-                <th scope="col">Fecha inicio</th>
-                <th scope="col">Fecha termino</th>
-              <th scope="col">Estado</th>
-              <th scope="col">Tipo de objeto</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for reserv in reservas %}
-                <tr>
-                  <th scope="row"> <input name="fila" type="checkbox" value="{{ reserv.id }}">  </th>
-                  <td>{{ reserv.rut }}</td>
-                  <td>{{ reserv.fh_ini_reserva }}</td>
-                  <td>{{ reserv.fh_fin_reserva }}</td>
-                    <td>{{ reserv.estado_reserva }}</td>
-                    <td>{{ reserv.tipo_objeto }}</td>
-                </tr>
-            {% endfor %}
-
-          </tbody>
-        </table>
-    </div>
-<script>
-
-    checkboxes = document.getElementsByTagName("fila");
-
-    for (var i = 0; i < checkboxes.length; i++) {
-        var checkbox = checkboxes[i];
-        checkbox.onclick = function() {
-            var currentRow = this.parentNode.parentNode;
-            var secondColumn = currentRow.getElementsByTagName("td")[1];
-        };
-    }
-
-</script>
-    <div class="container">
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Articulo</th>
-                    <th scope="col">Usuario</th>
-                    <th scope="col">Fecha prestamo</th>
-                    <th scope="col">Fecha fin prestamo</th>
-                    <th scope="col">Estado
-                        <select id="filtro_estado">
-                            <option value="todos">---</option>
-                            {% for estado,valor in estados_prestamo %}
-                                <option value="{{ valor }}">{{ valor }}</option>
-                            {% endfor %}
-                        </select>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for prest in prestamos %}
-                    <tr class="{{ prest.estado_prestamo }} todos">
-                        <th scope="row"> <input name="cosas" type="checkbox" value="{{ prest.id }}">  </th>
-                        <td> {{ prest.tipo_objeto }}</td>
-                        <td> {{ prest.rut }}</td>
-                        <td> {{ prest.fh_ini_prestamo }}</td>
-                        <td> {{ prest.fh_fin_prestamo }}</td>
-                        <td> {{ prest.estado_prestamo }}</td>
-
+    <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="pills-inicio-tab" data-toggle="pill"
+               href="#pills-inicio" role="tab" aria-controls="pills-inicio" aria-selected="true">Inicio</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-usuarios-tab" data-toggle="pill" href="#pills-usuarios"
+               role="tab" aria-controls="pills-usuarios" aria-selected="false">Usuarios</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-reservas-tab" data-toggle="pill" href="#pills-reservas"
+               role="tab" aria-controls="pills-reservas" aria-selected="false">Reservas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-prestamos-tab" data-toggle="pill" href="#pills-prestamos"
+               role="tab" aria-controls="pills-prestamos" aria-selected="false">Préstamos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-articulos-tab" data-toggle="pill" href="#pills-articulos"
+               role="tab" aria-controls="pills-articulos" aria-selected="false">Artículos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-espacios-tab" data-toggle="pill" href="#pills-espacios"
+               role="tab" aria-controls="pills-espacios" aria-selected="false">Espacios</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-inicio" role="tabpanel" aria-labelledby="pills-inicio-tab">
+            ...
+        </div>
+        <div class="tab-pane fade" id="pills-usuarios" role="tabpanel" aria-labelledby="pills-usuarios-tab">
+            ...
+        </div>
+        <div class="tab-pane fade" id="pills-reservas" role="tabpanel" aria-labelledby="pills-reservas-tab">
+            <div class="container">
+                <table class="table">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Rut</th>
+                        <th scope="col">Fecha inicio</th>
+                        <th scope="col">Fecha termino</th>
+                      <th scope="col">Estado</th>
+                      <th scope="col">Tipo de objeto</th>
                     </tr>
-                {% endfor %}
-            </tbody>
+                  </thead>
+                  <tbody>
+                    {% for reserv in reservas %}
+                        <tr>
+                          <th scope="row"> <input name="fila" type="checkbox" value="{{ reserv.id }}">  </th>
+                          <td>{{ reserv.rut }}</td>
+                          <td>{{ reserv.fh_ini_reserva }}</td>
+                          <td>{{ reserv.fh_fin_reserva }}</td>
+                            <td>{{ reserv.estado_reserva }}</td>
+                            <td>{{ reserv.tipo_objeto }}</td>
+                        </tr>
+                    {% endfor %}
 
-        </table>
+                  </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="pills-prestamos" role="tabpanel" aria-labelledby="pills-prestamos-tab">
+            <div class="container">
+                <button type="button" class="btn btn-success" style="float: right">Recibido</button>
+                <button type="button" class="btn btn-danger" style="float: right">Perdido</button>
+            </div>
+            <div class="container">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Articulo</th>
+                            <th scope="col">Usuario</th>
+                            <th scope="col">Fecha prestamo</th>
+                            <th scope="col">Fecha fin prestamo</th>
+                            <th scope="col">Estado
+                                <select id="filtro_estado">
+                                    <option value="todos">---</option>
+                                    {% for estado,valor in estados_prestamo %}
+                                        <option value="{{ valor }}">{{ valor }}</option>
+                                    {% endfor %}
+                                </select>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prest in prestamos %}
+                            <tr class="{{ prest.estado_prestamo }} todos">
+                                <th scope="row"> <input name="cosas" type="checkbox" value="{{ prest.id }}">  </th>
+                                <td> {{ prest.tipo_objeto }}</td>
+                                <td> {{ prest.rut }}</td>
+                                <td> {{ prest.fh_ini_prestamo }}</td>
+                                <td> {{ prest.fh_fin_prestamo }}</td>
+                                <td> {{ prest.estado_prestamo }}</td>
+
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="pills-articulos" role="tabpanel" aria-labelledby="pills-articulos-tab">
+            <div class="container">
+                <table class="table">
+                  <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for art in articulos %}
+                        <tr>
+                          <th scope="row"> <input name="fila" type="checkbox" value="{{ art.id }}">  </th>
+                          <td>{{ art.nombre }}</td>
+                          <td>{{ art.estado }}</td>
+                        </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="pills-espacios" role="tabpanel" aria-labelledby="pills-espacios-tab">
+            <div class="container">
+                <table class="table">
+                  <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for esp in espacios %}
+                        <tr>
+                          <th scope="row"> <input name="fila" type="checkbox" value="{{ art.id }}">  </th>
+                          <td>{{ esp.nombre }}</td>
+                          <td>{{ esp.estado }}</td>
+                        </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+
+
+
+{#    <div class="container">#}
+{#        <table class="table">#}
+{#            <thead class="thead-dark">#}
+{#                <tr>#}
+{#                    <th scope="col">#</th>#}
+{#                    <th scope="col">Articulo</th>#}
+{#                    <th scope="col">Usuario</th>#}
+{#                    <th scope="col">Fecha prestamo</th>#}
+{#                    <th scope="col">Fecha fin prestamo</th>#}
+{#                    <th scope="col">Estado#}
+{#                        <select id="filtro_estado">#}
+{#                            <option value="todos">---</option>#}
+{#                            {% for estado,valor in estados_prestamo %}#}
+{#                                <option value="{{ valor }}">{{ valor }}</option>#}
+{#                            {% endfor %}#}
+{#                        </select>#}
+{#                    </th>#}
+{#                </tr>#}
+{#            </thead>#}
+{#            <tbody>#}
+{#                {% for prest in prestamos %}#}
+{#                    <tr class="{{ prest.estado_prestamo }} todos">#}
+{#                        <th scope="row"> <input name="cosas" type="checkbox" value="{{ prest.id }}">  </th>#}
+{#                        <td> {{ prest.tipo_objeto }}</td>#}
+{#                        <td> {{ prest.rut }}</td>#}
+{#                        <td> {{ prest.fh_ini_prestamo }}</td>#}
+{#                        <td> {{ prest.fh_fin_prestamo }}</td>#}
+{#                        <td> {{ prest.estado_prestamo }}</td>#}
+{##}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{#            </tbody>#}
+{##}
+{#        </table>#}
+{#    </div>#}
 {% endblock %}
 {% block scripts %}
     <script>
@@ -83,5 +196,15 @@
             $(".todos").hide();
             $("."+$(this).val()).show();
         })
+    </script>
+    <script>
+        checkboxes = document.getElementsByTagName("fila");
+        for (var i = 0; i < checkboxes.length; i++) {
+            var checkbox = checkboxes[i];
+            checkbox.onclick = function() {
+                var currentRow = this.parentNode.parentNode;
+                var secondColumn = currentRow.getElementsByTagName("td")[1];
+            };
+        }
     </script>
 {% endblock %}
