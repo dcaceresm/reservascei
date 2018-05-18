@@ -2,35 +2,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <!--<meta charset="UTF-8">-->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="{% static 'inventarioCEI/css/inventarioCEI.css' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
     <title>calendario</title>
-    <!--<style>
-        table, th, td {
-        border: 1px solid black;
-    }
-    </style>-->
+    <style>
+
+    </style>
 </head>
 <body>
 
-    {% for element in week %}
-        <p>{{element}}</p>
-    {% endfor %}
+    <div align="center">
+        <!--<form action="{% url 'buscar' %}" align="middle" method="post">
+            {% csrf_token %}
+            <input type="text" name="elemento" id="elemento" size="150"/>
+            <input type="submit" value="Buscar"/>
+        </form>-->
+        <form action="{% url 'goToArticulos' %}" method="post">
+            {% csrf_token %}
+            <button class="activeButton">Articulos</button>
+        </form>
 
-    {% for element in month %}
-        <h1>{{element}}</h1>
-    {% endfor %}
+        <button class="unactiveButton">Espacios</button>
+    </div>
 
-    {% for el in prestamos %}
-        <h1>{{el.fh_fin_prestamo}}</h1>
-    {% endfor %}
 
-    {% for i in matrix%}
-        <p>{{i}}</p>
-    {% endfor %}
+    <table class = "table" align="center">
+        <tr>
+            <th class= "th">Hora</th>
+            <th class= "th">Mon {{Mon}}</th>
+            <th class= "th">Tue {{Tue}}</th>
+            <th class= "th">Wed {{Wed}}</th>
+            <th class= "th">Thu {{Thu}}</th>
+            <th class= "th">Fri {{Fri}}</th>
+        </tr>
+        {% for row in matrix%}
+
+            <tr>
+            <!--<td class="td">900</td>-->
+
+            {% for col in row %}
+                {% if col != 0 %}
+                    <td class="td">{{col}}</td>
+                {% elif col == 0%}
+                    <td class="td"></td>
+                {% endif %}
+
+            {% endfor %}
+            </tr>
+        {% endfor %}
+
+    </table>
+
+   <ul>
+       <a href="https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg">
+        <li>
+            <div class="triangle-left1"></div>
+        </li>
+        <li>
+            <div class="triangle-left1"></div>
+        </li>
+         </a>
+        <li>
+            <div>
+               <a href="https://www.w3schools.com/howto/howto_css_shapes.asp">
+                   <div class="triangle-left"></div>
+                </a>
+            </div>
+        </li>
+        <li>
+            <div>
+               <a href="https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg">
+                   <div class="triangle-right"></div>
+                </a>
+            </div>
+        </li>
+       <a href="https://www.cesarsway.com/sites/newcesarsway/files/styles/large_article_preview/public/Common-dog-behaviors-explained.jpg?itok=FSzwbBoi">
+        <li>
+            <div class="triangle-right1"></div>
+        </li>
+        <li>
+            <div class="triangle-right1"></div>
+        </li>
+         </a>
+   </ul>
+
+    <!--<div>
+        <a href="https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg">
+            <ul>
+                <li>
+                    <div class="triangle-left1"></div>
+                </li>
+                <li>
+                    <div class="triangle-left1"></div>
+                </li>
+            </ul>
+        </a>
+    </div>-->
 
 </body>
 </html>

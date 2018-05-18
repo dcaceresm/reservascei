@@ -53,7 +53,9 @@ p {
         border-radius: 50%;
 }
 
-.table {
+.table{
+    width:80%;
+    align: "center";
     border: 1px solid black;
 }
 
@@ -63,4 +65,73 @@ p {
 
 .td{
     border: 1px solid black;
+}
+
+.activeButton {
+    background-color: #D3D3D3;
+    border: none;
+    color: white;
+    padding: 8px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 20px 0px;
+    cursor: pointer;
+}
+
+.unactiveButton {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 8px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 20px 0px;
+    cursor: pointer;
+}
+
+.triangle-left {
+	width: 0;
+	height: 0;
+    margin: 0px 5px;
+	border-top: 5px solid transparent;
+	border-right: 10px solid #555;
+	border-bottom: 5px solid transparent;
+}
+
+.triangle-right {
+	width: 0;
+	height: 0;
+    margin: 0px 5px;
+	border-top: 5px solid transparent;
+	border-left: 10px solid #555;
+	border-bottom: 5px solid transparent;
+}
+
+.triangle-left1 {
+	width: 0;
+	height: 0;
+    margin: 0px -2px;
+	border-top: 5px solid transparent;
+	border-right: 10px solid #555;
+	border-bottom: 5px solid transparent;
+}
+
+.triangle-right1 {
+	width: 0;
+	height: 0;
+    margin: 0px -2px;
+	border-top: 5px solid transparent;
+	border-left: 10px solid #555;
+	border-bottom: 5px solid transparent;
+}
+li{
+    display: inline-block;
+}
+
+ul{
+    margin-left: 43.4%;
 }

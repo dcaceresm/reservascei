@@ -2,7 +2,7 @@ from time import strftime
 
 from datetime import date
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from .models import *
 
@@ -11,7 +11,7 @@ def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 
 
-def calendar(request):
+def calendar(request, default = 0):
     # fechas de prestamos se guardan f = datetime.datetime(2018, 5, 7, 15, 0, tzinfo=<UTC>) año mes día hora y min en utc
     # f.year =2018
     # d = date.today()
@@ -30,7 +30,9 @@ def calendar(request):
     month = [weekStart, weekEnd]
     days = 5
     hours = 9
-    matrix = [[0 for x in range(days)] for y in range(hours)]
+
+    times = ["9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"]
+    matrix = [[0 for x in range(days+1)] for y in range(hours)]
 
     ini_time = 9;
     end_time = 6;
@@ -40,15 +42,19 @@ def calendar(request):
 
     for i in range(hours):
         for j in range(days):
-            for element in prestamos:
 
-                if (element.fh_ini_prestamo.day == weekStart.day + j) & (element.tipo_objeto == "espacio"):
-                    condIni = element.fh_ini_prestamo.hour-3 <= ini_time & ini_time <= element.fh_fin_prestamo.hour-3
-                    if(condIni):
-                        matrix[i][j] = element
+            if j == 0:
+               matrix[i][j] = (str(ini_time) + ":00")
+            if j!=0:
+                for element in prestamos:
+
+                    if (element.fh_ini_prestamo.day == weekStart.day + j-1) & (element.tipo_objeto == "espacio"):
+                        condIni = element.fh_ini_prestamo.hour-3 <= ini_time & ini_time < element.fh_fin_prestamo.hour-3
+                        if(condIni):
+                            matrix[i][j] = element
 
         ini_time += 1
-    return render(request, 'inventarioCEI/calendario.html', {'week': week, 'month': month, 'prestamos': prestamos, 'matrix': matrix})
+    return render(request, 'inventarioCEI/calendario.html', {'Mon': week[0], 'Tue': week[1],'Wed': week[2],'Thu': week[3],'Fri': week[4], 'month': month, 'prestamos': prestamos, 'matrix': matrix})
 
 
 def buscar(request):
@@ -59,6 +65,10 @@ def buscar(request):
     else:
         lista = []
         return render(request, 'inventarioCEI/buscar.html', {'lista': lista})
+
+
+def goToArticulos(request):
+    return HttpResponse("Hello, world. You're at the polls index.")
 
 
 class LandingAdmin(TemplateView):

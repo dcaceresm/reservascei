@@ -11,9 +11,14 @@
 </head>
 <body>
 
-    <form action="{% url 'buscar' %}" method="post">
+    <div align="center">
+    <button class="activeButton">Articulos</button>
+    <button class="unactiveButton">Espacios</button>
+    </div>
+
+    <form action="{% url 'buscar' %}" align="middle" method="post">
     {% csrf_token %}
-    <input type="text" name="elemento" id="elemento"/>
+    <input type="text" name="elemento" id="elemento" size="150"/>
     <input type="submit" value="Buscar"/>
     </form>
 
