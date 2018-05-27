@@ -1,0 +1,54 @@
+
+<!-- top buttons-->
+            <div class="container">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#{% block modalID %}{% endblock %}">
+                  {% block BotonCrear %}{% endblock %}
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="{% block modalID2 %}{% endblock %}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <form class="needs-validation" novalidate>
+                                <div class="modal-header">
+                                    <h5 class="modal-title">{% block modaTitle %}{% endblock %}</h5>
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container">
+                                        {% block modalFormBody %}{% endblock %}
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="btn btn-info">Guardar</button>
+                                </div>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <!-- tabla de prestamos -->
+            <div class="container">
+                <table class="table" style="margin-top: 15px;">
+                    <thead class="thead-dark">
+                        <tr>
+                            {% block columnasTabla %}{% endblock %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% block filasTabla %}{% endblock %}
+                    </tbody>
+
+                </table>
+            </div>
+
+        <!-- botones cambio de estado-->
+            <div class="container">
+                <button type="button" class="btn btn-success" style="float: right">{% block BotonCambioPos %}{% endblock %}</button>
+                <button type="button" class="btn btn-danger" style="float: right">{% block BotonCambioNeg %}{% endblock %}</button>
+            </div>

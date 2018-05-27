@@ -48,22 +48,6 @@ class Espacio(models.Model):
     def __str__(self):
         return self.nombre
 
-class Reserva(models.Model):
-    ESTADO_CHOICES = (
-        ('Pediente', 'Pendiente'),
-        ('Aceptada', 'Aceptada'),
-        ('Rechazada', 'Rechazada'),
-    )
-    rut = models.CharField(max_length=100)
-    fh_reserva = models.DateTimeField()
-    fh_ini_reserva = models.DateTimeField()
-    fh_fin_reserva = models.DateTimeField()
-    estado_reserva = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Pendiente')
-    id_objeto = models.IntegerField()
-    tipo_objeto = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.rut
 
 class Articulo(models.Model):
     ESTADO_CHOICES = (
@@ -72,6 +56,7 @@ class Articulo(models.Model):
         ('En reparación', 'En resparación'),
         ('Perdido', 'Perdido'),
     )
+
     nombre = models.CharField(max_length=100)
     URLfoto = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=200)
@@ -81,19 +66,44 @@ class Articulo(models.Model):
     def __str__(self):
         return self.nombre
 
+class Reserva(models.Model):
+    ESTADO_CHOICES = (
+        ('Pediente', 'Pendiente'),
+        ('Aceptada', 'Aceptada'),
+        ('Rechazada', 'Rechazada'),
+    )
+    TIPO_CHOICES=(
+        ('Artículo', 'Artículo'),
+        ('Espacio','Espacio'),
+    )
+    rut = models.CharField(max_length=100)
+    fh_reserva = models.DateTimeField()
+    fh_ini_reserva = models.DateTimeField()
+    fh_fin_reserva = models.DateTimeField()
+    estado_reserva = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Pendiente')
+    id_objeto = models.IntegerField()
+    tipo_objeto = models.CharField(max_length=50, choices=TIPO_CHOICES, default='Artículo')
+
+    def __str__(self):
+        return self.rut
+
+
 class Prestamo(models.Model):
     ESTADO_CHOICES=(
         ('Vigente', 'Vigente'),
         ('Caducado','Caducado'),
         ('Perdido', 'Perdido'),
     )
-
+    TIPO_CHOICES = (
+        ('Artículo', 'Artículo'),
+        ('Espacio', 'Espacio'),
+    )
     rut = models.CharField(max_length=100)
     fh_ini_prestamo = models.DateTimeField()
     fh_fin_prestamo = models.DateTimeField()
     estado_prestamo = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Vigente')
     id_objeto = models.IntegerField()
-    tipo_objeto = models.CharField(max_length=100)
+    tipo_objeto = models.CharField(max_length=50, choices=TIPO_CHOICES, default='Artículo')
 
     def __str__(self):
         return self.rut

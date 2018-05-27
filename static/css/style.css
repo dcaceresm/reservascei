@@ -13,6 +13,19 @@
 .nav-link {
     color: #6DDCBD !important;
 }
+.btn-dark {
+    background-color: #E8B059 !important;
+    border-color: #E8B059 !important;
+}
+.btn-info {
+    background-color: #D0793E !important;
+    border-color: #D0793E !important;
+}
+th, td {
+  text-align: center;
+  vertical-align: middle;
+}
+
 /*colores cei:
 verde: #79BCB5
 marron: #B95933
