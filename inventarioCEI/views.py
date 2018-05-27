@@ -16,10 +16,12 @@ class LandingAdmin(TemplateView):
         context['reservas'] = Reserva.objects.all().order_by("-pk")
         context['prestamos'] = Prestamo.objects.all().order_by("-pk")
         context['estados_prestamo'] = Prestamo.ESTADO_CHOICES
-        context['estados_prestamo_tipo'] =Prestamo.TIPO_CHOICES
+        context['estados_prestamo_tipo'] = Prestamo.TIPO_CHOICES
+        context['estados_usuario'] = Profile.ESTADO_CHOICES
         context['articulos'] = Articulo.objects.all().order_by("-pk")
         context['espacios'] = Espacio.objects.all().order_by("-pk")
         context['usuarios'] = Profile.objects.all().order_by("-pk")
+
         return context
 
 def AceptarReservas(request):

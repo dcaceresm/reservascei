@@ -36,12 +36,12 @@
 
     <!-- aqui empieza tab de usuarios-->
         <div class="tab-pane fade" id="pills-usuarios" role="tabpanel" aria-labelledby="pills-usuarios-tab">
-            {% include 'UserTabFromAdmin.html' %}
+            {% include 'adminTabs/UserTabFromAdmin.html' %}
         </div>
 
     <!-- aqui empieza tab de reservas-->
         <div class="tab-pane fade" id="pills-reservas" role="tabpanel" aria-labelledby="pills-reservas-tab">
-            {% include 'ReservaTabFromAdmin.html' %}
+            {% include 'adminTabs/ReservaTabFromAdmin.html' %}
         </div>
 
     <!-- aqui empieza tab de prestamos-->
@@ -167,14 +167,18 @@
                                     <form action={% url 'inventario:verPrestamo' %} method="post" >
                                         {% csrf_token %}
                                         <input name="identificador" value="{{ prest.id }}" type="hidden">
-                                        <button type="submit" class="btn btn-dark" formmethod="post">Modificar</button>
+                                        <button type="submit" class="btn btn-dark" formmethod="post">
+                                            Modificar
+                                        </button>
                                     </form>
                                 </td>
                                 <td>
                                     <form action={% url 'inventario:borrarPrestamo' %} method="post" >
                                         {% csrf_token %}
                                         <input name="identificador" value="{{ prest.id }}" type="hidden">
-                                        <button type="submit" class="btn btn-info" formmethod="post">Eliminar</button>
+                                        <button type="submit" class="btn btn-info" formmethod="post">
+                                            Eliminar
+                                        </button>
                                     </form>
                                 </td>
 
@@ -195,54 +199,13 @@
 
     <!-- aqui empieza tab de articulos-->
         <div class="tab-pane fade" id="pills-articulos" role="tabpanel" aria-labelledby="pills-articulos-tab">
-            <div class="container">
-                <table class="table">
-                  <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Estado</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for art in articulos %}
-                        <tr>
-                          <th scope="row"> <input name="fila" type="checkbox" value="{{ art.id }}">  </th>
-                          <td>{{ art.nombre }}</td>
-                          <td>{{ art.estado }}</td>
-                        </tr>
-                    {% endfor %}
-
-                  </tbody>
-                </table>
-            </div>
+            {% include 'adminTabs/ArticuloTabFromAdmin.html' %}
         </div>
 
     <!-- aqui empieza tab de espacios-->
         <div class="tab-pane fade" id="pills-espacios" role="tabpanel" aria-labelledby="pills-espacios-tab">
-            <div class="container">
-                <table class="table">
-                  <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Estado</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for esp in espacios %}
-                        <tr>
-                          <th scope="row"> <input name="fila" type="checkbox" value="{{ art.id }}">  </th>
-                          <td>{{ esp.nombre }}</td>
-                          <td>{{ esp.estado }}</td>
-                        </tr>
-                    {% endfor %}
-
-                  </tbody>
-                </table>
-            </div>
+            {% include 'adminTabs/EspacioTabFromAdmin.html' %}
         </div>
-    </div>
 
 
 {% endblock content %}
@@ -250,6 +213,12 @@
     <script>
         $("#filtro_estado").change(function(){
             $(".todos").hide();
+            $("."+$(this).val()).show();
+        })
+    </script>
+    <script>
+        $("#filtro_estado_usuario").change(function(){
+            $(".usuarios").hide();
             $("."+$(this).val()).show();
         })
     </script>

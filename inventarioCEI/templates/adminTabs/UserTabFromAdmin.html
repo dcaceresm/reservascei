@@ -1,0 +1,52 @@
+{% extends 'adminTabs/BaseAdminTab.html' %}
+
+{% block modalID %}UserModal{% endblock %}
+{% block BotonCrear %}Crear nuevo usuario{% endblock %}
+{% block modalID2 %}UserModal{% endblock %} <!-- debe ser igual a modalID -->
+{% block modaTitle %}Nuevo usuario{% endblock %}
+{% block modalFormBody %}{% endblock %}
+{% block columnasTabla %}
+    <th scope="col">#</th>
+    <th scope="col">Nombre</th>
+    <th scope="col">Rut</th>
+    <th scope="col">Mail</th>
+    <th scope="col">Estado
+        <select id="filtro_estado_usuario">
+            <option value="usuarios">---</option>
+            {% for estado,valor in estados_usuario %}
+                <option value="{{ valor }}">{{ valor }}</option>
+            {% endfor %}
+        </select>
+    </th>
+    <th scope="col">Modificar</th>
+    <th scope="col">Eliminar</th>
+{% endblock %}
+{% block filasTabla %}
+    {% for user in usuarios %}
+        <tr class="{{ user.hab }} usuarios">
+            <th scope="row"> <input name="filas_usuarios" type="checkbox" value="{{ user.id }}">  </th>
+            <td> {{ user.user.username }}</td>
+            <td> {{ user.rut }}</td>
+            <td> {{ user.mail }}</td>
+            <td> {{ user.hab }}</td>
+            <td>
+                <form action={% url 'inventario:landingAdmin' %} method="post" >
+                    {% csrf_token %}
+                    <input name="identificador" value="{{ prest.id }}" type="hidden">
+                    <button type="submit" class="btn btn-dark" formmethod="post">Modificar</button>
+                </form>
+            </td>
+            <td>
+                <form action={% url 'inventario:landingAdmin' %} method="post" >
+                    {% csrf_token %}
+                    <input name="identificador" value="{{ prest.id }}" type="hidden">
+                    <button type="submit" class="btn btn-info" formmethod="post">Eliminar</button>
+                </form>
+            </td>
+
+
+        </tr>
+    {% endfor %}
+{% endblock %}
+{% block BotonCambioPos %}Habilitar{% endblock %}
+{% block BotonCambioNeg %}Inhabilitar{% endblock %}
