@@ -11,21 +11,33 @@
 </head>
 <body>
 
-    <div align="center">
-
-        <button class="unactiveButton">Articulos</button>
-        <form action="{% url 'goToEspacios' %}" method="post">
-            {% csrf_token %}
-            <button class="activeButton">Espacios</button>
-        </form>
-
-    </div>
+    <ul class="ul1">
+        <li>
+            <button class="activeButton">Articulos</button>
+        </li>
+        <li>
+            <form action="{% url 'goToEspacios' %}" method="post">
+                    {% csrf_token %}
+                    <button class="unactiveButton">Espacios</button>
+            </form>
+        </li>
+    </ul>
 
     <form action="{% url 'buscar' %}" align="middle" method="post">
     {% csrf_token %}
     <input type="text" name="elemento" id="elemento" size="150"/>
     <input type="submit" value="Buscar"/>
     </form>
+
+    <div class="divBA">
+        <a href="https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg">
+            <p style="color:black;font-size:10px;">Busqueda Avanzada</p>
+        </a>
+    </div>
+
+
+
+
 
     <div class="flex-container">
     {% for articulo in lista %}

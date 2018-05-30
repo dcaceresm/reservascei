@@ -1,6 +1,6 @@
 from time import strftime
 
-from datetime import date
+from datetime import date, timedelta
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
@@ -10,7 +10,7 @@ from .models import *
 def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 
-def dateChange(date, cant, anterior, signo):
+"""def dateChange(date, cant, anterior, signo):
     months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
     val = 0
@@ -26,58 +26,41 @@ def dateChange(date, cant, anterior, signo):
 
     day = date.day
 
-    if signo == 0:
-        anterior = anterior*-1
+    return date.replace(day=day + (val + anterior)*7)#+ (val + anterior)*7)"""
 
-    return date.replace(day=day + (val + anterior)*7)#+ (val + anterior)*7)
-
-def calendar(request, cant=0, anterior=0, signo = 1):
+def calendar(request):
     #signo 1 positivo 0 negativo
     # fechas de prestamos se guardan f = datetime.datetime(2018, 5, 7, 15, 0, tzinfo=<UTC>) año mes día hora y min en utc
     # f.year =2018
     # d = date.today()
     # d.weekday() = 0 -> lunes
 
+    #TIMEDELTA
+
     today = date.today()
-    today = dateChange(today, cant, anterior, signo)
+    #today = dateChange(today, cant, anterior, signo)
     day = today.day
     weekday = today.weekday()
     week = []
 
-    if cant == 1:
-        if(anterior-4 < 0):
-            anterior = abs(anterior-4)
-            signo = 0
-        else:
-            anterior = abs(anterior - 4)
-            signo = 1
-    elif cant == 2:
-        if (anterior - 1 < 0):
-            anterior = abs(anterior - 1)
-            signo = 0
-        else:
-            anterior = abs(anterior - 1)
-            signo = 1
-    elif cant == 3:
-        if (anterior + 1 < 0):
-            anterior = abs(anterior + 1)
-            signo = 0
-        else:
-            anterior = abs(anterior + 1)
-            signo = 1
-    elif cant == 4:
-        if (anterior + 4 < 0):
-            anterior = abs(anterior + 4)
-            signo = 0
-        else:
-            anterior = abs(anterior + 4)
-            signo = 1
+    today = today - timedelta(days = weekday)
+    day = today.day
 
-    for i in range(day - weekday, day - weekday + 7):
+    #for i in range(day - weekday, day - weekday + 7):
+    #    week.append(i)
+
+    #for i in range(0, weekday + 1):
+    #    today = today - timedelta(days = 1)
+
+    for i in range(day, day + 7):
         week.append(i)
 
-    weekStart = today.replace(day=day - weekday)
-    weekEnd = today.replace(day=day + 6 - weekday)
+
+    weekStart = today
+    weekEnd = today + timedelta(days=6)
+
+    #weekStart = today.replace(day=day - weekday)
+    #weekEnd = today.replace(day=day + 6 - weekday)
 
     month = [weekStart, weekEnd]
     days = 5
@@ -107,8 +90,8 @@ def calendar(request, cant=0, anterior=0, signo = 1):
 
         ini_time += 1
 
-    return render(request, 'inventarioCEI/calendario.html', {'anterior': anterior, 'Mon': week[0], 'Tue': week[1],'Wed': week[2],'Thu': week[3],'Fri': week[4], 'month': month, 'prestamos': prestamos, 'matrix': matrix})
-
+    return render(request, 'inventarioCEI/calendario.html', {'Mon': week[0], 'Tue': week[1],'Wed': week[2],'Thu': week[3],'Fri': week[4], 'month': month, 'prestamos': prestamos, 'matrix': matrix})
+    #return render(request, 'inventarioCEI/calendario.html', {'Mon': week[0], 'Tue': week[1], 'Wed': week[2], 'Thu': week[3], 'Fri': week[4]})
 
 def buscar(request):
     if request.method == "POST":

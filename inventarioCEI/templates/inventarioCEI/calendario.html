@@ -6,27 +6,24 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="{% static 'inventarioCEI/css/inventarioCEI.css' %}">
-    <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+    <!--<link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>-->
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
     <title>calendario</title>
-    <style>
-
-    </style>
 </head>
 <body>
+        -<ul class="ul1">
+            <li>
+                <form action="{% url 'goToArticulos' %}" method="post">
+                    {% csrf_token %}
+                    <button class="unactiveButton">Articulos</button>
+                </form>
+            </li>
 
-    <div align="center">
-        <!--<form action="{% url 'buscar' %}" align="middle" method="post">
-            {% csrf_token %}
-            <input type="text" name="elemento" id="elemento" size="150"/>
-            <input type="submit" value="Buscar"/>
-        </form>-->
-        <form action="{% url 'goToArticulos' %}" method="post">
-            {% csrf_token %}
-            <button class="activeButton">Articulos</button>
-        </form>
-        <button class="unactiveButton">Espacios</button>
-    </div>
+            <li>
+                <button class="activeButton">Espacios</button>
+            </li>
+
+        </ul>
 
 
     <table class = "table" align="center">
@@ -41,7 +38,6 @@
         {% for row in matrix%}
 
             <tr>
-            <!--<td class="td">900</td>-->
 
             {% for col in row %}
                 {% if col != 0 %}
@@ -56,9 +52,9 @@
 
     </table>
 
-   <ul>
+   <ul class="ul2">
 
-       <a href="{% url 'calendar' 1 anterior%}">
+       <a href="{% url 'calendar'%}">
         <li>
             <div class="triangle-left1"></div>
         </li>
@@ -68,19 +64,19 @@
          </a>
         <li>
             <div>
-               <a href="{% url 'calendar' 2 anterior%}">
+               <a href="{% url 'calendar'%}">
                    <div class="triangle-left"></div>
                 </a>
             </div>
         </li>
         <li>
             <div>
-               <a href="{% url 'calendar' 3 anterior%}">
+               <a href="{% url 'calendar'%}">
                    <div class="triangle-right"></div>
                 </a>
             </div>
         </li>
-       <a href="{% url 'calendar' 4 anterior%}">
+       <a href="{% url 'calendar'%}">
         <li>
             <div class="triangle-right1"></div>
         </li>
@@ -89,20 +85,6 @@
         </li>
          </a>
    </ul>
-
-    <!--<div>
-        <a href="https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg">
-            <ul>
-                <li>
-                    <div class="triangle-left1"></div>
-                </li>
-                <li>
-                    <div class="triangle-left1"></div>
-                </li>
-            </ul>
-        </a>
-    </div>-->
-
 </body>
 </html>
 

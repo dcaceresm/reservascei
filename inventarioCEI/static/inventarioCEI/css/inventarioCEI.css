@@ -16,6 +16,8 @@ p {
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
+        margin-left: 10%;
+        margin-right: 10%;
 }
 .flex-container > div {
         background-color: #f1f1f1;
@@ -132,6 +134,14 @@ li{
     display: inline-block;
 }
 
-ul{
-    margin-left: 43.4%;
+.ul1{
+    margin-left: 36.5%;
+}
+
+.ul2{
+    margin-left: 43.3%;
+}
+
+.divBA{
+    margin-left: 82%;
 }
