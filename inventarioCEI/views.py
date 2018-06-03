@@ -20,7 +20,7 @@ def ficha(request, id):
         if request.user.is_staff or request.user.is_superuser:  # IF USER IS STAFF OR ADMIN
             try:  # IF ITEM ID EXISTS
                 obj = Articulo.objects.get(pk=id)
-                time = datetime.datetime.now()
+                time = str(datetime.datetime.today())
                 context = {'articulo': obj, 'time': time}
                 #return render(request, 'articulo_admin.html', context)
                 return render(request, 'articulo.html', context)
@@ -63,14 +63,9 @@ def reserva_articulo(request):
         fh_reserva = request.POST['fh_reserva']
         fh_ini = request.POST['inicio']
         fh_termino = request.POST['termino']
-        reserva = Reserva.objects.create()
-        reserva.id = id
-        reserva.rut = rut
-        reserva.tipo_objeto = tipo_objeto
-        reserva.estado_reserva = estado_reserva
-        reserva.fh_reserva = fh_reserva
-        reserva.fh_ini_reserva = fh_ini
-        reserva.fh_fin_reserva = fh_termino
+        reserva = Reserva.objects.create(id_objeto = id, rut = rut, tipo_objeto = tipo_objeto, estado_reserva = estado_reserva,
+                                         fh_reserva = fh_reserva, fh_ini_reserva = fh_ini, fh_fin_reserva = fh_termino)
+
         reserva.save()
         return redirect('/')
     else:
