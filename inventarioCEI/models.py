@@ -58,10 +58,16 @@ class Reserva(models.Model):
 
 
 class Articulo(models.Model):
+    STATUS_CHOICE = (
+        ('Disponible', 'Disponible'),
+        ('En préstamo', 'En préstamo'),
+        ('En reparación', 'En reparación'),
+        ('Perdido', 'Perdido')
+    )
     name = models.CharField(max_length=50)
     photo = models.ImageField(upload_to='../img/articulos')
     text = models.CharField(max_length=200)
-    status = models.CharField(max_length=20)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICE, default='Disponible')
     tags = models.CharField(max_length=50)
 
     def __str__(self):

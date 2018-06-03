@@ -19,8 +19,8 @@
     Text: <textarea name='description'>{{ articulo.text }}</textarea> <br>
     Estado: <br>
     <input type="radio" name="status" value="Disponible" {% if articulo.status == 'Disponible' %}checked{% endif %}> Disponible<br>
-    <input type="radio" name="status" value="Prestamo" {% if articulo.status == 'Prestamo' %}checked{% endif %}> En Préstamo<br>
-    <input type="radio" name="status" value="Reparacion" {% if articulo.status == 'Reparacion' %}checked{% endif %}> En Reparación<br>
+    <input type="radio" name="status" value="En préstamo" {% if articulo.status == 'En préstamo' %}checked{% endif %}> En Préstamo<br>
+    <input type="radio" name="status" value="En reparación" {% if articulo.status == 'En reparación' %}checked{% endif %}> En Reparación<br>
     <input type="radio" name="status" value="Perdido" {% if articulo.status == 'Perdido' %}checked{% endif %}> Perdido<br><br>
     Tags: <input type="text" size="32" value="{{ articulo.tags }}" name="tags" /> <br>
     <input type="submit"> <br>
