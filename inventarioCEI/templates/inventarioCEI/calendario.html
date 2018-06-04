@@ -52,6 +52,8 @@
 
     </table>
 
+    <var></var>
+
    <ul class="ul2">
 
        <a href="{% url 'calendar'%}">
@@ -71,7 +73,41 @@
         </li>
         <li>
             <div>
+               <a href="{% url 'siguienteSemana'%}">
+                   <div class="triangle-right"></div>
+                </a>
+            </div>
+        </li>
+       <a href="{% url 'siguienteMes'%}">
+        <li>
+            <div class="triangle-right1"></div>
+        </li>
+        <li>
+            <div class="triangle-right1"></div>
+        </li>
+         </a>
+   </ul>
+
+    <ul class="ul2">
+
+       <a href="{% url 'calendar'%}">
+        <li>
+            <div class="triangle-left1"></div>
+        </li>
+        <li>
+            <div class="triangle-left1"></div>
+        </li>
+         </a>
+        <li>
+            <div>
                <a href="{% url 'calendar'%}">
+                   <div class="triangle-left"></div>
+                </a>
+            </div>
+        </li>
+        <li>
+            <div>
+               <a href="{% url 'siguienteSemana'%}">
                    <div class="triangle-right"></div>
                 </a>
             </div>
@@ -85,6 +121,7 @@
         </li>
          </a>
    </ul>
+
 </body>
 </html>
 
