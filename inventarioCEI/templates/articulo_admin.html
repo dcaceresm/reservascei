@@ -1,36 +1,32 @@
-<html>
-{% load static %}
-{% load staticfiles %}
+{% extends "base.html" %}
 
-<head>
-    <title>Inventario CEI - Ficha</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-
-
-</head>
-<body>
+{% block content %}
 {%  if articulo %}
+    <div class="ficha-datos">
     <form method="post" action="{% url 'update_articulo' %}">
     {% csrf_token %}
     <input type="hidden" value="{{ articulo.id }}" name="id"/>
-    Name: <input type="text" size="32" value="{{ articulo.name }}" name="name" /> <br>
+    Name: <input type="text" size="32" value="{{ articulo.nombre }}" name="name" /> <br>
     ID: {{ articulo.id }} <br>
-    Photo: <img src="{{ articulo.photo.url }}" style="max-width: 40%"> <br>
-    Text: <textarea name='description'>{{ articulo.text }}</textarea> <br>
+    Photo: <img src="{{ articulo.image.url }}" style="max-width: 40%"> <br>
+    Text: <textarea name='description'>{{ articulo.descripcion }}</textarea> <br>
     Estado: <br>
-    <input type="radio" name="status" value="Disponible" {% if articulo.status == 'Disponible' %}checked{% endif %}> Disponible<br>
-    <input type="radio" name="status" value="En préstamo" {% if articulo.status == 'En préstamo' %}checked{% endif %}> En Préstamo<br>
-    <input type="radio" name="status" value="En reparación" {% if articulo.status == 'En reparación' %}checked{% endif %}> En Reparación<br>
-    <input type="radio" name="status" value="Perdido" {% if articulo.status == 'Perdido' %}checked{% endif %}> Perdido<br><br>
-    Tags: <input type="text" size="32" value="{{ articulo.tags }}" name="tags" /> <br>
+    <input type="radio" name="status" value="Disponible" {% if articulo.estado == 'Disponible' %}checked{% endif %}> Disponible<br>
+    <input type="radio" name="status" value="En préstamo" {% if articulo.estado == 'En préstamo' %}checked{% endif %}> En Préstamo<br>
+    <input type="radio" name="status" value="En reparación" {% if articulo.estado == 'En reparación' %}checked{% endif %}> En Reparación<br>
+    <input type="radio" name="status" value="Perdido" {% if articulo.estado == 'Perdido' %}checked{% endif %}> Perdido<br><br>
+    Tags: <input type="text" size="32" value="{{ articulo.lista_tags }}" name="tags" /> <br>
     <input type="submit"> <br>
     </form>
+    </div>
 
 
 {% else %}
     <h2>No existe artículo con id {{ id }}</h2>
 {% endif %}
-
+{% endblock content %}
+{# END OF CONTENT #}
+{% block scripts %}
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -41,5 +37,4 @@
         alert('Articulo Actualizado!')
     }
 </script>
-</body>
-</html>
+{% endblock scripts %}

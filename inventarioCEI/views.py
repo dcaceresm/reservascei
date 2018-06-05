@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from .models import Articulo, Reserva
 import datetime
+from django.contrib.contenttypes.models import ContentType
 
 def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
@@ -17,38 +18,46 @@ class LandingAdmin(TemplateView):
 
 def ficha(request, id):
     if request.user.is_authenticated:
-        if request.user.is_staff or request.user.is_superuser:  # IF USER IS STAFF OR ADMIN
-            try:  # IF ITEM ID EXISTS
-                obj = Articulo.objects.get(pk=id)
+        try: # IF ITEM ID EXISTS
+            obj = Articulo.objects.get(pk=id)
+
+            # GET LASTEST RESERVATIONS
+
+            
+
+
+
+            # render
+            if request.user.profile.isAdmin:  # IF USER IS STAFF OR ADMIN
                 time = str(datetime.datetime.today())
                 context = {'articulo': obj, 'time': time}
-                #return render(request, 'articulo_admin.html', context)
-                return render(request, 'articulo.html', context)
-            except:  # IF ITEM ID DOESNT EXISTS
-                context = {'id': id}
-                #return render(request, 'articulo_admin.html', context)
-                return render(request, 'articulo.html', context)
-        else:
-            try:
+                return render(request, 'articulo_admin.html', context)
+                #return render(request, 'articulo.html', context)
+            else:
                 rut = request.user.profile.rut
-                time = datetime.datetime.now()
-                obj = Articulo.objects.get(pk=id)
+                time = str(datetime.datetime.today())
                 context = {'articulo': obj, 'rut': rut, 'time': time}
                 return render(request, 'articulo.html', context)
-            except:
+        except:
+            if request.user.profile.isAdmin:  # IF USER IS STAFF OR ADMIN
+                context = {'id': id}
+                return render(request, 'articulo_admin.html', context)
+                #return render(request, 'articulo.html', context)
+            else:
                 context = {'id': id}
                 return render(request, 'articulo.html', context)
     else:  # USER IS NOT LOGGED IN
         return redirect('/')  # REDIRECT TO INDEX (LOGIN) PAGE
 
+
 def update_articulo(request):
     if request.method == 'POST':
         id = request.POST['id']
         articulo = Articulo.objects.get(pk = id)
-        articulo.name = request.POST['name']
-        articulo.text = request.POST['description']
-        articulo.status = request.POST['status']
-        articulo.tags = request.POST['tags']
+        articulo.nombre = request.POST['name']
+        articulo.descripcion = request.POST['description']
+        articulo.estado = request.POST['status']
+        articulo.lista_tags = request.POST['tags']
         articulo.save()
         return redirect('/ficha/' + id + '/?updated=True')
     else:
@@ -57,14 +66,15 @@ def update_articulo(request):
 def reserva_articulo(request):
     if request.method == 'POST':
         id = request.POST['id']
-        rut = request.POST['rut']
-        tipo_objeto = request.POST['tipo_objeto']
+        articulo = Articulo.objects.get(pk = id)
         estado_reserva = request.POST['estado_reserva']
         fh_reserva = request.POST['fh_reserva']
         fh_ini = request.POST['inicio'] + " " + request.POST['hora_inicio']
         fh_termino = request.POST['termino'] + " " + request.POST['hora_termino']
-        reserva = Reserva.objects.create(id_objeto = id, rut = rut, tipo_objeto = tipo_objeto, estado_reserva = estado_reserva,
-                                         fh_reserva = fh_reserva, fh_ini_reserva = fh_ini, fh_fin_reserva = fh_termino)
+        ct = ContentType.objects.get_for_model(articulo)
+        reserva = Reserva.objects.create(profile=request.user.profile, fh_reserva=fh_reserva, fh_ini_reserva=fh_ini,
+                                         fh_fin_reserva=fh_termino, estado_reserva=estado_reserva, object_id=id,
+                                         content_type= ct)
 
         reserva.save()
         return redirect('/')
