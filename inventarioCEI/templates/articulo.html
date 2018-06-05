@@ -24,14 +24,66 @@
 
     {# STATIC INFO #}
     <input type="hidden" value="{{ articulo.id }}" name="id"/>
-    <input type="hidden" value="{{ rut }}" name="rut"/>
+{#    <input type="hidden" value="{{ rut }}" name="rut"/>#}
+    <input type="hidden" value="987654321" name="rut"/>
     <input type="hidden" value="articulo" name="tipo_objeto"/>
     <input type="hidden" value="Pendiente" name="estado_reserva"/>
     <input type="hidden" value="{{ time }}" name="fh_reserva"/>
 
+
     {# VARIABLE INFO #}
-    Fecha inicio: <input class="datepicker" type="datetime-local" name="inicio" id="datepicker" name="inicio"> <br>
-    Fecha término: <input class="datepicker" data-date-format="dd/mm/yyyy" name="termino" id="datepicker2" name="termino"> <br>
+    Fecha inicio: <input class="datepicker" type="datetime-local" name="inicio" id="datepicker" name="inicio"> Hora: <select name="hora_inicio">
+        <option value="00:00">00:00</option>
+        <option value="01:00">01:00</option>
+        <option value="02:00">02:00</option>
+        <option value="03:00">03:00</option>
+        <option value="04:00">04:00</option>
+        <option value="05:00">05:00</option>
+        <option value="06:00">06:00</option>
+        <option value="07:00">07:00</option>
+        <option value="08:00">08:00</option>
+        <option value="09:00">09:00</option>
+        <option value="10:00">10:00</option>
+        <option value="11:00">11:00</option>
+        <option value="12:00">12:00</option>
+        <option value="13:00">13:00</option>
+        <option value="14:00">14:00</option>
+        <option value="15:00">15:00</option>
+        <option value="16:00">16:00</option>
+        <option value="17:00">17:00</option>
+        <option value="18:00">18:00</option>
+        <option value="19:00">19:00</option>
+        <option value="20:00">20:00</option>
+        <option value="21:00">21:00</option>
+        <option value="22:00">22:00</option>
+        <option value="23:00">23:00</option>
+    </select> <br>
+    Fecha término: <input class="datepicker" data-date-format="dd/mm/yyyy" name="termino" id="datepicker2" name="termino"> Hora: <select name="hora_termino">
+        <option value="00:00">00:00</option>
+        <option value="01:00">01:00</option>
+        <option value="02:00">02:00</option>
+        <option value="03:00">03:00</option>
+        <option value="04:00">04:00</option>
+        <option value="05:00">05:00</option>
+        <option value="06:00">06:00</option>
+        <option value="07:00">07:00</option>
+        <option value="08:00">08:00</option>
+        <option value="09:00">09:00</option>
+        <option value="10:00">10:00</option>
+        <option value="11:00">11:00</option>
+        <option value="12:00">12:00</option>
+        <option value="13:00">13:00</option>
+        <option value="14:00">14:00</option>
+        <option value="15:00">15:00</option>
+        <option value="16:00">16:00</option>
+        <option value="17:00">17:00</option>
+        <option value="18:00">18:00</option>
+        <option value="19:00">19:00</option>
+        <option value="20:00">20:00</option>
+        <option value="21:00">21:00</option>
+        <option value="22:00">22:00</option>
+        <option value="23:00">23:00</option>
+    </select> <br>
 
     <input type="submit"> <br>
     </form>

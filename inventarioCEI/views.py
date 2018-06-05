@@ -61,8 +61,8 @@ def reserva_articulo(request):
         tipo_objeto = request.POST['tipo_objeto']
         estado_reserva = request.POST['estado_reserva']
         fh_reserva = request.POST['fh_reserva']
-        fh_ini = request.POST['inicio']
-        fh_termino = request.POST['termino']
+        fh_ini = request.POST['inicio'] + " " + request.POST['hora_inicio']
+        fh_termino = request.POST['termino'] + " " + request.POST['hora_termino']
         reserva = Reserva.objects.create(id_objeto = id, rut = rut, tipo_objeto = tipo_objeto, estado_reserva = estado_reserva,
                                          fh_reserva = fh_reserva, fh_ini_reserva = fh_ini, fh_fin_reserva = fh_termino)
 
