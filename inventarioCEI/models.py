@@ -18,7 +18,7 @@ class Profile(models.Model):
     )
 
     rut = models.CharField(max_length=15, null=True, blank=True, unique=True)
-    mail = models.CharField(max_length=200, blank=True)
+    mail = models.EmailField(max_length=150, unique=True)
     isAdmin = models.BooleanField(default=False)
     hab = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Habilitado')
 

@@ -63,6 +63,12 @@ def borrarPrestamo(request):
     prest.delete()
     return redirect('inventario:landingAdmin')
 
+def borrarUsuario(request):
+    rut_usuario =request.POST["identificador"]
+    profile = get_object_or_404(Profile, rut=rut_usuario)
+    profile.delete()
+    return redirect('inventario:landingAdmin')
+
 def verPrestamo(request):
     id_prestamo =request.POST["identificador"]
     prest = get_object_or_404(Prestamo, pk=id_prestamo)

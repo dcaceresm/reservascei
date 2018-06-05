@@ -21,9 +21,15 @@
     background-color: #D0793E !important;
     border-color: #D0793E !important;
 }
+thead {
+    border-radius: 25px;/*arreglar esto*/
+}
+
 th, td {
     text-align: center;
     vertical-align: middle;
+}
+td:not(.mailcito){
     text-transform: capitalize;
 }
 
