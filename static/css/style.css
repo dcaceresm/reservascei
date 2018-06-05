@@ -22,8 +22,9 @@
     border-color: #D0793E !important;
 }
 th, td {
-  text-align: center;
-  vertical-align: middle;
+    text-align: center;
+    vertical-align: middle;
+    text-transform: capitalize;
 }
 
 /*colores cei:

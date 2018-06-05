@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericRelation
 
 class Profile(models.Model):
     ESTADO_CHOICES = (
@@ -23,6 +26,7 @@ class Profile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
+
 
     def __str__(self):
         return self.rut
@@ -49,6 +53,9 @@ class Espacio(models.Model):
     estado = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Disponible')
     capacidad = models.IntegerField(default=0)
 
+    reservas = GenericRelation('Reserva')
+    prestamos = GenericRelation('Prestamo')
+
     def __str__(self):
         return self.nombre
 
@@ -67,12 +74,15 @@ class Articulo(models.Model):
     estado = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Disponible')
     lista_tags = models.CharField(max_length=200)
 
+    reservas = GenericRelation('Reserva')
+    prestamos = GenericRelation('Prestamo')
+
     def __str__(self):
         return self.nombre
 
 class Reserva(models.Model):
     ESTADO_CHOICES = (
-        ('Pediente', 'Pendiente'),
+        ('Pendiente', 'Pendiente'),
         ('Aceptada', 'Aceptada'),
         ('Rechazada', 'Rechazada'),
     )
@@ -80,16 +90,20 @@ class Reserva(models.Model):
         ('Artículo', 'Artículo'),
         ('Espacio','Espacio'),
     )
-    rut = models.CharField(max_length=100)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+
     fh_reserva = models.DateTimeField()
     fh_ini_reserva = models.DateTimeField()
     fh_fin_reserva = models.DateTimeField()
     estado_reserva = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Pendiente')
-    id_objeto = models.IntegerField()
-    tipo_objeto = models.CharField(max_length=50, choices=TIPO_CHOICES, default='Artículo')
+
+    limit = models.Q(app_label='inventarioCEI', model='articulo') | models.Q(app_label='inventarioCEI', model='espacio')
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=limit)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey()
 
     def __str__(self):
-        return self.rut
+        return str(self.profile.user.username) + " " + str(self.content_object.nombre)
 
 
 class Prestamo(models.Model):
@@ -102,12 +116,16 @@ class Prestamo(models.Model):
         ('Artículo', 'Artículo'),
         ('Espacio', 'Espacio'),
     )
-    rut = models.CharField(max_length=100)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+
     fh_ini_prestamo = models.DateTimeField()
     fh_fin_prestamo = models.DateTimeField()
     estado_prestamo = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Vigente')
-    id_objeto = models.IntegerField()
-    tipo_objeto = models.CharField(max_length=50, choices=TIPO_CHOICES, default='Artículo')
+
+    limit = models.Q(app_label='inventarioCEI', model='articulo') | models.Q(app_label='inventarioCEI', model='espacio')
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=limit)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey()
 
     def __str__(self):
-        return self.rut
+        return str(self.profile.user.username) + " " + str(self.content_object.nombre)
