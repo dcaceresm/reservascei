@@ -18,27 +18,27 @@ class Profile(models.Model):
     )
 
     rut = models.CharField(max_length=15, null=True, blank=True, unique=True)
-    mail = models.CharField(max_length=200, blank=True)
+    mail = models.CharField(max_length=200, null=True, blank=True)
     isAdmin = models.BooleanField(default=False)
     hab = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Habilitado')
 
-
-    bio = models.TextField(max_length=500, blank=True)
-    location = models.CharField(max_length=30, blank=True)
-    birth_date = models.DateField(null=True, blank=True)
-
-
     def __str__(self):
-        return self.rut
+        return self.user.username
 
-    # @receiver(post_save, sender=User)
-    # def create_user_profile(sender, instance, created, **kwargs):
-    #     if created:
-    #         Profile.objects.create(user=instance)
-    #
-    # @receiver(post_save, sender=User)
-    # def save_user_profile(sender, instance, **kwargs):
-    #     instance.profile.save()
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
+
+    #@receiver(post_save, sender=User)
+    #def update_user_profile(sender, instance, created, **kwargs):
+    #    if created:
+    #        Profile.objects.create(user=instance)
+    #    instance.profile.save()
 
 
 class Espacio(models.Model):
@@ -59,36 +59,15 @@ class Espacio(models.Model):
     def __str__(self):
         return self.nombre
 
-
-class Articulo(models.Model):
-    ESTADO_CHOICES = (
-        ('Disponible', 'Disponible'),
-        ('En préstamo', 'En préstamo'),
-        ('En reparación', 'En resparación'),
-        ('Perdido', 'Perdido'),
-    )
-
-    nombre = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='../img/articulos')
-    descripcion = models.CharField(max_length=200)
-    estado = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Disponible')
-    lista_tags = models.CharField(max_length=200)
-
-    reservas = GenericRelation('Reserva')
-    prestamos = GenericRelation('Prestamo')
-
-    def __str__(self):
-        return self.nombre
-
 class Reserva(models.Model):
     ESTADO_CHOICES = (
         ('Pendiente', 'Pendiente'),
         ('Aceptada', 'Aceptada'),
         ('Rechazada', 'Rechazada'),
     )
-    TIPO_CHOICES=(
+    TIPO_CHOICES = (
         ('Artículo', 'Artículo'),
-        ('Espacio','Espacio'),
+        ('Espacio', 'Espacio'),
     )
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
 
@@ -102,14 +81,30 @@ class Reserva(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey()
 
-    def __str__(self):
-        return str(self.profile.user.username) + " " + str(self.content_object.nombre)
+class Articulo(models.Model):
+    ESTADO_CHOICES = (
+        ('Disponible', 'Disponible'),
+        ('En préstamo', 'En préstamo'),
+        ('En reparación', 'En resparación'),
+        ('Perdido', 'Perdido'),
+    )
 
+    nombre = models.CharField(max_length=100)
+    URLfoto = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=200)
+    estado = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Disponible')
+    lista_tags = models.CharField(max_length=200)
+
+    reservas = GenericRelation('Reserva')
+    prestamos = GenericRelation('Prestamo')
+
+    def __str__(self):
+        return self.nombre
 
 class Prestamo(models.Model):
-    ESTADO_CHOICES=(
+    ESTADO_CHOICES = (
         ('Vigente', 'Vigente'),
-        ('Caducado','Caducado'),
+        ('Caducado', 'Caducado'),
         ('Perdido', 'Perdido'),
     )
     TIPO_CHOICES = (

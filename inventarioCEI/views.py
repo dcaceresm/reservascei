@@ -1,83 +1,109 @@
-from django.http import HttpResponse
-from django.views.generic import TemplateView
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from .models import Articulo, Reserva
-import datetime
-from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib import messages
+from .models import *
+from django.urls import reverse
+from .forms import SignUpForm
+
+from pprint import pprint
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    if (request.user.is_authenticated):
+        return HttpResponseRedirect('profile')
+    return render(request, 'custom_login.html')
 
 
-class LandingAdmin(TemplateView):
-    template_name = "landingPageAdmin.html"
+def showProfile(request):
+    if not (request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('index'))
 
-    def get_context_data(self, **kwargs):
-        return {}
+    data = request.GET.get('pestana', "Reservas")
 
+    if(data=="Reservas"):
 
-def ficha(request, id):
-    if request.user.is_authenticated:
-        try: # IF ITEM ID EXISTS
-            obj = Articulo.objects.get(pk=id)
+        reservas = Reserva.objects.filter(profile__rut=request.user.profile.rut).order_by('-id')[:10]
+        estados = Reserva.objects.filter(profile__rut=request.user.profile.rut).order_by('-id')\
+                            .values_list('estado_reserva', flat=True)[:10]
+        list= zip(reservas, estados)
+        return render(request, 'user_profile.html', {'result': list})
 
-            # GET LASTEST RESERVATIONS
-
-            
-
-
-
-            # render
-            if request.user.profile.isAdmin:  # IF USER IS STAFF OR ADMIN
-                time = str(datetime.datetime.today())
-                context = {'articulo': obj, 'time': time}
-                return render(request, 'articulo_admin.html', context)
-                #return render(request, 'articulo.html', context)
-            else:
-                rut = request.user.profile.rut
-                time = str(datetime.datetime.today())
-                context = {'articulo': obj, 'rut': rut, 'time': time}
-                return render(request, 'articulo.html', context)
-        except:
-            if request.user.profile.isAdmin:  # IF USER IS STAFF OR ADMIN
-                context = {'id': id}
-                return render(request, 'articulo_admin.html', context)
-                #return render(request, 'articulo.html', context)
-            else:
-                context = {'id': id}
-                return render(request, 'articulo.html', context)
-    else:  # USER IS NOT LOGGED IN
-        return redirect('/')  # REDIRECT TO INDEX (LOGIN) PAGE
-
-
-def update_articulo(request):
-    if request.method == 'POST':
-        id = request.POST['id']
-        articulo = Articulo.objects.get(pk = id)
-        articulo.nombre = request.POST['name']
-        articulo.descripcion = request.POST['description']
-        articulo.estado = request.POST['status']
-        articulo.lista_tags = request.POST['tags']
-        articulo.save()
-        return redirect('/ficha/' + id + '/?updated=True')
     else:
-        return HttpResponse("Whoops!")
 
-def reserva_articulo(request):
-    if request.method == 'POST':
-        id = request.POST['id']
-        articulo = Articulo.objects.get(pk = id)
-        estado_reserva = request.POST['estado_reserva']
-        fh_reserva = request.POST['fh_reserva']
-        fh_ini = request.POST['inicio'] + " " + request.POST['hora_inicio']
-        fh_termino = request.POST['termino'] + " " + request.POST['hora_termino']
-        ct = ContentType.objects.get_for_model(articulo)
-        reserva = Reserva.objects.create(profile=request.user.profile, fh_reserva=fh_reserva, fh_ini_reserva=fh_ini,
-                                         fh_fin_reserva=fh_termino, estado_reserva=estado_reserva, object_id=id,
-                                         content_type= ct)
+        prestamos = Prestamo.objects.filter(profile__rut=request.user.profile.rut).order_by('-id')[:10]
+        estados = Prestamo.objects.filter(profile__rut=request.user.profile.rut).order_by('-id') \
+                             .values_list('estado_prestamo', flat=True)[:10]
+        list = zip(prestamos, estados)
+        return render(request, 'user_profile.html', {'result': list})
 
-        reserva.save()
-        return redirect('/')
+
+
+def get_user(email):
+    try:
+        return Profile.objects.get(mail=email.lower()).user
+    except Profile.DoesNotExist:
+        return None
+
+
+def customlogin(request):
+    email = request.POST['email']
+    password = request.POST['password']
+    username = get_user(email).username
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+            return HttpResponseRedirect(reverse('profile'))
+        else:
+            return HttpResponseRedirect(reverse('index'))
     else:
-        return HttpResponse("Whoops!")
+        return HttpResponseRedirect(reverse('index'))
 
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.refresh_from_db()  # load the profile instance created by the signal
+            user.profile.rut = form.cleaned_data.get('rut')
+            user.profile.mail = form.cleaned_data.get('mail')
+            user.save()
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=user.username, password=raw_password)
+            login(request, user)
+            return redirect('profile')
+    else:
+        form = SignUpForm()
+    return render(request, 'signup.html', {'form': form})
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('change_password')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'change_password.html', {
+        'form': form
+    })
+
+def deleteRes(request):
+    delList = request.POST.getlist('element')
+
+    pprint(delList)
+
+    #espacios_por_borrar = Espacio.objects.filter(nombre__in=delList).values_list('id', flat=True)
+    #articulos_por_borrar = Articulo.objects.filter(nombre__in=delList).values_list('id', flat=True)
+
+    Reserva.objects.filter(id__in=delList).delete()
+    #Reserva.objects.filter(object_id__in=articulos_por_borrar).delete()
+
+    return HttpResponseRedirect(reverse('index'))

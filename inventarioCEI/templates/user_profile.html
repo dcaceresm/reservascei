@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div style="text-align: center">
+        <button class="btn btn-primary btn-lg" style="height:80px ; width:400px" >Reserva tu espacio</button>
+        <button class="btn btn-primary btn-lg" style="height:80px ; width:400px" >Pide tu artículo</button>
+    </div>
+    <br>
+    <div style="text-align: center">
+        <form action="{% url 'profile' %}" method="get">
+            <button class="btn btn-primary btn-lg" style="text-align: left" name='pestana' value="Reservas" >Reservas</button>
+            <button class="btn btn-primary btn-lg" style="text-align: left" name='pestana' value="Prestamos" >Prestamos</button>
+        </form>
+    </div>
+    <br>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-*-*">
+                <form action="{% url 'deleteRes' %}" method="post">
+                {% csrf_token %}
+                    <table class="table table-bordered">
+                        <tr class="table-primary">
+                            <th>Nombre</th>
+                            <th>Estado</th>
+                        </tr>
+                        {% for r,e in result %}
+                            <tr>
+                                {% ifnotequal e "Pendiente" %}
+                                    <th onclick="showData('{{r.content_object.descripcion}}',
+                                            '{{r.content_object.URLfoto}}',
+                                            '{{r.content_object.nombre}}')">
+                                        {{r.content_object.nombre}}
+                                    </th>
+                                    <th>
+                                        {{e}}
+                                    </th>
+                                {% else %}
+                                    <th onclick="showData('{{r.content_object.descripcion}}',
+                                            '{{r.content_object.URLfoto}}',
+                                            '{{r.content_object.nombre}}')">
+                                        <input type="checkbox" name="element" value="{{r.id}}">{{r.content_object.nombre}}
+                                    </th>
+                                    <th>
+                                        {{e}}
+                                    </th>
+                                {% endifnotequal %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <input class="btn btn-primary btn-sm" name="delete_item" type="submit" value="Borrar"/>
+                </form>
+            </div>
+            <div id="photo" class="col-*-*"></div>
+            <div id="description" class="col-*-*" style="width: 400px">
+                Click en un item para obtener la información.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showData(text, fotoURL, name){
+            let box = document.getElementById("photo");
+            box.innerHTML = "";
+            let box2 = document.getElementById("description");
+            box2.innerHTML = "";
+
+            let line = document.createElement("br");
+            let photo = document.createElement("img");
+            photo.src = fotoURL;
+            photo.height = "250";
+            photo.width = "350";
+
+            box.appendChild(photo);
+            box.appendChild(line);
+
+            let n = document.createElement("p");
+            let d = document.createElement("p");
+
+            let description = document.createTextNode(text);
+            let nametxt = document.createTextNode(name);
+
+            n.appendChild(nametxt);
+            d.appendChild(description);
+
+            box2.appendChild(n);
+            box2.appendChild(d);
+        }
+    </script>
+{% endblock %}
+
+{% block infoUsuario %}
+    <div id="right">
+        {{ request.user.first_name }} {{ request.user.last_name }}, Rut: {{ request.user.profile.rut }}
+        <br>{{ request.user.profile.mail }}
+        {% if request.user.profile.hab %}
+            <br>Habilitado
+        {% else %}
+            <br>No Habilitado
+        {% endif %}
+        <br><a href="{% url 'logout' %}"> Cerrar Sesión </a>
+        /<a href="{% url 'change_password' %}"> Cambiar Contraseña </a>
+    </div>
+
+{% endblock %}
