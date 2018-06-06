@@ -1,64 +1,58 @@
 {% extends "base.html" %}
 
+{% block infoUsuario %}
+    <div id="right">
+        {{ request.user.first_name }} {{ request.user.last_name }}, Rut: {{ request.user.profile.rut }}
+        <br>{{ request.user.profile.mail }}
+        {% if request.user.profile.hab %}
+            <br>Habilitado
+        {% else %}
+            <br>No Habilitado
+        {% endif %}
+        <br><a href="{% url 'logout' %}"> Cerrar Sesión </a>
+        /<a href="{% url 'change_password' %}"> Cambiar Contraseña </a>
+    </div>
+
+{% endblock %}
+
 {% block content %}
 
-    <div style="text-align: center">
-        <button class="btn btn-primary btn-lg" style="height:80px ; width:400px" >Reserva tu espacio</button>
-        <button class="btn btn-primary btn-lg" style="height:80px ; width:400px" >Pide tu artículo</button>
-    </div>
-    <br>
-    <div style="text-align: center">
-        <form action="{% url 'profile' %}" method="get">
-            <button class="btn btn-primary btn-lg" style="text-align: left" name='pestana' value="Reservas" >Reservas</button>
-            <button class="btn btn-primary btn-lg" style="text-align: left" name='pestana' value="Prestamos" >Prestamos</button>
-        </form>
-    </div>
+    <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="pill" role="tab" aria-selected="true">Reservar Espacio</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="pill" role="tab" aria-selected="true">Reservar Artículo</a>
+        </li>
+    </ul>
+
     <br>
 
     <div class="container">
-        <div class="row">
-            <div class="col-*-*">
-                <form action="{% url 'deleteRes' %}" method="post">
-                {% csrf_token %}
-                    <table class="table table-bordered">
-                        <tr class="table-primary">
-                            <th>Nombre</th>
-                            <th>Estado</th>
-                        </tr>
-                        {% for r,e in result %}
-                            <tr>
-                                {% ifnotequal e "Pendiente" %}
-                                    <th onclick="showData('{{r.content_object.descripcion}}',
-                                            '{{r.content_object.URLfoto}}',
-                                            '{{r.content_object.nombre}}')">
-                                        {{r.content_object.nombre}}
-                                    </th>
-                                    <th>
-                                        {{e}}
-                                    </th>
-                                {% else %}
-                                    <th onclick="showData('{{r.content_object.descripcion}}',
-                                            '{{r.content_object.URLfoto}}',
-                                            '{{r.content_object.nombre}}')">
-                                        <input type="checkbox" name="element" value="{{r.id}}">{{r.content_object.nombre}}
-                                    </th>
-                                    <th>
-                                        {{e}}
-                                    </th>
-                                {% endifnotequal %}
-                            </tr>
-                        {% endfor %}
-                    </table>
-                    <input class="btn btn-primary btn-sm" name="delete_item" type="submit" value="Borrar"/>
-                </form>
-            </div>
-            <div id="photo" class="col-*-*"></div>
-            <div id="description" class="col-*-*" style="width: 400px">
-                Click en un item para obtener la información.
-            </div>
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="pills-reservas-tab" data-toggle="pill" href="#pills-reservas"
+               role="tab" aria-controls="pills-reservas" aria-selected="true">Reservas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="pills-prestamos-tab" data-toggle="pill" href="#pills-prestamos"
+               role="tab" aria-controls="pills-prestamos" aria-selected="false">Prestamos</a>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-reservas" role="tabpanel" aria-labelledby="pills-reservas-tab">
+            {% include 'res_table.html' %}
+          </div>
+          <div class="tab-pane fade" id="pills-prestamos" role="tabpanel" aria-labelledby="pills-prestamos-tab">
+            {% include 'pres_table.html' %}
+          </div>
         </div>
     </div>
 
+{% endblock %}
+
+{% block scripts %}
     <script>
         function showData(text, fotoURL, name){
             let box = document.getElementById("photo");
@@ -88,19 +82,4 @@
             box2.appendChild(d);
         }
     </script>
-{% endblock %}
-
-{% block infoUsuario %}
-    <div id="right">
-        {{ request.user.first_name }} {{ request.user.last_name }}, Rut: {{ request.user.profile.rut }}
-        <br>{{ request.user.profile.mail }}
-        {% if request.user.profile.hab %}
-            <br>Habilitado
-        {% else %}
-            <br>No Habilitado
-        {% endif %}
-        <br><a href="{% url 'logout' %}"> Cerrar Sesión </a>
-        /<a href="{% url 'change_password' %}"> Cambiar Contraseña </a>
-    </div>
-
 {% endblock %}

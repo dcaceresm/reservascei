@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-*-*">
+        <form action="{% url 'deleteRes' %}" method="post">
+            {% csrf_token %}
+            <table class="table table-bordered">
+                <tr class="table-primary">
+                    <th>Nombre</th>
+                    <th>Estado</th>
+                </tr>
+                {% for r,e in prestamos %}
+                    <tr>
+                        {% ifnotequal e "Pendiente" %}
+                            <th style="cursor: pointer;" onclick="showData('{{r.content_object.descripcion}}',
+                                    '{{r.content_object.URLfoto}}',
+                                    '{{r.content_object.nombre}}')">
+                                {{r.content_object.nombre}}
+                            </th>
+                            <th>
+                                {{e}}
+                            </th>
+                        {% else %}
+                            <th style="cursor: pointer;" onclick="showData('{{r.content_object.descripcion}}',
+                                    '{{r.content_object.URLfoto}}',
+                                    '{{r.content_object.nombre}}')">
+                                <input type="checkbox" name="element" value="{{r.id}}">{{r.content_object.nombre}}
+                            </th>
+                            <th>
+                                {{e}}
+                            </th>
+                        {% endifnotequal %}
+                    </tr>
+                {% endfor %}
+            </table>
+            <input class="btn btn-primary btn-sm" name="delete_item" type="submit" value="Borrar"/>
+        </form>
+    </div>
+    <div id="photo" class="col-*-*"></div>
+    <div id="description" class="col-*-*" style="width: 400px">
+        Click en un item para obtener la información.
+    </div>
+</div>

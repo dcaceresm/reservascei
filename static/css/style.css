@@ -1,0 +1,35 @@
+.thead-dark th {
+    background-color: #79BCB5 !important;
+    border-color: #79BCB5 !important;
+}
+.nav-pills > li > a.active {
+    background-color: #B95933 !important;
+    color: #ffffff !important;
+}
+.nav-pills > li > a:hover {
+    background-color: #E8B059 !important;
+    color: #ffffff !important;
+}
+.nav-link {
+    color: #6DDCBD !important;
+}
+.btn-dark {
+    background-color: #E8B059 !important;
+    border-color: #E8B059 !important;
+}
+.btn-info {
+    background-color: #D0793E !important;
+    border-color: #D0793E !important;
+}
+th, td {
+    text-align: center;
+    vertical-align: middle;
+    text-transform: capitalize;
+}
+
+/*colores cei:
+verde: #79BCB5
+marron: #B95933
+naranjo: #D0793E
+amarillo: #E8B059
+ */

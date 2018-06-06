@@ -6,9 +6,6 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from .models import *
 from django.urls import reverse
-from .forms import SignUpForm
-
-from pprint import pprint
 
 def index(request):
     if (request.user.is_authenticated):
@@ -20,23 +17,16 @@ def showProfile(request):
     if not (request.user.is_authenticated):
         return HttpResponseRedirect(reverse('index'))
 
-    data = request.GET.get('pestana', "Reservas")
+    reservas = Reserva.objects.filter(profile__rut=request.user.profile.rut).order_by('-id')[:10]
+    estados_r = Reserva.objects.filter(profile__rut=request.user.profile.rut).order_by('-id')\
+                    .values_list('estado_reserva', flat=True)[:10]
+    list= zip(reservas, estados_r)
 
-    if(data=="Reservas"):
-
-        reservas = Reserva.objects.filter(profile__rut=request.user.profile.rut).order_by('-id')[:10]
-        estados = Reserva.objects.filter(profile__rut=request.user.profile.rut).order_by('-id')\
-                            .values_list('estado_reserva', flat=True)[:10]
-        list= zip(reservas, estados)
-        return render(request, 'user_profile.html', {'result': list})
-
-    else:
-
-        prestamos = Prestamo.objects.filter(profile__rut=request.user.profile.rut).order_by('-id')[:10]
-        estados = Prestamo.objects.filter(profile__rut=request.user.profile.rut).order_by('-id') \
-                             .values_list('estado_prestamo', flat=True)[:10]
-        list = zip(prestamos, estados)
-        return render(request, 'user_profile.html', {'result': list})
+    prestamos = Prestamo.objects.filter(profile__rut=request.user.profile.rut).order_by('-id')[:10]
+    estados_p = Prestamo.objects.filter(profile__rut=request.user.profile.rut).order_by('-id') \
+                     .values_list('estado_prestamo', flat=True)[:10]
+    list2 = zip(prestamos, estados_p)
+    return render(request, 'user_profile.html', {'reservas': list, 'prestamos': list2})
 
 
 
@@ -63,21 +53,34 @@ def customlogin(request):
 
 
 def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            user.refresh_from_db()  # load the profile instance created by the signal
-            user.profile.rut = form.cleaned_data.get('rut')
-            user.profile.mail = form.cleaned_data.get('mail')
-            user.save()
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=user.username, password=raw_password)
-            login(request, user)
-            return redirect('profile')
-    else:
-        form = SignUpForm()
-    return render(request, 'signup.html', {'form': form})
+    if request.method == "POST":
+        rut = request.POST['rut']
+        mail = request.POST['mail']
+        last_name = request.POST['last_name']
+        first_name = request.POST['first_name']
+        password = request.POST['password1']
+        password2 = request.POST['password2']
+        user = get_user(mail)
+        if password == password2:
+            if user is None:
+                user = User.objects.create_user(rut, mail, password)
+                user.first_name = first_name
+                user.last_name = last_name
+                user.save()
+                user.refresh_from_db()
+                user.profile.rut = rut
+                user.profile.mail = mail
+                user.save()
+                user = authenticate(username=user.username, password=password)
+                login(request, user)
+                return redirect('profile')
+            else:
+                # messages
+                return render(request, 'signup.html')
+        else:
+            # messages
+            return render(request, 'signup.html')
+    return render(request, 'signup.html')
 
 def change_password(request):
     if request.method == 'POST':
@@ -97,13 +100,5 @@ def change_password(request):
 
 def deleteRes(request):
     delList = request.POST.getlist('element')
-
-    pprint(delList)
-
-    #espacios_por_borrar = Espacio.objects.filter(nombre__in=delList).values_list('id', flat=True)
-    #articulos_por_borrar = Articulo.objects.filter(nombre__in=delList).values_list('id', flat=True)
-
     Reserva.objects.filter(id__in=delList).delete()
-    #Reserva.objects.filter(object_id__in=articulos_por_borrar).delete()
-
     return HttpResponseRedirect(reverse('index'))
