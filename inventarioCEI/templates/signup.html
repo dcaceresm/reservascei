@@ -1,60 +1,70 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-    <h2>Regístrese</h2>
-    <form class="form-horizontal" method="post" action="{% url 'signup' %}" onsubmit="validate()">
-        {% csrf_token %}
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="rut">Rut:</label>
-            <div class="col-sm-10">
-              <input type="text" name="rut" class="form-control" id="rut" required>
+    <div class="container">
+        <h2>Regístrese</h2>
+        <form class="form-horizontal" method="post" action="{% url 'signup' %}" onsubmit="validate()">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="rut">Rut:</label>
+                <div class="col-sm-10">
+                  <input type="text" name="rut" class="form-control" id="rut" required>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="mail">Correo:</label>
-            <div class="col-sm-10">
-              <input type="email" name="mail" class="form-control" id="mail" required>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="mail">Correo:</label>
+                <div class="col-sm-10">
+                  <input type="email" name="mail" class="form-control" id="mail" required>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="first_name">Nombre:</label>
-            <div class="col-sm-10">
-              <input type="text" name="first_name" class="form-control" id="first_name" required>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="first_name">Nombre:</label>
+                <div class="col-sm-10">
+                  <input type="text" name="first_name" class="form-control" id="first_name" required>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="last_name">Apellido:</label>
-            <div class="col-sm-10">
-              <input type="text" name="last_name" class="form-control" id="last_name" required>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="last_name">Apellido:</label>
+                <div class="col-sm-10">
+                  <input type="text" name="last_name" class="form-control" id="last_name" required>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="password1">Contraseña:</label>
-            <div class="col-sm-10">
-              <input type="password" name="password1" class="form-control" id="password1" required>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="password1">Contraseña:</label>
+                <div class="col-sm-10">
+                  <input type="password" name="password1" class="form-control" id="password1" required>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="password2">Repetir contraseña:</label>
-            <div class="col-sm-10">
-              <input type="password" name="password2" class="form-control" id="password2" required>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="password2">Repetir contraseña:</label>
+                <div class="col-sm-10">
+                  <input type="password" name="password2" class="form-control" id="password2" required>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-default">Registrarse</button>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <button type="submit" class="btn btn-default">Registrarse</button>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <br><a href="{% url 'index' %}">Volver atrás</a>
+    </div>
+{% endblock %}
 
-    <br><a href="{% url 'index' %}">Volver atrás</a>
+{% block scripts %}
 
     <script type="text/javascript">
         function validate() {

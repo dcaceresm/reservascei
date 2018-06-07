@@ -47,8 +47,10 @@ def customlogin(request):
             login(request, user)
             return HttpResponseRedirect(reverse('profile'))
         else:
+            messages.error(request, 'Correo y/o Contraseña incorrectos')
             return HttpResponseRedirect(reverse('index'))
     else:
+        messages.error(request, 'Correo y/o Contraseña incorrectos')
         return HttpResponseRedirect(reverse('index'))
 
 
@@ -75,10 +77,9 @@ def signup(request):
                 login(request, user)
                 return redirect('profile')
             else:
-                # messages
                 return render(request, 'signup.html')
         else:
-            # messages
+            messages.error(request,'Las contraseñas no coinciden')
             return render(request, 'signup.html')
     return render(request, 'signup.html')
 
@@ -88,10 +89,11 @@ def change_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)  # Important!
-            messages.success(request, 'Your password was successfully updated!')
+            messages.success(request, 'Su clave fue cambiada exitosamente')
             return redirect('change_password')
         else:
-            messages.error(request, 'Please correct the error below.')
+            messages.error(request, 'No se pudo cambiar su clave. Verifique que la clave actual o que la clave nueva'
+                                    ' y su repetición coincidan.')
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'change_password.html', {
