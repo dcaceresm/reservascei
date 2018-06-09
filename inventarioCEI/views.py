@@ -22,21 +22,23 @@ def ficha(request, id):
             obj = Articulo.objects.get(pk=id)
 
             # GET LASTEST RESERVATIONS
+            reservas = Reserva.objects.filter(object_id= id).order_by('-id')[:10]
 
-            
+
+
 
 
 
             # render
             if request.user.profile.isAdmin:  # IF USER IS STAFF OR ADMIN
                 time = str(datetime.datetime.today())
-                context = {'articulo': obj, 'time': time}
+                context = {'articulo': obj, 'time': time, 'reservas': reservas}
                 return render(request, 'articulo_admin.html', context)
                 #return render(request, 'articulo.html', context)
             else:
                 rut = request.user.profile.rut
                 time = str(datetime.datetime.today())
-                context = {'articulo': obj, 'rut': rut, 'time': time}
+                context = {'articulo': obj, 'rut': rut, 'time': time, 'reservas': reservas}
                 return render(request, 'articulo.html', context)
         except:
             if request.user.profile.isAdmin:  # IF USER IS STAFF OR ADMIN
