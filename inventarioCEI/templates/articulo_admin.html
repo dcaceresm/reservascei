@@ -1,29 +1,72 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class="container">
 {%  if articulo %}
-    <div class="ficha-datos">
-    <form method="post" action="{% url 'update_articulo' %}">
-    {% csrf_token %}
-    <input type="hidden" value="{{ articulo.id }}" name="id"/>
-    Name: <input type="text" size="32" value="{{ articulo.nombre }}" name="name" /> <br>
-    ID: {{ articulo.id }} <br>
-    Photo: <img src="{{ articulo.image.url }}" style="max-width: 40%"> <br>
-    Text: <textarea name='description'>{{ articulo.descripcion }}</textarea> <br>
-    Estado: <br>
-    <input type="radio" name="status" value="Disponible" {% if articulo.estado == 'Disponible' %}checked{% endif %}> Disponible<br>
-    <input type="radio" name="status" value="En préstamo" {% if articulo.estado == 'En préstamo' %}checked{% endif %}> En Préstamo<br>
-    <input type="radio" name="status" value="En reparación" {% if articulo.estado == 'En reparación' %}checked{% endif %}> En Reparación<br>
-    <input type="radio" name="status" value="Perdido" {% if articulo.estado == 'Perdido' %}checked{% endif %}> Perdido<br><br>
-    Tags: <input type="text" size="32" value="{{ articulo.lista_tags }}" name="tags" /> <br>
-    <input type="submit"> <br>
-    </form>
-    </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Ficha</h2>
+                <form method="post" action="{% url 'update_articulo' %}">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ articulo.id }}" name="id"/>
+                    <table class="table">
+                        <tr>
+                            <td style="width: 30%">Nombre:</td>
+                            <td style="width: 70%"><input type="text" size="32" value="{{ articulo.nombre }}" name="name" style="width: 100%"/></td>
+                        </tr>
+                        <tr>
+                            <td>ID:</td>
+                            <td>{{ articulo.id }}</td>
+                        </tr>
+                        <tr>
+                            <td>Descripción:</td>
+                            <td><textarea name='description' style="width: 100%">{{ articulo.descripcion }}</textarea></td>
+                        </tr>
+                        <tr>
+                            <td>Foto:</td>
+                            <td><div style="max-width: 400px;">
+                            <div style="background-image: url('{{ articulo.image.url }}'); width: 100%;
+                            padding-top: 80%; background-size: auto 100%; background-position: center center;
+                            background-repeat: no-repeat;"></div>
+                            </div></td>
+                        </tr>
+                        <tr>
+                            <td>Estado:</td>
+                            <td><input type="radio" name="status" value="Disponible" {% if articulo.estado == 'Disponible' %}checked{% endif %}> Disponible<br>
+                            <input type="radio" name="status" value="En préstamo" {% if articulo.estado == 'En préstamo' %}checked{% endif %}> En Préstamo<br>
+                            <input type="radio" name="status" value="En reparación" {% if articulo.estado == 'En reparación' %}checked{% endif %}> En Reparación<br>
+                            <input type="radio" name="status" value="Perdido" {% if articulo.estado == 'Perdido' %}checked{% endif %}> Perdido</td>
+                        </tr>
+                        <tr>
+                            <td>Tags:</td>
+                            <td><input type="text" size="32" value="{{ articulo.lista_tags }}" name="tags" style="width: 100%"/></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input type="submit" value="Actualizar Ficha"></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="col-sm">
+            <h2>Últimas Reservas</h2>
+            <div style="height:200px;overflow-y:scroll; width: 100%; border: 2px black solid; border-radius: 5px">
+            <ul>
+                {% for res in reservas %}
+                <li> Desde {{ res.fh_ini_reserva }} hasta {{ res.fh_fin_reserva }}</li>
+                {% endfor %}
+            </ul>
+            </div>
+            <br>
+            </div>
+        </div>
+
 
 
 {% else %}
     <h2>No existe artículo con id {{ id }}</h2>
 {% endif %}
+    </div>
 {% endblock content %}
 {# END OF CONTENT #}
 {% block scripts %}

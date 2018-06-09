@@ -1,111 +1,143 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+    <div class="container">
 {%  if articulo %} {# IF ARTICULO EXISTS IN CONTEXT #}
+        <div class="row">
+        {# DISPLAYS INFO #}
+            <div class="col-md-6">
+                <h2>Ficha</h2>
+                <table class="table">
+                    <tr>
+                        <td style="width: 30%">Nombre:</td>
+                        <td style="width: 70%">{{ articulo.nombre }}</td>
+                    </tr>
+                    <tr>
+                        <td>ID:</td>
+                        <td>{{ articulo.id }}</td>
+                    </tr>
+                    <tr>
+                        <td>Descripción:</td>
+                        <td>{{ articulo.descripcion }}</td>
+                    </tr>
+                    <tr>
+                        <td>Foto:</td>
+                        <td><div style="max-width: 400px;">
+                            <div style="background-image: url('{{ articulo.image.url }}'); width: 100%;
+                            padding-top: 80%; background-size: auto 100%; background-position: center center;
+                            background-repeat: no-repeat;"></div>
+                            </div></td>
+                    </tr>
+                    <tr>
+                        <td>Estado:</td>
+                        <td>{{ articulo.estado }}</td>
+                    </tr>
+                    <tr>
+                        <td>Tags:</td>
+                        <td>{{ articulo.lista_tags }}</td>
+                    </tr>
+                </table>
+            </div>
 
-    {# DISPLAYS INFO #}
-    <div class="ficha-datos">
-    Name: {{ articulo.nombre }} <br>
-    ID: {{ articulo.id }} <br>
-    Photo: <img src="{{ articulo.image.url }}" style="max-width: 40%"> <br>
-    Text: {{ articulo.descripcion }} <br>
-    Estado: {{ articulo.estado }} <br>
-    Tags: {{ articulo.lista_tags }} <br>
-    </div>
+        <br>
 
-    <br>
+        {# LASTEST RESERVATIONS #}
+            <div class="col-sm">
+            <h2>Últimas Reservas</h2>
+                <div style="height:200px;overflow-y:scroll; width: 100%; border: 2px black solid; border-radius: 5px">
+                    <ul>
+                        {% for res in reservas %}
+                        <li> Desde {{ res.fh_ini_reserva }} hasta {{ res.fh_fin_reserva }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            <br>
 
-    {# LASTEST RESERVATIONS #}
+            {# MAKE A RESERVATION #}
 
+                <div class="form-reserva">
+                {% if articulo.estado == 'Disponible' or articulo.estado == 'En préstamo' %}
+                <h3>Reserva aqui:</h3>
+                <form method="post" action="{% url 'reserva_articulo' %}">
+                {% csrf_token %}
 
-
-
-
-
-
-
-    {# MAKE A RESERVATION #}
-
-    <div class="form-reserva">
-    {% if articulo.estado == 'Disponible' or articulo.estado == 'En préstamo' %}
-    <h3>Reserva aqui:</h3> <br>
-    <form method="post" action="{% url 'reserva_articulo' %}">
-    {% csrf_token %}
-
-    {# STATIC INFO #}
-    <input type="hidden" value="{{ articulo.id }}" name="id"/>
-    <input type="hidden" value="articulo" name="tipo_objeto"/>
-    <input type="hidden" value="Pendiente" name="estado_reserva"/>
-    <input type="hidden" value="{{ time }}" name="fh_reserva"/>
+                {# STATIC INFO #}
+                <input type="hidden" value="{{ articulo.id }}" name="id"/>
+                <input type="hidden" value="articulo" name="tipo_objeto"/>
+                <input type="hidden" value="Pendiente" name="estado_reserva"/>
+                <input type="hidden" value="{{ time }}" name="fh_reserva"/>
 
 
-    {# VARIABLE INFO #}
-    Fecha inicio: <input class="datepicker" type="datetime-local" name="inicio" id="datepicker" name="inicio"> Hora: <select name="hora_inicio">
-        <option value="00:00">00:00</option>
-        <option value="01:00">01:00</option>
-        <option value="02:00">02:00</option>
-        <option value="03:00">03:00</option>
-        <option value="04:00">04:00</option>
-        <option value="05:00">05:00</option>
-        <option value="06:00">06:00</option>
-        <option value="07:00">07:00</option>
-        <option value="08:00">08:00</option>
-        <option value="09:00">09:00</option>
-        <option value="10:00">10:00</option>
-        <option value="11:00">11:00</option>
-        <option value="12:00">12:00</option>
-        <option value="13:00">13:00</option>
-        <option value="14:00">14:00</option>
-        <option value="15:00">15:00</option>
-        <option value="16:00">16:00</option>
-        <option value="17:00">17:00</option>
-        <option value="18:00">18:00</option>
-        <option value="19:00">19:00</option>
-        <option value="20:00">20:00</option>
-        <option value="21:00">21:00</option>
-        <option value="22:00">22:00</option>
-        <option value="23:00">23:00</option>
-    </select> <br>
-    Fecha término: <input class="datepicker" data-date-format="dd/mm/yyyy" name="termino" id="datepicker2" name="termino"> Hora: <select name="hora_termino">
-        <option value="00:00">00:00</option>
-        <option value="01:00">01:00</option>
-        <option value="02:00">02:00</option>
-        <option value="03:00">03:00</option>
-        <option value="04:00">04:00</option>
-        <option value="05:00">05:00</option>
-        <option value="06:00">06:00</option>
-        <option value="07:00">07:00</option>
-        <option value="08:00">08:00</option>
-        <option value="09:00">09:00</option>
-        <option value="10:00">10:00</option>
-        <option value="11:00">11:00</option>
-        <option value="12:00">12:00</option>
-        <option value="13:00">13:00</option>
-        <option value="14:00">14:00</option>
-        <option value="15:00">15:00</option>
-        <option value="16:00">16:00</option>
-        <option value="17:00">17:00</option>
-        <option value="18:00">18:00</option>
-        <option value="19:00">19:00</option>
-        <option value="20:00">20:00</option>
-        <option value="21:00">21:00</option>
-        <option value="22:00">22:00</option>
-        <option value="23:00">23:00</option>
-    </select> <br>
+                {# VARIABLE INFO #}
+                Fecha inicio: <input class="datepicker" type="datetime-local" name="inicio" id="datepicker" name="inicio"> Hora: <select name="hora_inicio">
+                    <option value="00:00">00:00</option>
+                    <option value="01:00">01:00</option>
+                    <option value="02:00">02:00</option>
+                    <option value="03:00">03:00</option>
+                    <option value="04:00">04:00</option>
+                    <option value="05:00">05:00</option>
+                    <option value="06:00">06:00</option>
+                    <option value="07:00">07:00</option>
+                    <option value="08:00">08:00</option>
+                    <option value="09:00">09:00</option>
+                    <option value="10:00">10:00</option>
+                    <option value="11:00">11:00</option>
+                    <option value="12:00">12:00</option>
+                    <option value="13:00">13:00</option>
+                    <option value="14:00">14:00</option>
+                    <option value="15:00">15:00</option>
+                    <option value="16:00">16:00</option>
+                    <option value="17:00">17:00</option>
+                    <option value="18:00">18:00</option>
+                    <option value="19:00">19:00</option>
+                    <option value="20:00">20:00</option>
+                    <option value="21:00">21:00</option>
+                    <option value="22:00">22:00</option>
+                    <option value="23:00">23:00</option>
+                </select> <br>
+                Fecha término: <input class="datepicker" data-date-format="dd/mm/yyyy" name="termino" id="datepicker2" name="termino"> Hora: <select name="hora_termino">
+                    <option value="00:00">00:00</option>
+                    <option value="01:00">01:00</option>
+                    <option value="02:00">02:00</option>
+                    <option value="03:00">03:00</option>
+                    <option value="04:00">04:00</option>
+                    <option value="05:00">05:00</option>
+                    <option value="06:00">06:00</option>
+                    <option value="07:00">07:00</option>
+                    <option value="08:00">08:00</option>
+                    <option value="09:00">09:00</option>
+                    <option value="10:00">10:00</option>
+                    <option value="11:00">11:00</option>
+                    <option value="12:00">12:00</option>
+                    <option value="13:00">13:00</option>
+                    <option value="14:00">14:00</option>
+                    <option value="15:00">15:00</option>
+                    <option value="16:00">16:00</option>
+                    <option value="17:00">17:00</option>
+                    <option value="18:00">18:00</option>
+                    <option value="19:00">19:00</option>
+                    <option value="20:00">20:00</option>
+                    <option value="21:00">21:00</option>
+                    <option value="22:00">22:00</option>
+                    <option value="23:00">23:00</option>
+                </select> <br>
 
-    <input type="submit"> <br>
-    </form>
+                <input type="submit" value="Reservar"> <br>
+                </form>
+                {% else %}
+                    <h2>No es posible reservar</h2>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+
+
     {% else %}
-        <h2>No es posible reservar</h2>
+        <h2>No existe artículo con id {{ id }}</h2>
+
     {% endif %}
+
     </div>
-
-
-{% else %}
-    <h2>No existe artículo con id {{ id }}</h2>
-
-{% endif %}
 
 {% endblock content %}
 
