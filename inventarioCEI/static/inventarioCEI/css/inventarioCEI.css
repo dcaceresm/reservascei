@@ -145,3 +145,12 @@ li{
 .divBA{
     margin-left: 82%;
 }
+
+.divBusqAv{
+    background-color: #DCDCDC;
+    margin-right: 5%;
+    margin-left: 5%;
+    padding: 2%;
+    border-radius: 25px;
+
+}

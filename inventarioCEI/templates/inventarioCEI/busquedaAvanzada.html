@@ -2,15 +2,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <!--<meta charset="UTF-8">-->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="{% static 'inventarioCEI/css/inventarioCEI.css' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>buscar</title>
+    <!--<link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>-->
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>busquedaAvanzada</title>
 </head>
 <body>
-
+    <p>nueva Busqueda</p>
     <ul class="ul1">
         <li>
             <button class="activeButton">Articulos</button>
@@ -23,17 +24,22 @@
         </li>
     </ul>
 
-    <form action="{% url 'buscar' %}" align="middle" method="post">
-    {% csrf_token %}
-    <input type="text" name="elemento" id="elemento" size="150"/>
-    <input type="submit" value="Buscar"/>
-    </form>
+    <div class="divBusqAv">
+        <form action="{% url 'buscar' %}" align="middle" method="post">
+        {% csrf_token %}
+        <input type="text" name="elemento" id="elemento" size="150"/>
+        <select name="estado">
+            <option value="Disponible" selected>Disponible</option>
+            <option value="En préstamo">En préstamo</option>
+            <option value="En reparación">En reparación</option>
+            <option value="Perdido">Perdido</option>
+          </select>
+        <input type="submit" value="Buscar"/>
+        </form>
 
-    <div class="divBA">
-        <a href="{% url 'busquedaAvanzada'%}">
-            <p style="color:black;font-size:10px;">Busqueda Avanzada</p>
-        </a>
     </div>
+
+
 
 
 
@@ -58,9 +64,5 @@
         </div>
     {% endfor %}
     </div>
-
-
 </body>
 </html>
-
-<!--style="width:104px;height:104px;-->

@@ -271,6 +271,8 @@ def calendar(request, tipo=0):
     prestamos = Prestamo.objects.filter(fh_ini_prestamo__range=[weekStart, weekEnd]) | Prestamo.objects.filter(
         fh_fin_prestamo__range=[weekStart, weekEnd])
 
+    ct = ContentType.objects.get_for_model(Espacio)
+
     for i in range(hours):
         for j in range(days):
 
@@ -279,7 +281,7 @@ def calendar(request, tipo=0):
             if j != 0:
                 for element in prestamos:
 
-                    if (element.fh_ini_prestamo.day == weekStart.day + j - 1) & (element.tipo_objeto == "espacio"):
+                    if (element.fh_ini_prestamo.day == weekStart.day + j - 1) & (element.content_type == ct):
                         condIni = element.fh_ini_prestamo.hour - 3 <= ini_time & ini_time < element.fh_fin_prestamo.hour - 3
                         if (condIni):
                             matrix[i][j] = element
@@ -300,6 +302,16 @@ def buscar(request):
         lista = []
         return render(request, 'inventarioCEI/buscar.html', {'lista': lista})
 
+def busquedaAvanzada(request):
+    if request.method == "POST":
+        busqueda = request.POST['elemento']
+        estado = request.POST['estado']
+        lista = Articulo.objects.filter(lista_tags__contains=busqueda)
+        lista = lista.filter(estado__contains=estado)
+        return render(request, 'inventarioCEI/busquedaAvanzada.html', {'lista': lista})
+    else:
+        lista = []
+        return render(request, 'inventarioCEI/busquedaAvanzada.html', {'lista': lista})
 
 def goToArticulos(request):
     if request.method == "POST":

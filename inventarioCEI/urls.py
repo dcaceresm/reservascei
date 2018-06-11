@@ -13,6 +13,7 @@ urlpatterns = [
     path('anteriorMes/', views.anteriorMes, name='anteriorMes'),
     path('siguienteSemana/', views.siguienteSemana, name='siguienteSemana'),
     path('siguienteMes/', views.siguienteMes, name='siguienteMes'),
+    path('busquedaAvanzada/', views.busquedaAvanzada, name='busquedaAvanzada'),
     path('landingAdmin/', views.LandingAdmin.as_view(), name='landingAdmin'),
 ]
 
