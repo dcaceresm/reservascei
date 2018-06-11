@@ -11,7 +11,6 @@
     <title>busquedaAvanzada</title>
 </head>
 <body>
-    <p>nueva Busqueda</p>
     <ul class="ul1">
         <li>
             <button class="activeButton">Articulos</button>
@@ -25,17 +24,25 @@
     </ul>
 
     <div class="divBusqAv">
-        <form action="{% url 'buscar' %}" align="middle" method="post">
+        <form action="{% url 'busquedaAvanzada' %}" align="middle" method="post">
         {% csrf_token %}
-        <input type="text" name="elemento" id="elemento" size="150"/>
-        <select name="estado">
-            <option value="Disponible" selected>Disponible</option>
-            <option value="En préstamo">En préstamo</option>
-            <option value="En reparación">En reparación</option>
-            <option value="Perdido">Perdido</option>
-          </select>
-        <input type="submit" value="Buscar"/>
+            <input type="text" name="elemento" id="elemento" size="150"/>
+            <input type="submit" value="Buscar"/>
+            <br><br>
+            <select name="estado">
+                <option value="Disponible" selected>Disponible</option>
+                <option value="En préstamo">En préstamo</option>
+                <option value="En reparación">En reparación</option>
+                <option value="Perdido">Perdido</option>
+              </select>
+
         </form>
+
+        <div class="divBA">
+            <a href="{% url 'buscar'%}">
+                <p style="color:black;font-size:10px;">Busqueda Simple</p>
+            </a>
+        </div>
 
     </div>
 
