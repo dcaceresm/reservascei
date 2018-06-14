@@ -16,19 +16,9 @@ def index(request):
 def showProfile(request):
     if not (request.user.is_authenticated):
         return HttpResponseRedirect(reverse('index'))
-
     reservas = Reserva.objects.filter(profile__rut=request.user.profile.rut).order_by('-id')[:10]
-    estados_r = Reserva.objects.filter(profile__rut=request.user.profile.rut).order_by('-id')\
-                    .values_list('estado_reserva', flat=True)[:10]
-    list= zip(reservas, estados_r)
-
     prestamos = Prestamo.objects.filter(profile__rut=request.user.profile.rut).order_by('-id')[:10]
-    estados_p = Prestamo.objects.filter(profile__rut=request.user.profile.rut).order_by('-id') \
-                     .values_list('estado_prestamo', flat=True)[:10]
-    list2 = zip(prestamos, estados_p)
-    return render(request, 'user_profile.html', {'reservas': list, 'prestamos': list2})
-
-
+    return render(request, 'user_profile.html', {'reservas': reservas, 'prestamos': prestamos})
 
 def get_user(email):
     try:

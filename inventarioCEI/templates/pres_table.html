@@ -2,40 +2,45 @@
     <div class="col-*-*">
         <form action="{% url 'deleteRes' %}" method="post">
             {% csrf_token %}
-            <table class="table table-bordered">
-                <tr class="table-primary">
-                    <th>Nombre</th>
-                    <th>Estado</th>
-                </tr>
-                {% for r,e in prestamos %}
-                    <tr>
-                        {% ifnotequal e "Pendiente" %}
+            <div style="overflow-y:auto; height: 350px;">
+                <table class="table table-bordered">
+                    <tr class="table-primary">
+                        <th>Nombre de elemento prestado</th>
+                        <th>Estado</th>
+                    </tr>
+                    {% for r in prestamos %}
+                        <tr>
                             <th style="cursor: pointer;" onclick="showData('{{r.content_object.descripcion}}',
                                     '{{r.content_object.URLfoto}}',
-                                    '{{r.content_object.nombre}}')">
-                                {{r.content_object.nombre}}
-                            </th>
-                            <th>
-                                {{e}}
-                            </th>
-                        {% else %}
-                            <th style="cursor: pointer;" onclick="showData('{{r.content_object.descripcion}}',
-                                    '{{r.content_object.URLfoto}}',
-                                    '{{r.content_object.nombre}}')">
+                                    '{{r.content_object.nombre}}',
+                                    '{{r.fh_ini_prestamo}}',
+                                    '{{r.fh_fin_prestamo}}')">
                                 <input type="checkbox" name="element" value="{{r.id}}">{{r.content_object.nombre}}
                             </th>
                             <th>
-                                {{e}}
+                                {{r.estado_prestamo}}
                             </th>
-                        {% endifnotequal %}
-                    </tr>
-                {% endfor %}
-            </table>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
             <input class="btn btn-primary btn-sm" name="delete_item" type="submit" value="Borrar"/>
         </form>
     </div>
-    <div id="photo" class="col-*-*"></div>
-    <div id="description" class="col-*-*" style="width: 400px">
-        Click en un item para obtener la información.
+    <div class="col-*-* border" style="width: 700px; height: 350px;">
+         <div class=" container">
+            <div class="row">
+                <div class="col-*-*">
+                    <div id="photo" class="container" style="text-align: center">
+
+                    </div>
+                </div>
+                <div class="col-*-*" style="width: 400px">
+                    <div id="description" class="container">
+                        Click en un item para obtener la información.
+                    </div>
+                </div>
+            </div>
+         </div>
     </div>
 </div>

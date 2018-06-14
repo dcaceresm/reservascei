@@ -27,7 +27,9 @@
                             </li>
                             <hr>
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" href="{% url 'change_password' %}">Cambiar Contraseña</a>
+                                <a role="menuitem" tabindex="-1" href="{% url 'change_password' %}">
+                                    Cambiar Contraseña
+                                </a>
                             </li>
                             <hr>
                             <li role="presentation">
@@ -80,7 +82,7 @@
 
 {% block scripts %}
     <script>
-        function showData(text, fotoURL, name){
+        function showData(text, fotoURL, name, fh_ini, fh_fin){
             let box = document.getElementById("photo");
             box.innerHTML = "";
             let box2 = document.getElementById("description");
@@ -89,21 +91,29 @@
             let line = document.createElement("br");
             let photo = document.createElement("img");
             photo.src = fotoURL;
-            photo.height = "250";
-            photo.width = "350";
+            photo.height = "200";
+            photo.width = "250";
 
             box.appendChild(photo);
             box.appendChild(line);
 
             let n = document.createElement("p");
             let d = document.createElement("p");
+            let fi = document.createElement("p");
+            let ff = document.createElement("p");
 
-            let description = document.createTextNode(text);
+            let description = document.createTextNode("Descripción: "+text);
             let nametxt = document.createTextNode(name);
+            let fitxt = document.createTextNode("Inicio: "+fh_ini);
+            let fftxt = document.createTextNode("Fin: "+fh_fin);
 
             n.appendChild(nametxt);
             d.appendChild(description);
+            fi.appendChild(fitxt);
+            ff.appendChild(fftxt);
 
+            box.appendChild(fi);
+            box.appendChild(ff);
             box2.appendChild(n);
             box2.appendChild(d);
         }
