@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="77c295a2-eef1-49c0-b664-f00f8432fff0" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/calendario.html" afterPath="$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/calendario.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -29,19 +30,34 @@
       <file leaf-file-name="buscar.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/buscar.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="35" column="10" lean-forward="false" selection-start-line="31" selection-start-column="5" selection-end-line="35" selection-end-column="10" />
+            <state relative-caret-position="30">
+              <caret line="8" column="24" lean-forward="false" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="calendario.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="calendario.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/calendario.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1020">
-              <caret line="68" column="24" lean-forward="false" selection-start-line="68" selection-start-column="24" selection-end-line="68" selection-end-column="49" />
+            <state relative-caret-position="492">
+              <caret line="56" column="0" lean-forward="true" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="fullcalendar.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/inventarioCEI/static/inventarioCEI/fullcalendar/fullcalendar.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-614">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <marker date="1520211936000" expanded="true" signature="293785:293791" ph=" " />
+                <marker date="1520211936000" expanded="true" signature="457445:457451" ph=" " />
+                <marker date="1520211936000" expanded="true" signature="474750:474762" ph="..." />
+                <marker date="1520211936000" expanded="true" signature="510453:510459" ph=" " />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -49,7 +65,7 @@
       <file leaf-file-name="busquedaAvanzada.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/busquedaAvanzada.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
+            <state relative-caret-position="-359">
               <caret line="5" column="29" lean-forward="false" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="29" />
               <folding />
             </state>
@@ -59,7 +75,7 @@
       <file leaf-file-name="inventarioCEI.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/inventarioCEI/static/inventarioCEI/css/inventarioCEI.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2235">
+            <state relative-caret-position="1527">
               <caret line="149" column="29" lean-forward="false" selection-start-line="149" selection-start-column="29" selection-end-line="149" selection-end-column="29" />
               <folding />
             </state>
@@ -139,12 +155,12 @@
         <option value="$PROJECT_DIR$/inventarioCEI/static/css/inventarioCEI.css" />
         <option value="$PROJECT_DIR$/T3_INGSW/settings.py" />
         <option value="$PROJECT_DIR$/inventarioCEI/models.py" />
-        <option value="$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/calendario.html" />
         <option value="$PROJECT_DIR$/inventarioCEI/urls.py" />
         <option value="$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/buscar.html" />
         <option value="$PROJECT_DIR$/inventarioCEI/static/inventarioCEI/css/inventarioCEI.css" />
         <option value="$PROJECT_DIR$/inventarioCEI/views.py" />
         <option value="$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/busquedaAvanzada.html" />
+        <option value="$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/calendario.html" />
       </list>
     </option>
   </component>
@@ -259,6 +275,32 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="img" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="2018-1-200-100-requisitos-los-que-querai-T3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="2018-1-200-100-requisitos-los-que-querai-T3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="inventarioCEI" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="inventarioCEI" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fullcalendar" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -624,14 +666,20 @@
       <option name="project" value="LOCAL" />
       <updated>1528688793465</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="&quot;stable&quot; version of calendar">
+      <created>1528777303899</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1528777303899</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26171243" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26171243" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -665,7 +713,8 @@
     <MESSAGE value="calendar advanced" />
     <MESSAGE value="calendar functionality finished" />
     <MESSAGE value="advances search" />
-    <option name="LAST_COMMIT_MESSAGE" value="advances search" />
+    <MESSAGE value="&quot;stable&quot; version of calendar" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;stable&quot; version of calendar" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1013,14 +1062,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/inventarioCEI/static/inventarioCEI/css/inventarioCEI.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2235">
-          <caret line="149" column="29" lean-forward="false" selection-start-line="149" selection-start-column="29" selection-end-line="149" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/inventarioCEI/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2055">
@@ -1041,27 +1082,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/buscar.html">
+    <entry file="file://$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/busquedaAvanzada.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="35" column="10" lean-forward="false" selection-start-line="31" selection-start-column="5" selection-end-line="35" selection-end-column="10" />
+        <state relative-caret-position="-359">
+          <caret line="5" column="29" lean-forward="false" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="29" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/busquedaAvanzada.html">
+    <entry file="file://$PROJECT_DIR$/inventarioCEI/static/inventarioCEI/css/inventarioCEI.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="29" lean-forward="false" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="29" />
+        <state relative-caret-position="1527">
+          <caret line="149" column="29" lean-forward="false" selection-start-line="149" selection-start-column="29" selection-end-line="149" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/buscar.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="8" column="24" lean-forward="false" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/inventarioCEI/templates/inventarioCEI/calendario.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
-          <caret line="68" column="24" lean-forward="false" selection-start-line="68" selection-start-column="24" selection-end-line="68" selection-end-column="49" />
+        <state relative-caret-position="492">
+          <caret line="56" column="0" lean-forward="true" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inventarioCEI/static/inventarioCEI/fullcalendar/fullcalendar.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-614">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1520211936000" expanded="true" signature="293785:293791" ph=" " />
+            <marker date="1520211936000" expanded="true" signature="457445:457451" ph=" " />
+            <marker date="1520211936000" expanded="true" signature="474750:474762" ph="..." />
+            <marker date="1520211936000" expanded="true" signature="510453:510459" ph=" " />
+          </folding>
         </state>
       </provider>
     </entry>
