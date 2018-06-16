@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from .models import *
+import json
 
 
 # variables globales
@@ -12,6 +13,7 @@ from .models import *
 
 def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
+
 
 def anteriorSemana(request):
     # today = date.today()
@@ -80,7 +82,7 @@ def anteriorMes(request):
     today = today - timedelta(weeks=4)
     day = today.day
 
-    #for i in range(day, day + 7):
+    # for i in range(day, day + 7):
     #    week.append(i)
 
     dia = today
@@ -236,9 +238,8 @@ def siguienteMes(request):
                    'prestamos': prestamos, 'matrix': matrix})
 
 
-def calendar(request, tipo=0):
-    # CORREGIR! SALE 32
-
+def calendar(request):
+    """
     global today
     today = date.today()
     global semana
@@ -272,7 +273,7 @@ def calendar(request, tipo=0):
         fh_fin_prestamo__range=[weekStart, weekEnd])
 
     ct = ContentType.objects.get_for_model(Espacio)
-
+    
     for i in range(hours):
         for j in range(days):
 
@@ -287,10 +288,101 @@ def calendar(request, tipo=0):
                             matrix[i][j] = element
 
         ini_time += 1
-
+    
     return render(request, 'inventarioCEI/calendario.html',
-                  {'Mon': week[0], 'Tue': week[1], 'Wed': week[2], 'Thu': week[3], 'Fri': week[4], 'month': month,
+                  {'data_string': data_string, 'Mon': week[0], 'Tue': week[1], 'Wed': week[2], 'Thu': week[3], 'Fri': week[4], 'month': month,
                    'prestamos': prestamos, 'matrix': matrix})
+    """
+
+    events = [
+        """{
+            "title": 'event1',
+            "start": '2018-06-06T09:30',
+            "end": '2018-06-06T13:30:00'
+
+
+        },
+        {
+            "title": 'event2',
+            "start": '2018-06-10T12:30:00',
+            "end": '2018-06-10T13:30:00'
+        },
+        {
+            "title": 'event3',
+            "start": '2010-01-09T12:30:00',
+            "allDay": "false"
+        }"""
+    ]
+
+    ct = ContentType.objects.get_for_model(Espacio)
+
+    prestamos = Prestamo.objects.all()
+
+    for i in range(0, len(prestamos)):
+
+        event = prestamos[i]
+
+        if event.content_type == ct:
+
+            di = event.fh_ini_prestamo
+            df = event.fh_fin_prestamo
+
+            if di.month < 10:
+                month_i = "0" + str(di.month)
+            else:
+                month_i = str(di.month)
+
+            if di.day < 10:
+                day_i = "0" + str(di.day)
+            else:
+                day_i = str(di.day)
+
+            if di.hour < 10:
+                hour_i = "0" + str(di.hour)
+            else:
+                hour_i = str(di.hour)
+
+            if di.minute < 10:
+                minute_i = "0" + str(di.minute)
+            else:
+                minute_i = str(di.minute)
+
+            if df.month < 10:
+                month_f = "0" + str(df.month)
+            else:
+                month_f = str(df.month)
+
+            if df.day < 10:
+                day_f = "0" + str(df.day)
+            else:
+                day_f = str(df.day)
+
+            if df.hour < 10:
+                hour_f = "0" + str(df.hour)
+            else:
+                hour_f = str(df.hour)
+
+            if df.minute < 10:
+                minute_f = "0" + str(df.minute)
+            else:
+                minute_f = str(df.minute)
+
+            name = "sala" + str(event.object_id)
+
+            time_i = str(di.year) + "-" + str(month_i) + "-" + str(day_i) + "T" + hour_i + ":" + minute_i
+            time_f = str(df.year) + "-" + str(month_f) + "-" + str(day_f) + "T" + hour_f + ":" + minute_f
+
+            event_json = {
+                "title": name,
+                "start": time_i,
+                "end": time_f
+            }
+
+            events.append(event_json)
+
+    events_string = json.dumps(events)
+
+    return render(request, 'inventarioCEI/calendario.html', {'events': events_string})
 
 
 def buscar(request):
@@ -302,6 +394,7 @@ def buscar(request):
         lista = []
         return render(request, 'inventarioCEI/buscar.html', {'lista': lista})
 
+
 def busquedaAvanzada(request):
     if request.method == "POST":
         busqueda = request.POST['elemento']
@@ -312,6 +405,7 @@ def busquedaAvanzada(request):
     else:
         lista = []
         return render(request, 'inventarioCEI/busquedaAvanzada.html', {'lista': lista})
+
 
 def goToArticulos(request):
     if request.method == "POST":

@@ -15,11 +15,25 @@
     <script>
         $(function() {
 
-          // page is now ready, initialize the calendar...
+            // page is now ready, initialize the calendar...
 
-          $('#calendar').fullCalendar({
+            /*$('#calendar').fullCalendar({
             // put your options and callbacks here
-          })
+                weekends: false
+             })*/
+            $('#calendar').fullCalendar({
+              header: { center: 'month, agendaWeek' }, // buttons for switching between views
+
+              views: {
+                month: { // name of view
+                  titleFormat: 'YYYY, MM, DD'
+                  // other view-specific options here
+                }
+              },
+
+              events: {{events|safe}}
+            });
+
 
         });
     </script>
@@ -41,7 +55,11 @@
             </li>
 
         </ul>
+
         <div id='calendar'></div>
+
+
+
     <!--<table class = "table" align="center">
         <tr>
             <th class= "th">Hora</th>
