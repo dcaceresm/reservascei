@@ -238,6 +238,63 @@ def siguienteMes(request):
                    'prestamos': prestamos, 'matrix': matrix})
 
 
+def event_adding(event, di, df, type):
+
+    if di.month < 10:
+        month_i = "0" + str(di.month)
+    else:
+        month_i = str(di.month)
+
+    if di.day < 10:
+        day_i = "0" + str(di.day)
+    else:
+        day_i = str(di.day)
+
+    if di.hour < 10:
+        hour_i = "0" + str(di.hour)
+    else:
+        hour_i = str(di.hour)
+
+    if di.minute < 10:
+        minute_i = "0" + str(di.minute)
+    else:
+        minute_i = str(di.minute)
+
+    if df.month < 10:
+        month_f = "0" + str(df.month)
+    else:
+        month_f = str(df.month)
+
+    if df.day < 10:
+        day_f = "0" + str(df.day)
+    else:
+        day_f = str(df.day)
+
+    if df.hour < 10:
+        hour_f = "0" + str(df.hour)
+    else:
+        hour_f = str(df.hour)
+
+    if df.minute < 10:
+        minute_f = "0" + str(df.minute)
+    else:
+        minute_f = str(df.minute)
+
+    if type == 1:
+        name = (Espacio.objects.get(id=event.object_id)).nombre + "-" + event.estado_prestamo
+    else:
+        name = (Espacio.objects.get(id=event.object_id)).nombre + "-" + event.estado_reserva
+
+
+    time_i = str(di.year) + "-" + str(month_i) + "-" + str(day_i) + "T" + hour_i + ":" + minute_i
+    time_f = str(df.year) + "-" + str(month_f) + "-" + str(day_f) + "T" + hour_f + ":" + minute_f
+
+    return {
+        "title": name,
+        "start": time_i,
+        "end": time_f
+    }
+
 def calendar(request):
     """
     global today
@@ -318,6 +375,8 @@ def calendar(request):
 
     prestamos = Prestamo.objects.all()
 
+    reservas = Reserva.objects.all()
+
     for i in range(0, len(prestamos)):
 
         event = prestamos[i]
@@ -327,57 +386,19 @@ def calendar(request):
             di = event.fh_ini_prestamo
             df = event.fh_fin_prestamo
 
-            if di.month < 10:
-                month_i = "0" + str(di.month)
-            else:
-                month_i = str(di.month)
+            event_json = event_adding(event, di, df, 1)
+            events.append(event_json)
 
-            if di.day < 10:
-                day_i = "0" + str(di.day)
-            else:
-                day_i = str(di.day)
+    for i in range(0, len(reservas)):
 
-            if di.hour < 10:
-                hour_i = "0" + str(di.hour)
-            else:
-                hour_i = str(di.hour)
+        event = reservas[i]
 
-            if di.minute < 10:
-                minute_i = "0" + str(di.minute)
-            else:
-                minute_i = str(di.minute)
+        if event.content_type == ct:
 
-            if df.month < 10:
-                month_f = "0" + str(df.month)
-            else:
-                month_f = str(df.month)
+            di = event.fh_ini_reserva
+            df = event.fh_fin_reserva
 
-            if df.day < 10:
-                day_f = "0" + str(df.day)
-            else:
-                day_f = str(df.day)
-
-            if df.hour < 10:
-                hour_f = "0" + str(df.hour)
-            else:
-                hour_f = str(df.hour)
-
-            if df.minute < 10:
-                minute_f = "0" + str(df.minute)
-            else:
-                minute_f = str(df.minute)
-
-            name = "sala" + str(event.object_id)
-
-            time_i = str(di.year) + "-" + str(month_i) + "-" + str(day_i) + "T" + hour_i + ":" + minute_i
-            time_f = str(df.year) + "-" + str(month_f) + "-" + str(day_f) + "T" + hour_f + ":" + minute_f
-
-            event_json = {
-                "title": name,
-                "start": time_i,
-                "end": time_f
-            }
-
+            event_json = event_adding(event, di, df, 2)
             events.append(event_json)
 
     events_string = json.dumps(events)
