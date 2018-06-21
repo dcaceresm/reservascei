@@ -38,7 +38,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="btn btn-info">Guardar</button>
+                                    {% block modalSaveButton %}{% endblock %}
                                 </div>
                                 </form>
                         </div>
@@ -66,6 +66,7 @@
             </div>
 
         <!-- botones cambio de estado-->
-            <div class="container">
+
+            <div class="container" >
                 {% block botonesCambioEstado %}{% endblock %}
             </div>

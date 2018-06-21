@@ -1,1 +1,102 @@
 {% extends 'adminTabs/BaseAdminTab.html' %}
+
+{% block modalID %}ArticleModal{% endblock %}
+{% block modalButton %}Crear nuevo artículo{% endblock %}
+{% block buscadorPlace %}Busca un artículo{% endblock %}
+{% block modalID2 %}ArticleModal{% endblock %} <!-- debe ser igual a modalID -->
+{% block modaTitle %}Nuevo artículo{% endblock %}
+
+{% block modalFormBody %}
+    <div class="form-row">
+        <div class="col-md-6 mb-3">
+            <label for="NameSpace">Nombre</label>
+            <input type="text" class="form-control" id="NameSpace" placeholder="Nombre" required>
+            <div class="invalid-feedback">
+                Nombre inválido
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="SpaceCapacity">Capacidad</label>
+            <input type="number" class="form-control" id="SpaceCapacity" required>
+            <div class="invalid-feedback">
+                Capacidad inválida
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6 mb-3">
+            <label for="SpaceStateInput">Estado</label>
+            <select class="custom-select">
+                {% for opcion,valor in estados_espacio %}
+                    <option value="{{ opcion }}">{{ opcion }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="SpacePhoto">Fotografía</label>
+            <input type="file" class="form-control form-control-sm" id="SpacePhoto"  required>
+            <div class="invalid-feedback">
+                Ningún archivo seleccionado
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-row">
+        <div class="col" style="margin-bottom: 16px">
+            <label for="SpaceDesc">Descripción</label>
+            <input type="text" class="form-control" id="SpaceDesc" placeholder="Agrega una descripción del espacio" required>
+            <div class="invalid-feedback">
+                Texto inválido
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block modalSaveButton %}<button type="submit" class="btn btn-info">Guardar</button>{% endblock %}
+
+{% block columnasTabla %}
+    <th scope="col">Nombre</th>
+    <th scope="col">Capacidad</th>
+    <th scope="col">Estado
+        <select id="filtro_estado_espacios">
+            <option value="espacios">---</option>
+            {% for estado,valor in estados_espacio %}
+                <option value="{{ valor }}">{{ valor }}</option>
+            {% endfor %}
+        </select>
+    </th>
+{% endblock %}
+
+{% block cuerpoTabla %}
+    {% for esp in espacios %}
+        <tr class="{{ esp.estado }} espacios">
+            <th scope="row"> <input name="filas_espacios" type="checkbox" value="{{ esp.pk }}">  </th>
+            <td> {{ esp.nombre }} </td>
+            <td> {{ esp.capacidad }}</td>
+            <td> {{ esp.estado }}</td>
+            <td>
+                <form action={% url 'inventario:landingAdmin' %} method="post" >
+                    {% csrf_token %}
+                    <input name="identificador" value="{{ esp.pk }}" type="hidden">
+                    <button type="submit" class="btn btn-dark" formmethod="post">Modificar</button>
+                </form>
+            </td>
+            <td>
+                <form action={% url 'inventario:borrarEspacio' %} method="post" >
+                    {% csrf_token %}
+                    <input name="identificador" value="{{ esp.pk }}" type="hidden">
+                    <button type="submit" class="btn btn-info" formmethod="post">Eliminar</button>
+                </form>
+            </td>
+
+
+        </tr>
+    {% endfor %}
+{% endblock %}
+
+{% block botonesCambioEstado %}
+    <button type="button" class="btn btn-success" style="float: right;  margin-bottom: 15px">Habilitar espacio</button>
+
+    <button type="button" class="btn btn-danger" style="float: right; margin-right: 12px; margin-bottom: 15px">Inhabilitar espacio</button>
+{% endblock %}

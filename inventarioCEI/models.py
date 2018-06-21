@@ -64,7 +64,7 @@ class Articulo(models.Model):
     ESTADO_CHOICES = (
         ('Disponible', 'Disponible'),
         ('En préstamo', 'En préstamo'),
-        ('En reparación', 'En resparación'),
+        ('En reparación', 'En reparación'),
         ('Perdido', 'Perdido'),
     )
 

@@ -75,6 +75,8 @@
     </div>
 {% endblock %}
 
+{% block modalSaveButton %}<button type="submit" class="btn btn-info">Guardar</button>{% endblock %}
+
 {% block columnasTabla %}
     <th scope="col">Nombre</th>
     <th scope="col">Rut</th>
@@ -118,7 +120,7 @@
 {% endblock %}
 
 {% block botonesCambioEstado %}
-    <button type="button" class="btn btn-success" style="float: right">Habilitar usuario</button>
+    <button type="button" class="btn btn-success" style="float: right;  margin-bottom: 15px">Habilitar usuario</button>
 
-    <button type="button" class="btn btn-danger" style="float: right; margin-right: 12px">Inhabilitar usuario</button>
+    <button type="button" class="btn btn-danger" style="float: right; margin-right: 12px; margin-bottom: 15px">Inhabilitar usuario</button>
 {% endblock %}
