@@ -1,7 +1,35 @@
 {% extends "base.html" %}
 
+
 {% block content %}
+    <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="pills-inicio-tab" data-toggle="pill" href="#inicio"
+               role="tab" aria-controls="pills-inicio" aria-selected="false">Inicio</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-usuarios-tab" data-toggle="pill" href="#usuarios"
+               role="tab" aria-controls="pills-usuarios" aria-selected="false">Usuarios</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-reservas-tab" data-toggle="pill" href="#reservas"
+               role="tab" aria-controls="pills-reservas" aria-selected="false">Reservas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-prestamos-tab" data-toggle="pill" href="#prestamos"
+               role="tab" aria-controls="pills-prestamos" aria-selected="false">Préstamos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-articulos-tab" data-toggle="pill" href="#articulos"
+               role="tab" aria-controls="pills-articulos" aria-selected="false">Artículos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-espacios-tab" data-toggle="pill" href="#espacios"
+               role="tab" aria-controls="pills-espacios" aria-selected="false">Espacios</a>
+        </li>
+    </ul>
     <div class="container">
+
 {%  if articulo %}
         <div class="row">
             <div class="col-md-6">

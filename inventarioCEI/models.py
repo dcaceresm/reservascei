@@ -45,11 +45,11 @@ class Espacio(models.Model):
     ESTADO_CHOICES = (
         ('Disponible', 'Disponible'),
         ('En préstamo', 'En préstamo'),
-        ('En reparación', 'En resparación'),
+        ('En reparación', 'En reparación'),
     )
     nombre = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=200)
-    URLfoto = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='../img/espacios')
     estado = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Disponible')
     capacidad = models.IntegerField(default=0)
 
