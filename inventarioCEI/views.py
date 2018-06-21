@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from .models import Articulo, Reserva
 import datetime
+from T3_INGSW import settings
 from django.contrib.contenttypes.models import ContentType
 
 from django.http import HttpResponseRedirect
@@ -27,6 +28,7 @@ class LandingAdmin(TemplateView):
 
 def ficha(request, id):
     if request.user.is_authenticated:
+        print(settings.SITE_ROOT)
         try: # IF ITEM ID EXISTS
             obj = Articulo.objects.get(pk=id)
 
