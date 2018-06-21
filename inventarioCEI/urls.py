@@ -1,8 +1,9 @@
 from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.urls import path
+from django.urls import path, re_path
 from . import views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -12,5 +13,11 @@ urlpatterns = [
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^deleting/$', views.deleteRes, name='deleteRes'),
     url(r'^password/$', views.change_password, name='change_password'),
-    #url(r'^admin/', admin.site.urls),
-]
+    path('update_articulo', views.update_articulo, name='update_articulo'),
+    path('reserva_articulo', views.reserva_articulo, name='reserva_articulo'),
+    path('landingAdmin/', views.LandingAdmin.as_view(), name='landingAdmin'),
+    re_path(r'ficha/(?P<id>[0-9]*)/$', views.ficha, name='ficha')
+    ]
+
+
+urlpatterns += staticfiles_urlpatterns()
