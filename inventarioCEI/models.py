@@ -20,6 +20,7 @@ class Profile(models.Model):
     rut = models.CharField(max_length=15, null=True, blank=True, unique=True)
     mail = models.EmailField(max_length=150, unique=True)
     isAdmin = models.BooleanField(default=False)
+
     hab = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Habilitado')
 
 
@@ -27,6 +28,10 @@ class Profile(models.Model):
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
 
+
+
+    # def __str__(self):
+    #     return self.user.username
 
     def __str__(self):
         return self.user.first_name + " " +self.user.last_name + " " +self.rut
@@ -41,6 +46,8 @@ class Profile(models.Model):
     #     instance.profile.save()
 
 
+
+
 class Espacio(models.Model):
     ESTADO_CHOICES = (
         ('Disponible', 'Disponible'),
@@ -49,7 +56,7 @@ class Espacio(models.Model):
     )
     nombre = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=200)
-    URLfoto = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='../img/espacios')
     estado = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Disponible')
     capacidad = models.IntegerField(default=0)
 
@@ -61,6 +68,7 @@ class Espacio(models.Model):
 
 
 class Articulo(models.Model):
+
     ESTADO_CHOICES = (
         ('Disponible', 'Disponible'),
         ('En préstamo', 'En préstamo'),

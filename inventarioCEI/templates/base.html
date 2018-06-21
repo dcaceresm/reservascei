@@ -1,5 +1,6 @@
 {% load static %}
 {% load staticfiles %}
+
 <!DOCTYPE html>
 
 <html lang="es">
@@ -17,7 +18,7 @@
 
     <nav class="navbar navbar-light bg-light">
       <a class="navbar-brand" href="/">
-        <img src={% static "img/Logo-Cei.png" %} style="width: 20%;">
+        <img src={% static 'img/Logo-Cei.png' %} style="width:20%;">
       </a>
         {% block infoUsuario %}{% endblock %}
     </nav>
