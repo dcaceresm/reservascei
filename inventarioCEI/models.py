@@ -34,13 +34,6 @@ class Profile(models.Model):
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
 
-    #@receiver(post_save, sender=User)
-    #def update_user_profile(sender, instance, created, **kwargs):
-    #    if created:
-    #        Profile.objects.create(user=instance)
-    #    instance.profile.save()
-
-
 class Espacio(models.Model):
     ESTADO_CHOICES = (
         ('Disponible', 'Disponible'),
@@ -90,7 +83,7 @@ class Articulo(models.Model):
     )
 
     nombre = models.CharField(max_length=100)
-    URLfoto = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='../img/articulos')
     descripcion = models.CharField(max_length=200)
     estado = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Disponible')
     lista_tags = models.CharField(max_length=200)

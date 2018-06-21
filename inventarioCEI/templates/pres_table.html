@@ -11,7 +11,7 @@
                     {% for r in prestamos %}
                         <tr>
                             <th style="cursor: pointer;" onclick="showData('{{r.content_object.descripcion}}',
-                                    '{{r.content_object.URLfoto}}',
+                                    '{{r.content_object.image.url}}',
                                     '{{r.content_object.nombre}}',
                                     '{{r.fh_ini_prestamo}}',
                                     '{{r.fh_fin_prestamo}}')">

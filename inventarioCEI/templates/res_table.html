@@ -5,14 +5,18 @@
             <div style="overflow-y:auto; height: 350px;">
                 <table class="table table-bordered">
                     <tr class="table-primary">
+                        <th>#</th>
                         <th>Nombre de elemento reservado</th>
                         <th>Estado</th>
                     </tr>
                     {% for r in reservas %}
                         <tr>
                             {% ifnotequal r.estado_reserva "Pendiente" %}
+                                <th>
+                                    <input type="checkbox" name="element" value="{{r.id}}" disabled>
+                                </th>
                                 <th style="cursor: pointer;" onclick="showData('{{r.content_object.descripcion}}',
-                                        '{{r.content_object.URLfoto}}',
+                                        '{{r.content_object.image.url}}',
                                         '{{r.content_object.nombre}}',
                                         '{{r.fh_ini_reserva}}',
                                         '{{r.fh_fin_reserva}}')">
@@ -22,12 +26,15 @@
                                     {{r.estado_reserva}}
                                 </th>
                             {% else %}
+                                <th>
+                                    <input type="checkbox" name="element" value="{{r.id}}">
+                                </th>
                                 <th style="cursor: pointer;" onclick="showData('{{r.content_object.descripcion}}',
-                                        '{{r.content_object.URLfoto}}',
+                                        '{{r.content_object.image.url}}',
                                         '{{r.content_object.nombre}}',
                                         '{{r.fh_ini_reserva}}',
                                         '{{r.fh_fin_reserva}}')">
-                                    <input type="checkbox" name="element" value="{{r.id}}">{{r.content_object.nombre}}
+                                    {{r.content_object.nombre}}
                                 </th>
                                 <th>
                                     {{r.estado_reserva}}
@@ -37,7 +44,7 @@
                     {% endfor %}
                 </table>
             </div>
-            <input class="btn btn-primary btn-sm" name="delete_item" type="submit" value="Borrar"/>
+            <input class="btn btn-primary btn-sm" name="delete_item" id="borrar" type="submit" value="Borrar"/>
         </form>
     </div>
     <div class="col-*-* border" style="width: 700px; height: 350px;">

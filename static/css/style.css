@@ -11,7 +11,7 @@
     color: #ffffff !important;
 }
 .nav-link {
-    color: #6DDCBD !important;
+    color: #E8B059 !important;
 }
 .btn-dark {
     background-color: #E8B059 !important;
@@ -21,9 +21,19 @@
     background-color: #D0793E !important;
     border-color: #D0793E !important;
 }
+.btn-warning {
+    background-color: #ffff52; !important;
+    border-color: #ffff52; !important;
+}
+thead {
+    border-radius: 25px;/*arreglar esto*/
+}
+
 th, td {
     text-align: center;
     vertical-align: middle;
+}
+td:not(.mailcito){
     text-transform: capitalize;
 }
 
