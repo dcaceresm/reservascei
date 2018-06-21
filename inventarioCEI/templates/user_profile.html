@@ -2,49 +2,7 @@
 {% load static %}
 
 {% block infoUsuario %}
-    <div class="row">
-        <div class="col-*-*">
-            {{ request.user.first_name }} {{ request.user.last_name }}
-            <br>{{ request.user.profile.rut }}
-            <br>{{ request.user.profile.mail }}
-            {% if request.user.profile.hab %}
-                <br>Habilitado
-            {% else %}
-                <br>No Habilitado
-            {% endif %}
-        </div>
-        <div class="col-*-*">
-            <div class="container">
-                <div class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-                        <img src={% static "img/blank-profile-picture.png" %} width="80" height="80" alt="">
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                        <div class="container">
-                            <li role="presentation">
-                                <a role="menuitem" tabindex="-1" href="#">
-                                    Inicio
-                                </a>
-                            </li>
-                            <hr>
-                            <li role="presentation">
-                                <a role="menuitem" tabindex="-1" href="{% url 'change_password' %}">
-                                    Cambiar Contraseña
-                                </a>
-                            </li>
-                            <hr>
-                            <li role="presentation">
-                                <a role="menuitem" tabindex="-1" href="{% url 'logout' %}">
-                                    Cerrar Sesión
-                                </a>
-                            </li>
-                        </div>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+
 {% endblock %}
 
 {% block content %}
