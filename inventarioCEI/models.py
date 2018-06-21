@@ -69,7 +69,8 @@ class Articulo(models.Model):
     )
 
     nombre = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='../img/articulos')
+    #image = models.ImageField(upload_to='../img/articulos')
+    URLfoto = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=200)
     estado = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Disponible')
     lista_tags = models.CharField(max_length=200)
