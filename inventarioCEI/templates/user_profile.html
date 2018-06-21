@@ -45,13 +45,13 @@
 {% block scripts %}
     <script>
         function showData(text, fotoURL, name, fh_ini, fh_fin){
-            let box = document.getElementById("photo");
+            var box = document.getElementById("photo");
             box.innerHTML = "";
-            let box2 = document.getElementById("description");
+            var box2 = document.getElementById("description");
             box2.innerHTML = "";
 
-            let line = document.createElement("br");
-            let photo = document.createElement("img");
+            var line = document.createElement("br");
+            var photo = document.createElement("img");
             photo.src = fotoURL;
             photo.height = "200";
             photo.width = "250";
@@ -59,15 +59,15 @@
             box.appendChild(photo);
             box.appendChild(line);
 
-            let n = document.createElement("p");
-            let d = document.createElement("p");
-            let fi = document.createElement("p");
-            let ff = document.createElement("p");
+            var n = document.createElement("p");
+            var d = document.createElement("p");
+            var fi = document.createElement("p");
+            var ff = document.createElement("p");
 
-            let description = document.createTextNode("Descripción: "+text);
-            let nametxt = document.createTextNode(name);
-            let fitxt = document.createTextNode("Inicio: "+fh_ini);
-            let fftxt = document.createTextNode("Fin: "+fh_fin);
+            var description = document.createTextNode("Descripción: "+text);
+            var nametxt = document.createTextNode(name);
+            var fitxt = document.createTextNode("Inicio: "+fh_ini);
+            var fftxt = document.createTextNode("Fin: "+fh_fin);
 
             n.appendChild(nametxt);
             d.appendChild(description);
@@ -80,4 +80,13 @@
             box2.appendChild(d);
         }
     </script>
+
+    <script>
+        $(function() {
+            $(".checkbox").click(function(){
+                $('.delete').prop('disabled',$('input.checkbox:checked').length == 0);
+            });
+        });
+    </script>
+
 {% endblock %}
