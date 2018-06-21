@@ -13,7 +13,7 @@
                         <tr>
                             {% ifnotequal r.estado_reserva "Pendiente" %}
                                 <th>
-                                    <input type="checkbox" name="element" value="{{r.id}}" disabled>
+                                    <input type="checkbox" class="checkbox" name="element" value="{{r.id}}" disabled>
                                 </th>
                                 <th style="cursor: pointer;" onclick="showData('{{r.content_object.descripcion}}',
                                         '{{r.content_object.image.url}}',
@@ -27,7 +27,7 @@
                                 </th>
                             {% else %}
                                 <th>
-                                    <input type="checkbox" name="element" value="{{r.id}}">
+                                    <input type="checkbox" class="checkbox" name="element" value="{{r.id}}">
                                 </th>
                                 <th style="cursor: pointer;" onclick="showData('{{r.content_object.descripcion}}',
                                         '{{r.content_object.image.url}}',
@@ -44,10 +44,11 @@
                     {% endfor %}
                 </table>
             </div>
-            <input class="btn btn-primary btn-sm" name="delete_item" id="borrar" type="submit" value="Borrar"/>
+            <input class="btn btn-primary btn-sm delete" name="delete_item" id="borrar" type="submit"
+                   value="Borrar" disabled="disabled"/>
         </form>
     </div>
-    <div class="col-*-* border" style="width: 700px; height: 350px;">
+    <div class="col-*-*" style="width: 700px; height: 350px;">
          <div class=" container">
             <div class="row">
                 <div class="col-*-*">
