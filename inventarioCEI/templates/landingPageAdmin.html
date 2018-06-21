@@ -110,6 +110,19 @@
         })
     </script>
     <script>
+        $(document).ready(function(){
+            $('.UserCheckbox').on("click", function () {
+                console.log($('.UserCheckbox:checked').length)
+                if($('.UserCheckbox:checked').length > 0){
+                    $('.user-button').removeClass("disabled")
+                }
+                else{
+                    $('.user-button').addClass("disabled")
+                }
+            })
+        })
+    </script>
+    <script>
         function aceptarReservas(){
             var checkboxes = $('.reservaCheckbox:checked');
             var reservasId = "";

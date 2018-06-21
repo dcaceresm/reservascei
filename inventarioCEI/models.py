@@ -29,7 +29,7 @@ class Profile(models.Model):
 
 
     def __str__(self):
-        return self.rut
+        return self.user.first_name + " " +self.user.last_name + " " +self.rut
 
     # @receiver(post_save, sender=User)
     # def create_user_profile(sender, instance, created, **kwargs):
@@ -45,7 +45,7 @@ class Espacio(models.Model):
     ESTADO_CHOICES = (
         ('Disponible', 'Disponible'),
         ('En préstamo', 'En préstamo'),
-        ('En reparación', 'En resparación'),
+        ('En reparación', 'En reparación'),
     )
     nombre = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=200)

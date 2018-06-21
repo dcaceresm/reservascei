@@ -1,5 +1,124 @@
 {% extends 'adminTabs/BaseAdminTab.html' %}
 
+{% block modalID %}ReservaModal{% endblock %}
+{% block modalButton %}Crear nueva reserva{% endblock %}
+{% block buscadorPlace %}Busca una reserva{% endblock %}
+{% block modalID2 %}ReservaModal{% endblock %} <!-- debe ser igual a modalID -->
+{% block modaTitle %}Nueva reserva{% endblock %}
+
+{% block modalFormBody %}
+    <div class="form-row">
+        <div class="col" style="margin-bottom: 16px">
+            <label for="UserReserva">Usuario</label>
+            <select class="custom-select form-control" required>
+                <option value="" selected disabled hidden >Elegir un usuario</option>
+                {% for user in usuarios %}
+                    <option value="{{ user.id }}">{{ user }}</option>
+                {% endfor %}
+            </select>
+            <div class="invalid-feedback">
+                Campo obligatorio
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6 mb-3">
+            <label for="FechaInicioInputReserv">Fecha de inicio de reserva</label>
+            <input type="datetime-local" class="form-control" id="FechaInicioInputReserv" placeholder="Fecha de inicio" required>
+            <div class="invalid-feedback">
+                Fecha inválida
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="FechaFinInputReserv">Fecha de fin de reserva</label>
+            <input type="datetime-local" class="form-control" id="FechaFinInputReserv" placeholder="Fecha de fin" required>
+            <div class="invalid-feedback">
+                Fecha inválida
+            </div>
+
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-md-6 mb-3">
+            <label for="TipoObjetoInputReserv">Tipo de objeto</label>
+            <select class="custom-select" required>
+                <option value="" selected disabled hidden >Elegir un tipo</option>
+                {% for opcion,valor in estados_prestamo_tipo %}
+                    <option value="{{ opcion }}">{{ opcion }}</option>
+                {% endfor %}
+            </select>
+            <div class="invalid-feedback">
+                Campo obligatorio
+            </div>
+
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="IDobjeto2">Identificador objeto</label>
+            <input type="text" class="form-control" id="IDobjeto2" placeholder="Objeto" required>
+            <div class="invalid-feedback">
+                Objeto inválido
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block modalSaveButton %}<button type="submit" class="btn btn-info">Guardar</button>{% endblock %}
+
+{% block columnasTabla %}
+    <th scope="col">Objeto</th>
+    <th scope="col">Usuario</th>
+    <th scope="col">Inicio reserva</th>
+    <th scope="col">Fin reserva</th>
+    <th scope="col">Estado
+        <select id="filtro_estado_reservas">
+            <option value="reservas">---</option>
+            {% for estado,valor in estados_reserva %}
+                <option value="{{ valor }}">{{ valor }}</option>
+            {% endfor %}
+        </select>
+    </th>
+{% endblock %}
+
+{% block cuerpoTabla %}
+    {% for reserv in reservas %}
+        <tr class="{{ reserv.estado_reserva }} reservas">
+            <th scope="row"> <input name="filas_reservas" type="checkbox" value="{{ reserv.id }}">  </th>
+            <td> {{ reserv.content_object.nombre }}</td>
+            <td> {{ reserv.profile.user.first_name }} {{ reserv.profile.user.last_name }}</td>
+            <td> {{ reserv.fh_ini_reserva }}</td>
+            <td> {{ reserv.fh_fin_reserva }}</td>
+            <td> {{ reserv.estado_reserva }}</td>
+            <td>
+                <form action={% url 'inventario:landingAdmin' %} method="post" >
+                    {% csrf_token %}
+                    <input name="identificador" value="{{ reserv.id }}" type="hidden">
+                    <button type="submit" class="btn btn-dark" formmethod="post">
+                        Modificar
+                    </button>
+                </form>
+            </td>
+            <td>
+                <form action={% url 'inventario:borrarReserva' %} method="post" >
+                    {% csrf_token %}
+                    <input name="identificador" value="{{ reserv.id }}" type="hidden">
+                    <button type="submit" class="btn btn-info" formmethod="post">
+                        Eliminar
+                    </button>
+                </form>
+            </td>
+
+
+        </tr>
+    {% endfor %}
+{% endblock %}
+
+{% block botonesCambioEstado %}
+    <button type="button" class="btn btn-success" style="float: right;  margin-bottom: 15px">Aceptar</button>
+
+    <button type="button" class="btn btn-danger" style="float: right; margin-right: 12px; margin-bottom: 15px">Rechazar</button>
+{% endblock %}
 
 {#<!-- top buttons-->#}
 {#            <div class="container">#}

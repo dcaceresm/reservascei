@@ -21,6 +21,10 @@
     background-color: #D0793E !important;
     border-color: #D0793E !important;
 }
+.btn-warning {
+    background-color: #ffff52; !important;
+    border-color: #ffff52; !important;
+}
 thead {
     border-radius: 25px;/*arreglar esto*/
 }

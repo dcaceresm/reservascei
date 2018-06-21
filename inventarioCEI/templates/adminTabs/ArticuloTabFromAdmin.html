@@ -9,15 +9,15 @@
 {% block modalFormBody %}
     <div class="form-row">
         <div class="col-md-6 mb-3">
-            <label for="NameSpace">Nombre</label>
-            <input type="text" class="form-control" id="NameSpace" placeholder="Nombre" required>
+            <label for="ArticleName">Nombre</label>
+            <input type="text" class="form-control" id="ArticleName" placeholder="Nombre artículo" required>
             <div class="invalid-feedback">
                 Nombre inválido
             </div>
         </div>
         <div class="col-md-6 mb-3">
-            <label for="SpaceCapacity">Capacidad</label>
-            <input type="number" class="form-control" id="SpaceCapacity" required>
+            <label for="ArticleTags">Tags</label>
+            <input type="text" class="form-control" id="ArticleTags" required>
             <div class="invalid-feedback">
                 Capacidad inválida
             </div>
@@ -25,16 +25,20 @@
     </div>
     <div class="form-row">
         <div class="col-md-6 mb-3">
-            <label for="SpaceStateInput">Estado</label>
-            <select class="custom-select">
-                {% for opcion,valor in estados_espacio %}
+            <label for="ArticleStateInput">Estado</label>
+            <select class="custom-select" required>
+                <option value="" selected disabled hidden >Elegir estado</option>
+                {% for opcion,valor in estados_articulo %}
                     <option value="{{ opcion }}">{{ opcion }}</option>
                 {% endfor %}
             </select>
+            <div class="invalid-feedback">
+                Campo obligatorio
+            </div>
         </div>
         <div class="col-md-6 mb-3">
-            <label for="SpacePhoto">Fotografía</label>
-            <input type="file" class="form-control form-control-sm" id="SpacePhoto"  required>
+            <label for="ArticlePhoto">Fotografía</label>
+            <input type="file" class="form-control form-control-sm" id="ArticlePhoto"  required>
             <div class="invalid-feedback">
                 Ningún archivo seleccionado
             </div>
@@ -44,8 +48,8 @@
 
     <div class="form-row">
         <div class="col" style="margin-bottom: 16px">
-            <label for="SpaceDesc">Descripción</label>
-            <input type="text" class="form-control" id="SpaceDesc" placeholder="Agrega una descripción del espacio" required>
+            <label for="ArticleDesc">Descripción</label>
+            <input type="text" class="form-control" id="ArticleDesc" placeholder="Agrega una descripción del espacio" required>
             <div class="invalid-feedback">
                 Texto inválido
             </div>
@@ -57,11 +61,10 @@
 
 {% block columnasTabla %}
     <th scope="col">Nombre</th>
-    <th scope="col">Capacidad</th>
     <th scope="col">Estado
-        <select id="filtro_estado_espacios">
-            <option value="espacios">---</option>
-            {% for estado,valor in estados_espacio %}
+        <select id="filtro_estado_articulos">
+            <option value="articulos">---</option>
+            {% for estado,valor in estados_articulo %}
                 <option value="{{ valor }}">{{ valor }}</option>
             {% endfor %}
         </select>
@@ -69,23 +72,22 @@
 {% endblock %}
 
 {% block cuerpoTabla %}
-    {% for esp in espacios %}
-        <tr class="{{ esp.estado }} espacios">
-            <th scope="row"> <input name="filas_espacios" type="checkbox" value="{{ esp.pk }}">  </th>
-            <td> {{ esp.nombre }} </td>
-            <td> {{ esp.capacidad }}</td>
-            <td> {{ esp.estado }}</td>
+    {% for arti in articulos %}
+        <tr class="{{ arti.estado }} articulos">
+            <th scope="row"> <input name="filas_articulos" type="checkbox" value="{{ arti.pk }}">  </th>
+            <td> {{ arti.nombre }} </td>
+            <td> {{ arti.estado }}</td>
             <td>
                 <form action={% url 'inventario:landingAdmin' %} method="post" >
                     {% csrf_token %}
-                    <input name="identificador" value="{{ esp.pk }}" type="hidden">
+                    <input name="identificador" value="{{ arti.pk }}" type="hidden">
                     <button type="submit" class="btn btn-dark" formmethod="post">Modificar</button>
                 </form>
             </td>
             <td>
-                <form action={% url 'inventario:borrarEspacio' %} method="post" >
+                <form action={% url 'inventario:borrarArticulo' %} method="post" >
                     {% csrf_token %}
-                    <input name="identificador" value="{{ esp.pk }}" type="hidden">
+                    <input name="identificador" value="{{ arti.pk }}" type="hidden">
                     <button type="submit" class="btn btn-info" formmethod="post">Eliminar</button>
                 </form>
             </td>
@@ -96,7 +98,9 @@
 {% endblock %}
 
 {% block botonesCambioEstado %}
-    <button type="button" class="btn btn-success" style="float: right;  margin-bottom: 15px">Habilitar espacio</button>
+    <button type="button" class="btn btn-success" style="float: right;  margin-bottom: 15px">Artículo disponible</button>
 
-    <button type="button" class="btn btn-danger" style="float: right; margin-right: 12px; margin-bottom: 15px">Inhabilitar espacio</button>
+    <button type="button" class="btn btn-warning" style="float: right; margin-right: 12px; margin-bottom: 15px">Artículo en reparación</button>
+
+    <button type="button" class="btn btn-danger" style="float: right; margin-right: 12px; margin-bottom: 15px">Artículo perdido</button>
 {% endblock %}
