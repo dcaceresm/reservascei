@@ -1,0 +1,72 @@
+<!-- top buttons-->
+            <div class="container">
+                <!-- Button trigger modal -->
+                <div class="row">
+                    <div class="col">
+                        <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#{% block modalID %}{% endblock %}">
+                            {% block modalButton %}{% endblock %}
+                        </button>
+                    </div>
+                    <div class="col"></div>
+                    <div class="col-sm">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="{% block buscadorPlace %}{% endblock %}">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="{% block modalID2 %}{% endblock %}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <form class="needs-validation" novalidate>
+                                <div class="modal-header">
+                                    <h5 class="modal-title">{% block modaTitle %}{% endblock %}</h5>
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container">
+                                        {% block modalFormBody %}{% endblock %}
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
+                                    {% block modalSaveButton %}{% endblock %}
+                                </div>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        <!-- tabla de reservas -->
+            <div class="container">
+                <table class="table table-bordered" >
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            {% block columnasTabla %}{% endblock %}
+                            <th scope="col">Modificar</th>
+                            <th scope="col">Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% block cuerpoTabla %}{% endblock %}
+                    </tbody>
+
+                </table>
+            </div>
+
+        <!-- botones cambio de estado-->
+
+            <div class="container" >
+                {% block botonesCambioEstado %}{% endblock %}
+            </div>

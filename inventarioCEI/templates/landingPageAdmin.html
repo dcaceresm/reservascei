@@ -1,5 +1,172 @@
 {% extends "base.html" %}
+{% block infoUsuario %}
+{% endblock %}
 
 {% block content %}
+    <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="pills-inicio-tab" data-toggle="pill" href="#inicio"
+               role="tab" aria-controls="pills-inicio" aria-selected="true">Inicio</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-usuarios-tab" data-toggle="pill" href="#usuarios"
+               role="tab" aria-controls="pills-usuarios" aria-selected="false">Usuarios</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-reservas-tab" data-toggle="pill" href="#reservas"
+               role="tab" aria-controls="pills-reservas" aria-selected="false">Reservas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-prestamos-tab" data-toggle="pill" href="#prestamos"
+               role="tab" aria-controls="pills-prestamos" aria-selected="false">Préstamos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-articulos-tab" data-toggle="pill" href="#articulos"
+               role="tab" aria-controls="pills-articulos" aria-selected="false">Artículos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-espacios-tab" data-toggle="pill" href="#espacios"
+               role="tab" aria-controls="pills-espacios" aria-selected="false">Espacios</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
 
-{% endblock %}
+    <!-- aqui empieza tab de inicio /calendario -->
+        <div class="tab-pane fade show active" id="inicio" role="tabpanel" aria-labelledby="pills-inicio-tab">
+            ...calendario, buscador y cosas
+        </div>
+
+    <!-- aqui empieza tab de usuarios-->
+        <div class="tab-pane fade" id="usuarios" role="tabpanel" aria-labelledby="pills-usuarios-tab">
+            {% include 'adminTabs/UserTabFromAdmin.html' %}
+        </div>
+
+    <!-- aqui empieza tab de reservas-->
+        <div class="tab-pane fade" id="reservas" role="tabpanel" aria-labelledby="pills-reservas-tab">
+            {% include 'adminTabs/ReservaTabFromAdmin.html' %}
+
+        </div>
+
+    <!-- aqui empieza tab de prestamos-->
+        <div class="tab-pane fade" id="prestamos" role="tabpanel" aria-labelledby="pills-prestamos-tab">
+            {% include 'adminTabs/PrestamoTabFromAdmin.html' %}
+        </div>
+
+    <!-- aqui empieza tab de articulos-->
+        <div class="tab-pane fade" id="articulos" role="tabpanel" aria-labelledby="pills-articulos-tab">
+            {% include 'adminTabs/ArticuloTabFromAdmin.html' %}
+        </div>
+
+    <!-- aqui empieza tab de espacios-->
+        <div class="tab-pane fade" id="espacios" role="tabpanel" aria-labelledby="pills-espacios-tab">
+            {% include 'adminTabs/EspacioTabFromAdmin.html' %}
+        </div>
+
+
+{% endblock content %}
+{% block scripts %}
+    <script>
+        var url_string = window.location.href
+        var url = new URL(url_string);
+        var tab = url.searchParams.get("tab");
+        // muestra tab que le da la url
+        if (tab) {
+            $('.nav-pills a[href="#' + tab + '"]').tab('show');
+        }
+        // cambia atributo en la url cuando cambio de tab
+        $('.nav-pills a').on('shown.bs.tab', function (e) {
+            var searchParams = new URLSearchParams(window.location.search);
+            searchParams.set('tab',$(this).attr('href').replace('#', ''))
+            window.history.replaceState(null, null, '?'+searchParams.toString())
+        })
+        //filtros tablas
+        $("#filtro_estado_usuarios").change(function(){
+            $(".usuarios").hide();
+            $("."+$(this).val()).show();
+        })
+        $("#filtro_estado_reservas").change(function(){
+            $(".reservas").hide();
+            $("."+$(this).val()).show();
+        })
+        $("#filtro_estado_prestamos").change(function(){
+            $(".prestamos").hide();
+            $("."+$(this).val()).show();
+        })
+        $("#filtro_estado_articulos").change(function(){
+            $(".articulos").hide();
+            $("."+$(this).val()).show();
+        })
+        $("#filtro_estado_espacios").change(function(){
+            $(".espacios").hide();
+            $("."+$(this).val()).show();
+        })
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('.UserCheckbox').on("click", function () {
+                console.log($('.UserCheckbox:checked').length)
+                if($('.UserCheckbox:checked').length > 0){
+                    $('.user-button').removeClass("disabled")
+                }
+                else{
+                    $('.user-button').addClass("disabled")
+                }
+            })
+        })
+    </script>
+    <script>
+        function aceptarReservas(){
+            var checkboxes = $('.reservaCheckbox:checked');
+            var reservasId = "";
+            for (var i = 0; i < checkboxes.length; i++) {
+                var value = checkboxes[i].value;
+                if (reservasId == ""){
+                    reservasId = value;
+                }
+                else{
+                    reservasId = reservasId.concat(",", value);
+                }
+            }
+            document.location="/AceptarReservas/"+reservasId;
+        }
+        function rechazarReservas(){
+            var checkboxes = $('.reservaCheckbox:checked');
+            var reservasId = "";
+            for (var i = 0; i < checkboxes.length; i++) {
+                var value = checkboxes[i].value;
+                if (reservasId == ""){
+                    reservasId = value;
+                }
+                else{
+                    reservasId = reservasId.concat(",", value);
+                }
+            }
+            document.location="/RechazarReservas/"+reservasId;
+        }
+    </script>
+    <script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                    }, false);
+            });
+            }, false);
+    })();
+    </script>
+    <script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+    </script>
+{% endblock scripts %}
