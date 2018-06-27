@@ -5,6 +5,8 @@ from django.urls import path, re_path
 from . import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+
+
 urlpatterns = [
     path('', views.index, name='index'),
     url(r'^profile/$', views.showProfile, name='profile'),
@@ -16,8 +18,20 @@ urlpatterns = [
     path('update_articulo', views.update_articulo, name='update_articulo'),
     path('reserva_articulo', views.reserva_articulo, name='reserva_articulo'),
     path('landingAdmin/', views.LandingAdmin.as_view(), name='landingAdmin'),
+    path('landingUser/', views.buscar, name = 'buscar'),
+    path('calendar/', views.calendar, name='calendar'),
+    path('goToArticulos/', views.goToArticulos, name='goToArticulos'),
+    path('goToEspacios/', views.goToEspacios, name='goToEspacios'),
+    path('busquedaAvanzada/', views.busquedaAvanzada, name='busquedaAvanzada'),
     re_path(r'ficha/(?P<id>[0-9]*)/$', views.ficha, name='ficha')
     ]
 
+#urlpatterns += patterns('', url(r'^media/(?P<path>.*)$','django.views.static.serve', {
+#        'document_root': settings.MEDIA_ROOT,
+#    }),)
+
+
 
 urlpatterns += staticfiles_urlpatterns()
+
+

@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from .models import Articulo, Reserva
 import datetime
+from T3_INGSW import settings
 from django.contrib.contenttypes.models import ContentType
 
 from django.http import HttpResponseRedirect
@@ -13,6 +14,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from .models import *
 from django.urls import reverse
+import json
 
 def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
@@ -27,6 +29,7 @@ class LandingAdmin(TemplateView):
 
 def ficha(request, id):
     if request.user.is_authenticated:
+        print(settings.SITE_ROOT)
         try: # IF ITEM ID EXISTS
             obj = Articulo.objects.get(pk=id)
 
@@ -174,3 +177,132 @@ def deleteRes(request):
     delList = request.POST.getlist('element')
     Reserva.objects.filter(id__in=delList).delete()
     return HttpResponseRedirect(reverse('index'))
+
+
+def event_adding(event, di, df, type):
+    if di.month < 10:
+        month_i = "0" + str(di.month)
+    else:
+        month_i = str(di.month)
+
+    if di.day < 10:
+        day_i = "0" + str(di.day)
+    else:
+        day_i = str(di.day)
+
+    if di.hour < 10:
+        hour_i = "0" + str(di.hour)
+    else:
+        hour_i = str(di.hour)
+
+    if di.minute < 10:
+        minute_i = "0" + str(di.minute)
+    else:
+        minute_i = str(di.minute)
+
+    if df.month < 10:
+        month_f = "0" + str(df.month)
+    else:
+        month_f = str(df.month)
+
+    if df.day < 10:
+        day_f = "0" + str(df.day)
+    else:
+        day_f = str(df.day)
+
+    if df.hour < 10:
+        hour_f = "0" + str(df.hour)
+    else:
+        hour_f = str(df.hour)
+
+    if df.minute < 10:
+        minute_f = "0" + str(df.minute)
+    else:
+        minute_f = str(df.minute)
+
+    if type == 1:
+        name = (Espacio.objects.get(id=event.object_id)).nombre + "-" + event.estado_prestamo
+    else:
+        name = (Espacio.objects.get(id=event.object_id)).nombre + "-" + event.estado_reserva
+
+    time_i = str(di.year) + "-" + str(month_i) + "-" + str(day_i) + "T" + hour_i + ":" + minute_i
+    time_f = str(df.year) + "-" + str(month_f) + "-" + str(day_f) + "T" + hour_f + ":" + minute_f
+
+    return {
+        "title": name,
+        "start": time_i,
+        "end": time_f
+    }
+
+
+def calendar(request):
+    events = [
+    ]
+
+    ct = ContentType.objects.get_for_model(Espacio)
+
+    prestamos = Prestamo.objects.all()
+
+    reservas = Reserva.objects.all()
+
+    for i in range(0, len(prestamos)):
+
+        event = prestamos[i]
+
+        if event.content_type == ct:
+            di = event.fh_ini_prestamo
+            df = event.fh_fin_prestamo
+
+            event_json = event_adding(event, di, df, 1)
+            events.append(event_json)
+
+    for i in range(0, len(reservas)):
+
+        event = reservas[i]
+
+        if event.content_type == ct:
+            di = event.fh_ini_reserva
+            df = event.fh_fin_reserva
+
+            event_json = event_adding(event, di, df, 2)
+            events.append(event_json)
+
+    events_string = json.dumps(events)
+
+    return render(request, 'calendario.html', {'events': events_string})
+
+
+def buscar(request):
+    if request.method == "POST":
+        busqueda = request.POST['elemento']
+        lista = Articulo.objects.filter(lista_tags__contains=busqueda)
+        return render(request, 'buscar.html', {'lista': lista})
+    else:
+        lista = []
+        return render(request, 'buscar.html', {'lista': lista})
+
+
+def busquedaAvanzada(request):
+    if request.method == "POST":
+        busqueda = request.POST['elemento']
+        estado = request.POST['estado']
+        lista = Articulo.objects.filter(lista_tags__contains=busqueda)
+        lista = lista.filter(estado__contains=estado)
+        return render(request, 'busquedaAvanzada.html', {'lista': lista})
+    else:
+        lista = []
+        return render(request, 'busquedaAvanzada.html', {'lista': lista})
+
+
+def goToArticulos(request):
+    if request.method == "POST":
+        return redirect('buscar')
+    else:
+        return render(request, 'calendario.html')
+
+
+def goToEspacios(request):
+    if request.method == "POST":
+        return redirect('calendar')
+    else:
+        return render(request, 'buscar.html')
