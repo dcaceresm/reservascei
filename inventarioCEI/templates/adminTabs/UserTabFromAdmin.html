@@ -1,0 +1,126 @@
+{% extends 'adminTabs/BaseAdminTab.html' %}
+
+{% block modalID %}UserModal{% endblock %}
+{% block modalButton %}Crear nuevo usuario{% endblock %}
+{% block buscadorPlace %}Busca un usuario{% endblock %}
+{% block modalID2 %}UserModal{% endblock %} <!-- debe ser igual a modalID -->
+{% block modaTitle %}Nuevo usuario{% endblock %}
+
+{% block modalFormBody %}
+    <div class="form-row">
+        <div class="col-md-6 mb-3">
+            <label for="NameUser">Nombre</label>
+            <input type="text" class="form-control" id="NameUser" placeholder="Nombre" required>
+            <div class="invalid-feedback">
+                Nombre inválido
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="LastnameUser">Apellido</label>
+            <input type="text" class="form-control" id="LastnameUser" placeholder="Apellido" required>
+            <div class="invalid-feedback">
+                Apellido inválido
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6 mb-3">
+            <label for="RutUser">Rut usuario</label>
+            <input type="text" class="form-control" id="RutUser" placeholder="Rut" required>
+            <div class="invalid-feedback">
+                Rut inválido
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="MailUser">Mail usuario</label>
+            <input type="email" class="form-control" id="MailUser" placeholder="Mail" required>
+            <div class="invalid-feedback">
+                Mail inválido
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-row">
+        <div class="col-md-6 mb-3">
+            <input type="checkbox"  id="habUser">
+            <label for="habUser" data-toggle="tooltip" data-placement="top"
+                   title="Un usuario habilitado puede reservar artículos y espacios">¿Está habilitado?</label>
+
+
+        </div>
+        <div class="col-md-6 mb-3">
+            <input type="checkbox"  id="isAdmUser">
+            <label for="isAdmUser" data-toggle="tooltip" data-placement="top"
+                   title="Un administrador puede gestionar las reservas, inventario y usuarios">
+                ¿Es administrador?</label>
+
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6 mb-3">
+            <label for="UserPas1">Contraseña</label>
+            <input type="password" class="form-control" id="UserPas1" placeholder="Contraseña" required>
+            <div class="invalid-feedback">
+                Contraseña inválida
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="UserPas2">Repite contraseña</label>
+            <input type="password" class="form-control" id="UserPas2" placeholder="Contraseña" required>
+            <div class="invalid-feedback">
+                Contraseña inválida
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block modalSaveButton %}<button type="submit" class="btn btn-info">Guardar</button>{% endblock %}
+
+{% block columnasTabla %}
+    <th scope="col">Nombre</th>
+    <th scope="col">Rut</th>
+    <th scope="col">Mail</th>
+    <th scope="col">Estado
+        <select id="filtro_estado_usuarios">
+            <option value="usuarios">---</option>
+            {% for estado,valor in estados_usuario %}
+                <option value="{{ valor }}">{{ valor }}</option>
+            {% endfor %}
+        </select>
+    </th>
+{% endblock %}
+
+{% block cuerpoTabla %}
+    {% for user in usuarios %}
+        <tr class="{{ user.hab }} usuarios">
+            <th scope="row"> <input class="UserCheckbox" name="filas_usuarios" type="checkbox" value="{{ user.id }}">  </th>
+            <td> {{ user.user.first_name }} {{ user.user.last_name }}</td>
+            <td> {{ user.rut }}</td>
+            <td class="mailcito"> {{ user.mail }}</td>
+            <td> {{ user.hab }}</td>
+            <td>
+                <form action={% url 'landingAdmin' %} method="post" >
+                    {% csrf_token %}
+                    <input name="identificador" value="{{ user.rut }}" type="hidden">
+                    <button type="submit" class="btn btn-dark" formmethod="post">Modificar</button>
+                </form>
+            </td>
+            <td>
+                <form action={% url 'borrarUsuario' %} method="post" >
+                    {% csrf_token %}
+                    <input name="identificador" value="{{ user.rut }}" type="hidden">
+                    <button type="submit" class="btn btn-info" formmethod="post">Eliminar</button>
+                </form>
+            </td>
+
+
+        </tr>
+    {% endfor %}
+{% endblock %}
+
+{% block botonesCambioEstado %}
+    <button type="button" class="btn btn-success user-button disabled" style="float: right;  margin-bottom: 15px" >Habilitar usuario</button>
+
+    <button type="button" class="btn btn-danger user-button disabled" style="float: right; margin-right: 12px; margin-bottom: 15px" >Inhabilitar usuario</button>
+{% endblock %}

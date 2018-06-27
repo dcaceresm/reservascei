@@ -23,6 +23,14 @@ urlpatterns = [
     path('goToArticulos/', views.goToArticulos, name='goToArticulos'),
     path('goToEspacios/', views.goToEspacios, name='goToEspacios'),
     path('busquedaAvanzada/', views.busquedaAvanzada, name='busquedaAvanzada'),
+    path('borrarPrestamo/', views.borrarPrestamo, name='borrarPrestamo'),
+    path('borrarArticulo/', views.borrarArticulo, name='borrarArticulo'),
+    path('borrarReserva/', views.borrarReserva, name='borrarReserva'),
+    path('borrarEspacio/', views.borrarEspacio, name='borrarEspacio'),
+    path('borrarUsuario/', views.borrarUsuario, name='borrarUsuario'),
+    path('verPrestamo/', views.verPrestamo, name='verPrestamo'),
+    path('AceptarReservas/<str:string_id>', views.AceptarReservas, name="AceptarReservas"),
+    path('RechazarReservas/<str:string_id>', views.RechazarReservas, name="RechazarReservas"),
     re_path(r'ficha/(?P<id>[0-9]*)/$', views.ficha, name='ficha')
     ]
 
