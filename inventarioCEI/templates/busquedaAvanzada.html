@@ -3,9 +3,9 @@
 <html lang="en">
 <head>
     <!--<meta charset="UTF-8">-->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="{% static 'inventarioCEI/css/inventarioCEI.css' %}">
+    <!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">-->
+    <link rel="stylesheet" href="{% static 'css/inventarioCEI.css' %}">
     <!--<link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>-->
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
     <title>busquedaAvanzada</title>
@@ -35,6 +35,18 @@
                 <option value="En reparación">En reparación</option>
                 <option value="Perdido">Perdido</option>
               </select>
+            <label for="fechaInicioBusq">Fecha Inicio Prestamo </label>
+            <input type="datetime-local" name="fechaInicioBusq" class="form-control" id="fechaInicioBusq" required>
+
+            <label for="fechaFinBusq">Fecha Fin Prestamo </label>
+            <input type="datetime-local" name="fechaFinBusq" class="form-control" id="fechaFinBusq" required>
+
+            <!--<div class="col-md-6 mb-3">
+            <label for="FechaInicioInputReserv">Fecha de inicio de reserva</label>
+            <input type="datetime-local" class="form-control" id="FechaInicioInputReserv" placeholder="Fecha de inicio" required>
+            <div class="invalid-feedback">
+                Fecha inválida
+            </div>-->
 
         </form>
 
@@ -48,7 +60,7 @@
 
 
 
-
+    <p>{{fecha}}</p>
 
 
 
@@ -71,5 +83,6 @@
         </div>
     {% endfor %}
     </div>
+
 </body>
 </html>

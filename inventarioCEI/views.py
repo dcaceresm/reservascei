@@ -14,6 +14,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from .models import *
 from django.urls import reverse
+from datetime import date
 import json
 
 def index(request):
@@ -306,6 +307,20 @@ def busquedaAvanzada(request):
         estado = request.POST['estado']
         lista = Articulo.objects.filter(lista_tags__contains=busqueda)
         lista = lista.filter(estado__contains=estado)
+
+        fecha_inicio = request.POST['fechaInicioBusq']
+        fecha_fin = request.POST['fechaFinBusq']
+
+        reservas = Reserva.objects.filter(estado_reserva="Aceptada") & \
+                   (Reserva.objects.filter(fh_ini_reserva__range=[fecha_inicio, fecha_fin]) | \
+                   Reserva.objects.filter(fh_fin_reserva__range=[fecha_inicio, fecha_fin]))
+
+        for reserva in reservas:
+            id_object = reserva.object_id
+            object = Articulo.objects.get(id = id_object)
+            if object in lista:
+                lista = lista.exclude(id = id_object)
+
         return render(request, 'busquedaAvanzada.html', {'lista': lista})
     else:
         lista = []
