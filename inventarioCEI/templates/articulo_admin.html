@@ -71,7 +71,8 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td><input type="submit" value="Actualizar Ficha"></td>
+                            <td><button type="submit" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm"> Actualizar Datos</button>
+                            </td>
                         </tr>
                     </table>
                 </form>
@@ -90,7 +91,6 @@
         </div>
 
 
-
 {% else %}
     <h2>No existe artículo con id {{ id }}</h2>
 {% endif %}
@@ -101,8 +101,10 @@
 
 <script>
     {# Check update and send alert #}
-    if (window.location.search.substring(1).split("&")[0].split("=")[1] === "True"){
+     if (window.location.search.substring(1).split("&")[0].split("=")[1] === "True"){
         alert('Articulo Actualizado!')
-    }
+     }
 </script>
+
+
 {% endblock scripts %}
