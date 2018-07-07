@@ -1,0 +1,26 @@
+{% load static %}
+
+<!--Aquí parte el calendario -->
+<link rel='stylesheet' href="{% static 'fullcalendar/fullcalendar.css' %}">
+<link rel="stylesheet" href="{% static 'css/inventarioCEI.css' %}">
+
+<div class="container">
+
+    <ul class="ul1">
+        <li>
+            <form action="{% url 'goToArticulos' %}" method="post">
+                {% csrf_token %}
+                <button class="unactiveButton">Artículos</button>
+            </form>
+        </li>
+
+        <li>
+            <button class="activeButton">Espacios</button>
+        </li>
+
+    </ul>
+
+    <div id='calendar'></div>
+
+</div>
+

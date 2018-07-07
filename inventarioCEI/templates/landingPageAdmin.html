@@ -33,7 +33,7 @@
 
     <!-- aqui empieza tab de inicio /calendario -->
         <div class="tab-pane fade show active" id="inicio" role="tabpanel" aria-labelledby="pills-inicio-tab">
-            ...calendario, buscador y cosas
+            {% include 'adminTabs/HomeTabFromAdmin.html' %}
         </div>
 
     <!-- aqui empieza tab de usuarios-->
@@ -168,5 +168,26 @@
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
+    </script>
+    <script>
+        $(document).ready(function () {
+            // page is now ready, initialize the calendar...
+            /*$('#calendar').fullCalendar({
+            // put your options and callbacks here
+                weekends: false
+             })*/
+            $('#calendar').fullCalendar({
+                header: {center: 'month, agendaWeek'}, // buttons for switching between views
+                views: {
+                    month: { // name of view
+                        titleFormat: 'DD, MM, YYYY'
+                        // other view-specific options here
+                    }
+                },
+                events: {{eventsAdmin|safe}}
+            });
+
+        });
+
     </script>
 {% endblock scripts %}
