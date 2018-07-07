@@ -16,10 +16,6 @@ from .models import *
 from django.urls import reverse
 import json
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
-
-
 class LandingAdmin(TemplateView):
     template_name = "landingPageAdmin.html"
 
