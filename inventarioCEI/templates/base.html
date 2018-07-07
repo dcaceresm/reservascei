@@ -11,7 +11,7 @@
           integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
           crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
-    <title>{% block  title %} Amazing website {% endblock %}</title>
+    <title>{% block  title %} Inventario CEI {% endblock %}</title>
 </head>
 <body>
 
@@ -20,9 +20,13 @@
         <img src="{% static 'img/Logo-Cei.png' %}" style="width: 20%;"/>
     </a>
 
-    {% if request.user.is_authenticated %}
-        <div class="row">
+        <!-- Menu con la informacion del usuario y links a ciertas paginas -->
+        <!-- Se activa si el usuario entro -->
+        {% if request.user.is_authenticated %}
+            <div class="row">
             <div class="col-*-*">
+
+                <!-- Nombre, rut correo y habilitado -->
                 {{ request.user.first_name }} {{ request.user.last_name }}
                 <br>{{ request.user.profile.rut }}
                 <br>{{ request.user.profile.mail }}
@@ -32,11 +36,13 @@
                     <br>No Habilitado
                 {% endif %}
             </div>
+
+            <!--Menu dropdown desde la pestana de foto de perfil-->
             <div class="col-*-*">
                 <div class="container">
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-                            <img src={% static "img/blank-profile-picture.png" %} width="80" height="80" alt="">
+                            <img src="{% static "img/blank-profile-picture.png" %}" width="80" height="80" alt="">
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">

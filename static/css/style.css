@@ -2,29 +2,60 @@
     background-color: #79BCB5 !important;
     border-color: #79BCB5 !important;
 }
+.nav-pills{
+    border-radius: 0px !important;
+}
+.nav-item{
+    border-radius: 0px !important;
+}
 .nav-pills > li > a.active {
     background-color: #B95933 !important;
     color: #ffffff !important;
+    border-radius: 0px !important;
 }
 .nav-pills > li > a:hover {
     background-color: #E8B059 !important;
     color: #ffffff !important;
+    border-radius: 0px !important;
 }
 .nav-link {
     color: white  !important;
     background-color: #7bbcb5 !important;
+    border-radius: 0px !important;
 }
 .btn-dark {
     background-color: #E8B059 !important;
     border-color: #E8B059 !important;
 }
+.btn-dark:hover {
+    background-color: #d6a252 !important;
+    border-color: #d6a252 !important;
+}
 .btn-info {
     background-color: #D0793E !important;
     border-color: #D0793E !important;
 }
+.btn-info:hover {
+    background-color: #bf6d3a !important;
+    border-color: #bf6d3a !important;
+}
 .btn-warning {
-    background-color: #ffff52; !important;
-    border-color: #ffff52; !important;
+    background-color: #ffd250; !important;
+    border-color: #ffd250; !important;
+}
+.btn-warning:hover {
+    background-color: #d7b143; !important;
+    border-color: #d7b143; !important;
+}
+
+.btn-primary {
+    background-color: #E8B059; !important;
+    border-color: #E8B059; !important;
+}
+
+.btn-primary:hover {
+    background-color: #c8984f; !important;
+    border-color: #c8984f; !important;
 }
 thead {
     border-radius: 25px;/*arreglar esto*/
@@ -37,6 +68,7 @@ th, td {
 td:not(.mailcito){
     text-transform: capitalize;
 }
+
 
 /*colores cei:
 verde: #79BCB5

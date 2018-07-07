@@ -6,6 +6,8 @@
         <form action="{% url 'deleteRes' %}" method="post">
             {% csrf_token %}
             <div style="overflow-y:auto; height: 350px;">
+
+                <!-- Tabla con elementos reservados -->
                 <table class="table table-bordered">
                     <thead class="thead-dark">
                         <tr class="table-primary">
@@ -16,10 +18,12 @@
                     </thead>
                     {% for r in reservas %}
                         <tr>
+                            <!--Agrega checkbox solo a los pendientes-->
                             {% ifnotequal r.estado_reserva "Pendiente" %}
                                 <th>
                                     <input type="checkbox" class="checkbox" name="element" value="{{r.id}}" disabled>
                                 </th>
+                                <!-- showData recibe datos y pasan por javascript -->
                                 <th style="cursor: pointer;" onclick="showData('{{r.content_object.descripcion}}',
                                         '{{r.content_object.image.url}}',
                                         '{{r.fh_reserva}}',
@@ -53,11 +57,14 @@
                    value="Borrar" disabled="disabled"/>
         </form>
     </div>
+
+    <!-- Cards con informacion de los elementos -->
     <div class="col-*-*" style="width: 720px; height: 350px;">
          <div class=" container">
             <div class="row">
-                <div class="col-*-*">
 
+                <!--Foto y descripcion-->
+                <div class="col-*-*">
                    <div class="card" style="width: 18rem; height: 23.4rem;">
                        <div style="max-width: 400px;">
                             <div id="foto" style="background-image: url('{% static 'img/Logo-Cei (bw).png' %}'); width: 100%;
@@ -65,24 +72,26 @@
                             background-repeat: no-repeat;"></div>
                             </div>
                        <div class="card-body">
-                        <p class="card-text" id="desc">Descripción del elemento</p>
+                        <p class="card-text" id="desc"></p>
                       </div>
                    </div>
                 </div>
+
+                <!-- Fechas -->
                 <div class="col-*-*" style="width: 400px">
-                    <div class="card" style="max-width: 18rem;height: 7.1rem;">
+                    <div class="card" style="max-width: 18rem;height: 7.8rem;">
                       <div class="card-header nav-link">Fecha de reserva</div>
                       <div class="card-body">
                         <p class="card-text" id="fecha_reserva">-</p>
                       </div>
                     </div>
-                    <div class="card" style="max-width: 18rem;height: 7.1rem;">
+                    <div class="card" style="max-width: 18rem;height: 7.8rem;">
                       <div class="card-header nav-link">Inicio de la reserva</div>
                       <div class="card-body">
                         <p class="card-text" id="fecha_ini">-</p>
                       </div>
                     </div>
-                    <div class="card" style="max-width: 18rem; height: 7.1rem;">
+                    <div class="card" style="max-width: 18rem; height: 7.8rem;">
                       <div class="card-header nav-link">Fin de la reserva</div>
                       <div class="card-body">
                         <p class="card-text" id="fecha_fin">-</p>
