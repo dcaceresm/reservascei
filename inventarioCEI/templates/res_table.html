@@ -57,9 +57,14 @@
          <div class=" container">
             <div class="row">
                 <div class="col-*-*">
+
                    <div class="card" style="width: 18rem; height: 23.4rem;">
-                      <img class="card-img-top" src="{% static 'img/Logo-Cei (bw).png' %}" style="height: 16rem; width: 18rem" id="foto">
-                      <div class="card-body">
+                       <div style="max-width: 400px;">
+                            <div id="foto" style="background-image: url('{% static 'img/Logo-Cei (bw).png' %}'); width: 100%;
+                            padding-top: 80%; background-size: auto 100%; background-position: center center;
+                            background-repeat: no-repeat;"></div>
+                            </div>
+                       <div class="card-body">
                         <p class="card-text" id="desc">Descripción del elemento</p>
                       </div>
                    </div>
