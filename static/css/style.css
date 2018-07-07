@@ -2,17 +2,26 @@
     background-color: #79BCB5 !important;
     border-color: #79BCB5 !important;
 }
+.nav-pills{
+    border-radius: 0px !important;
+}
+.nav-item{
+    border-radius: 0px !important;
+}
 .nav-pills > li > a.active {
     background-color: #B95933 !important;
     color: #ffffff !important;
+    border-radius: 0px !important;
 }
 .nav-pills > li > a:hover {
     background-color: #E8B059 !important;
     color: #ffffff !important;
+    border-radius: 0px !important;
 }
 .nav-link {
     color: white  !important;
     background-color: #7bbcb5 !important;
+    border-radius: 0px !important;
 }
 .btn-dark {
     background-color: #E8B059 !important;
