@@ -386,7 +386,9 @@ def goToEspacios(request):
 
 def AceptarReservas(request, string_id=""):
     if string_id == "":
-        return redirect('inventario:landingAdmin')
+        response = redirect('landingAdmin')
+        response['Location'] += '?tab=reservas'
+        return response
 
     id_elements = string_id.split(",")
     for id_elemento in id_elements:
@@ -397,29 +399,35 @@ def AceptarReservas(request, string_id=""):
             existe = Prestamo.objects.get(id=id_elemento)
         except Prestamo.DoesNotExist:
             existe = None
-            prestamo = Prestamo(rut=reserva.rut, fh_ini_prestamo=reserva.fh_ini_reserva
-                            , fh_fin_prestamo=reserva.fh_fin_reserva, estado_prestamo='vigente'
-                            , tipo_objeto=reserva.tipo_objeto, id_objeto=reserva.id_objeto)
+            prestamo = Prestamo(profile=reserva.profile, fh_ini_prestamo=reserva.fh_ini_reserva
+                            , fh_fin_prestamo=reserva.fh_fin_reserva, estado_prestamo='Vigente'
+                            , content_type=reserva.content_type, object_id=reserva.object_id)
             prestamo.save();
 
-    return redirect('inventario:landingAdmin')
+    response = redirect('landingAdmin')
+    response['Location'] += '?tab=reservas'
+    return response
 
 def RechazarReservas(request, string_id=""):
     if string_id == "":
-        return redirect('inventario:landingAdmin')
+        response = redirect('landingAdmin')
+        response['Location'] += '?tab=reservas'
+        return response
 
     id_elements = string_id.split(",")
     for id_elemento in id_elements:
         reserva = get_object_or_404(Reserva, pk=id_elemento)
         reserva.estado_reserva = Reserva.ESTADO_CHOICES[2][0]
         reserva.save()
-    return redirect('inventario:landingAdmin')
+    response = redirect('landingAdmin')
+    response['Location'] += '?tab=reservas'
+    return response
 
 def borrarPrestamo(request):
     # id_prestamo =request.POST["identificador"]
     # prestamo= get_object_or_404(Prestamo,pk=id_prestamo)
     # prestamo.delete()
-    response = redirect('inventario:landingAdmin')
+    response = redirect('landingAdmin')
     response['Location'] += '?tab=prestamos'
     return response
 

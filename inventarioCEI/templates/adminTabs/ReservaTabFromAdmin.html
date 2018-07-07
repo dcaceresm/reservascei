@@ -84,7 +84,10 @@
 {% block cuerpoTabla %}
     {% for reserv in reservas %}
         <tr class="{{ reserv.estado_reserva }} reservas">
-            <th scope="row"> <input name="filas_reservas" type="checkbox" value="{{ reserv.id }}">  </th>
+            <th scope="row"> <input class="ReservCheckbox" name="filas_reservas" type="checkbox" value="{{ reserv.id }}"
+                {% if reserv.estado_reserva == "Aceptada" %} disabled
+                {% elif reserv.estado_reserva == "Rechazada" %} disabled
+                {% endif %}>  </th>
             <td> {{ reserv.content_object.nombre }}</td>
             <td> {{ reserv.profile.user.first_name }} {{ reserv.profile.user.last_name }}</td>
             <td> {{ reserv.fh_ini_reserva }}</td>
@@ -115,9 +118,11 @@
 {% endblock %}
 
 {% block botonesCambioEstado %}
-    <button type="button" class="btn btn-success" style="float: right;  margin-bottom: 15px">Aceptar</button>
+    <button type="button" class="btn btn-success reserv-button disabled"
+            onclick="aceptarReservas()" value="aceptar" style="float: right;  margin-bottom: 15px">Aceptar</button>
 
-    <button type="button" class="btn btn-danger" style="float: right; margin-right: 12px; margin-bottom: 15px">Rechazar</button>
+    <button type="button" class="btn btn-danger reserv-button disabled"
+            onclick="rechazarReservas()" value="rechazar" style="float: right; margin-right: 12px; margin-bottom: 15px">Rechazar</button>
 {% endblock %}
 
 {#<!-- top buttons-->#}
