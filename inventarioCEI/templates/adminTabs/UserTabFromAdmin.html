@@ -1,5 +1,6 @@
 {% extends 'adminTabs/BaseAdminTab.html' %}
 
+
 {% block modalID %}UserModal{% endblock %}
 {% block modalButton %}Crear nuevo usuario{% endblock %}
 {% block buscadorPlace %}Busca un usuario{% endblock %}
@@ -7,6 +8,7 @@
 {% block modaTitle %}Nuevo usuario{% endblock %}
 
 {% block modalFormBody %}
+
     <div class="form-row">
         <div class="col-md-6 mb-3">
             <label for="NameUser">Nombre</label>
@@ -120,6 +122,11 @@
 {% endblock %}
 
 {% block botonesCambioEstado %}
+    <div class="divBA">
+        <a href="{% url 'busquedaAvanzada'%}">
+            <p style="color:black;font-size:20px;">Busqueda Avanzada</p>
+        </a>
+    </div>
     <button type="button" class="btn btn-success user-button disabled" style="float: right;  margin-bottom: 15px" >Habilitar usuario</button>
 
     <button type="button" class="btn btn-danger user-button disabled" style="float: right; margin-right: 12px; margin-bottom: 15px" >Inhabilitar usuario</button>

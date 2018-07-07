@@ -292,34 +292,43 @@ def calendar(request):
 
 
 def buscar(request):
-    if request.method == "POST":
-        busqueda = request.POST['elemento']
-        lista = Articulo.objects.filter(lista_tags__contains=busqueda)
-        return render(request, 'buscar.html', {'lista': lista})
-    else:
-        lista = []
-        return render(request, 'buscar.html', {'lista': lista})
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            busqueda = request.POST['elemento']
+            lista = Articulo.objects.filter(lista_tags__contains=busqueda)
+            return render(request, 'buscar.html', {'lista': lista})
+        else:
+            lista = []
+            return render(request, 'buscar.html', {'lista': lista})
+    else:  # USER IS NOT LOGGED IN
+        return redirect('/')  # REDIRECT TO INDEX (LOGIN) PAGE
+
 
 
 def busquedaAvanzada(request):
     if request.method == "POST":
         busqueda = request.POST['elemento']
-        estado = request.POST['estado']
         lista = Articulo.objects.filter(lista_tags__contains=busqueda)
-        lista = lista.filter(estado__contains=estado)
 
+        """id_elemento = request.POST['id_elemento']
+        lista = Articulo.objects.filter(id = id_elemento)"""
+
+        estado = request.POST['estado']
+        if estado != "Todos":
+            lista = lista.filter(estado__contains=estado)
         fecha_inicio = request.POST['fechaInicioBusq']
         fecha_fin = request.POST['fechaFinBusq']
 
-        reservas = Reserva.objects.filter(estado_reserva="Aceptada") & \
-                   (Reserva.objects.filter(fh_ini_reserva__range=[fecha_inicio, fecha_fin]) | \
-                   Reserva.objects.filter(fh_fin_reserva__range=[fecha_inicio, fecha_fin]))
+        if (fecha_inicio != "") & (fecha_fin != ""):
+            reservas = Reserva.objects.filter(estado_reserva="Aceptada") & \
+                       (Reserva.objects.filter(fh_ini_reserva__range=[fecha_inicio, fecha_fin]) | \
+                        Reserva.objects.filter(fh_fin_reserva__range=[fecha_inicio, fecha_fin]))
 
-        for reserva in reservas:
-            id_object = reserva.object_id
-            object = Articulo.objects.get(id = id_object)
-            if object in lista:
-                lista = lista.exclude(id = id_object)
+            for reserva in reservas:
+                id_object = reserva.object_id
+                object = Articulo.objects.get(id=id_object)
+                if object in lista:
+                    lista = lista.exclude(id=id_object)
 
         return render(request, 'busquedaAvanzada.html', {'lista': lista})
     else:

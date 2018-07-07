@@ -38,6 +38,17 @@ td:not(.mailcito){
     text-transform: capitalize;
 }
 
+.card-body{
+    font-size: small;
+}
+
+
+.card-img-top {
+    width: 100%;
+    height: 15vw;
+    object-fit: cover;
+}
+
 /*colores cei:
 verde: #79BCB5
 marron: #B95933

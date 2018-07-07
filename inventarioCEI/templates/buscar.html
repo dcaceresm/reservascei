@@ -1,62 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
 {% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">-->
-    <link rel="stylesheet" href="{% static 'css/inventarioCEI.css' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>buscar</title>
-</head>
-<body>
 
-    <ul class="ul1">
+
+
+
+{% block content %}
+
+    <ul class="ul1" style="margin-top: 2%">
         <li>
-            <button class="activeButton">Articulos</button>
+            <button type="button" class="btn btn-success user-button disabled" style="margin-bottom: 15px; padding-left: 20px; padding-right: 20px">Artículos</button>
         </li>
         <li>
             <form action="{% url 'goToEspacios' %}" method="post">
                     {% csrf_token %}
-                    <button class="unactiveButton">Espacios</button>
+                    <button class="btn btn-danger user-button" style="margin-right: 12px; margin-bottom: 15px; padding-left: 20px; padding-right: 20px" >Espacios</button>
             </form>
         </li>
     </ul>
 
-    <form action="{% url 'buscar' %}" align="middle" method="post">
-    {% csrf_token %}
-    <input type="text" name="elemento" id="elemento" size="150"/>
-    <input type="submit" value="Buscar"/>
-    </form>
+    <div class="col-sm">
+        <form action="{% url 'buscar' %}" method="post">
+        {% csrf_token %}
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="elemento" id="elemento">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-outline-secondary">Buscar</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
-    <div class="divBA">
+    <div style="float: right; margin-right: 13px">
         <a href="{% url 'busquedaAvanzada'%}">
-            <p style="color:black;font-size:10px;">Busqueda Avanzada</p>
+            <p style="color:black;font-size:15px;">Busqueda Avanzada</p>
         </a>
     </div>
 
-    <div class="flex-container">
+    <div class="card-deck">
     {% for articulo in lista %}
-        <div class="card">
-            <a href="https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg">
-            <img src={{articulo.URLfoto}} style="width:100%;height:104px;">
-                <h4><b>{{articulo.nombre}}</b></h4>
-                {% if articulo.estado == "disponible" %}
-                    <div class="circlegreen"></div>
-                {% elif articulo.estado == "prestamo"%}
-                    <div class="circlered"></div>
-                {% elif articulo.estado == "reparacion"%}
-                    <div class="circleblue"></div>
-                {% else %} <!--perdido-->
-                    <div class="circleblack"></div>
+        <div class="card" style="max-width: 202px;" onclick="location.href='/ficha/{{articulo.id}}';" >
+
+            <!-- Heading -->
+            <div class="card-body">
+            <h4 class="card-title">{{articulo.nombre}}</h4>
+            {% if articulo.estado == "Disponible" %}
+                    <h6 class="card-subtitle text-muted"><span class="badge badge-success">Disponible</span></h6>
+                {% elif articulo.estado == "En préstamo"%}
+                    <h6 class="card-subtitle text-muted"><span class="badge badge-primary">En Prestamo</span></h6>
+                {% elif articulo.estado == "En reparación"%}
+                    <h6 class="card-subtitle text-muted"><span class="badge badge-warning">En Reparación</span></h6>
+                {% else %}
+                    <h6 class="card-subtitle text-muted"><span class="badge badge-danger">Perdido</span></h6>
                 {% endif %}
-            </a>
+
+            </div>
+
+            <!-- Image -->
+            <img class="card-img-top" src={{articulo.image.url}}>
+
         </div>
+
+
     {% endfor %}
     </div>
 
+{% endblock content %}
 
-</body>
-</html>
+{# END OF CONTENT #}
+{% block scripts %}
+    <link rel="stylesheet" href="{% static 'css/inventarioCEI.css' %}">
 
-<!--style="width:104px;height:104px;-->
+{% endblock scripts %}
