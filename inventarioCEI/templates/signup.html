@@ -60,7 +60,7 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        <br><a href="{% url 'index' %}">Volver atrás</a>
+        <br><button class="btn btn-primary" onclick="goBack()">Volver atrás</button>
     </div>
 {% endblock %}
 
@@ -68,9 +68,12 @@
 
     <script type="text/javascript">
         function validate() {
-            const pass1 = document.getElementsByName("password1").value;
-            const pass2 = document.getElementsByName("password2").value;
+            var pass1 = document.getElementsByName("password1").value;
+            var pass2 = document.getElementsByName("password2").value;
             return pass1 === pass2;
+        }
+        function goBack() {
+            window.history.back();
         }
     </script>
 
