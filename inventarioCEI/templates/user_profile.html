@@ -7,6 +7,7 @@
 
 {% block content %}
 
+    <!--Pills para redireccionar a Reservar Espacio o Articulo. No hace nada-->
     <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
         <li class="nav-item">
             <a class="nav-link" data-toggle="pill" role="tab" aria-selected="false">Reservar Espacio</a>
@@ -18,6 +19,7 @@
 
     <br>
 
+    <!--Pills llaman al contenido de los HTML indicados en los "pills-tabContent"-->
     <div class="container">
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
           <li class="nav-item">
@@ -44,44 +46,39 @@
 
 {% block scripts %}
     <script>
-        function showData(text, fotoURL, name, fh_ini, fh_fin){
-            var box = document.getElementById("photo");
-            box.innerHTML = "";
-            var box2 = document.getElementById("description");
-            box2.innerHTML = "";
+        function showData(text, fotoURL, fh_res, fh_ini, fh_fin){
 
-            var line = document.createElement("br");
-            var photo = document.createElement("img");
-            photo.src = fotoURL;
-            photo.height = "200";
-            photo.width = "250";
+            //Recibe los datos del objeto y los escribe en
+            //las cajas correspondientes.
 
-            box.appendChild(photo);
-            box.appendChild(line);
+            var f_res_box = document.getElementById("fecha_reserva");
+            f_res_box.innerHTML = "";
+            var f_res = document.createTextNode(fh_res);
+            f_res_box.appendChild(f_res);
 
-            var n = document.createElement("p");
-            var d = document.createElement("p");
-            var fi = document.createElement("p");
-            var ff = document.createElement("p");
+            var f_ini_box = document.getElementById("fecha_ini");
+            f_ini_box.innerHTML = "";
+            var f_ini = document.createTextNode(fh_ini);
+            f_ini_box.appendChild(f_ini);
 
-            var description = document.createTextNode("Descripción: "+text);
-            var nametxt = document.createTextNode(name);
-            var fitxt = document.createTextNode("Inicio: "+fh_ini);
-            var fftxt = document.createTextNode("Fin: "+fh_fin);
+            var desc = document.getElementById("desc");
+            desc.innerHTML = "";
+            var desc_txt = document.createTextNode(text);
+            desc.appendChild(desc_txt);
 
-            n.appendChild(nametxt);
-            d.appendChild(description);
-            fi.appendChild(fitxt);
-            ff.appendChild(fftxt);
+            var f_fin_box = document.getElementById("fecha_fin");
+            f_fin_box.innerHTML = "";
+            var f_fin = document.createTextNode(fh_fin);
+            f_fin_box.appendChild(f_fin);
 
-            box.appendChild(fi);
-            box.appendChild(ff);
-            box2.appendChild(n);
-            box2.appendChild(d);
+            var foto = document.getElementById("foto");
+            foto.style = "background-image: url("+fotoURL+"); width: 100%;padding-top: 80%; background-size: " +
+                "auto 100%; background-position: center center;background-repeat: no-repeat;"
         }
     </script>
 
     <script>
+        //Habilita el checkbox para borrar si al menos una casilla esta marcada
         $(function() {
             $(".checkbox").click(function(){
                 $('.delete').prop('disabled',$('input.checkbox:checked').length == 0);
