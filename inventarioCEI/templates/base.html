@@ -18,7 +18,7 @@
 
     <nav class="navbar navbar-light bg-light">
       <a class="navbar-brand" href="/">
-        <img src={% static 'img/Logo-Cei.png' %} style="width: 20%;"/>
+        <img src="{% static 'img/Logo-Cei.png' %}" style="width: 20%;"/>
       </a>
 
         {% if request.user.is_authenticated %}
@@ -43,9 +43,15 @@
                         <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                             <div class="container">
                                 <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="#">
+                                    {% if request.user.profile.isAdmin %}
+                                    <a role="menuitem" tabindex="-1" href="{% url 'landingAdmin' %}">
                                         Inicio
                                     </a>
+                                    {% else %}
+                                        <a role="menuitem" tabindex="-1" href="{% url 'buscar' %}">
+                                        Inicio
+                                    </a>
+                                    {% endif %}
                                 </li>
                                 <hr>
                                 <li role="presentation">

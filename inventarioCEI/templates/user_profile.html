@@ -44,40 +44,30 @@
 
 {% block scripts %}
     <script>
-        function showData(text, fotoURL, name, fh_ini, fh_fin){
-            var box = document.getElementById("photo");
-            box.innerHTML = "";
-            var box2 = document.getElementById("description");
-            box2.innerHTML = "";
+        function showData(text, fotoURL, fh_res, fh_ini, fh_fin){
 
-            var line = document.createElement("br");
-            var photo = document.createElement("img");
-            photo.src = fotoURL;
-            photo.height = "200";
-            photo.width = "250";
+            var f_res_box = document.getElementById("fecha_reserva");
+            f_res_box.innerHTML = "";
+            var f_res = document.createTextNode(fh_res);
+            f_res_box.appendChild(f_res);
 
-            box.appendChild(photo);
-            box.appendChild(line);
+            var f_ini_box = document.getElementById("fecha_ini");
+            f_ini_box.innerHTML = "";
+            var f_ini = document.createTextNode(fh_ini);
+            f_ini_box.appendChild(f_ini);
 
-            var n = document.createElement("p");
-            var d = document.createElement("p");
-            var fi = document.createElement("p");
-            var ff = document.createElement("p");
+            var desc = document.getElementById("desc");
+            desc.innerHTML = "";
+            var desc_txt = document.createTextNode(text);
+            desc.appendChild(desc_txt);
 
-            var description = document.createTextNode("Descripción: "+text);
-            var nametxt = document.createTextNode(name);
-            var fitxt = document.createTextNode("Inicio: "+fh_ini);
-            var fftxt = document.createTextNode("Fin: "+fh_fin);
+            var f_fin_box = document.getElementById("fecha_fin");
+            f_fin_box.innerHTML = "";
+            var f_fin = document.createTextNode(fh_fin);
+            f_fin_box.appendChild(f_fin);
 
-            n.appendChild(nametxt);
-            d.appendChild(description);
-            fi.appendChild(fitxt);
-            ff.appendChild(fftxt);
-
-            box.appendChild(fi);
-            box.appendChild(ff);
-            box2.appendChild(n);
-            box2.appendChild(d);
+            var foto = document.getElementById("foto");
+            foto.src = fotoURL;
         }
     </script>
 
