@@ -226,9 +226,10 @@ def change_password(request):
     })
 
 def deleteRes(request):
+    #Borra las reservas enviadas por POST
     delList = request.POST.getlist('element')
     Reserva.objects.filter(id__in=delList).delete()
-    return HttpResponseRedirect(reverse('index'))
+    return HttpResponseRedirect(reverse('profile'))
 
 
 def event_adding(event, di, df, type):
