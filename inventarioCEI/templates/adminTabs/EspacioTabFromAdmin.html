@@ -75,7 +75,7 @@
 {% block cuerpoTabla %}
     {% for esp in espacios %}
         <tr class="{{ esp.estado }} espacios">
-            <th scope="row"> <input name="filas_espacios" type="checkbox" value="{{ esp.pk }}">  </th>
+            <th scope="row"> <input class="EspCheckbox" name="filas_espacios" type="checkbox" value="{{ esp.pk }}">  </th>
             <td> {{ esp.nombre }} </td>
             <td> {{ esp.capacidad }}</td>
             <td> {{ esp.estado }}</td>
@@ -100,7 +100,7 @@
 {% endblock %}
 
 {% block botonesCambioEstado %}
-    <button type="button" class="btn btn-success" style="float: right;  margin-bottom: 15px">Habilitar espacio</button>
+    <button type="button" class="btn btn-success esp-button disabled" style="float: right;  margin-bottom: 15px">Habilitar espacio</button>
 
-    <button type="button" class="btn btn-danger" style="float: right; margin-right: 12px; margin-bottom: 15px">Inhabilitar espacio</button>
+    <button type="button" class="btn btn-danger esp-button disabled" style="float: right; margin-right: 12px; margin-bottom: 15px">Inhabilitar espacio</button>
 {% endblock %}

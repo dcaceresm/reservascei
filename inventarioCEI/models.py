@@ -107,6 +107,7 @@ class Prestamo(models.Model):
         ('Vigente', 'Vigente'),
         ('Caducado','Caducado'),
         ('Perdido', 'Perdido'),
+        ('Recibido', 'Recibido'),
     )
     TIPO_CHOICES = (
         ('Artículo', 'Artículo'),

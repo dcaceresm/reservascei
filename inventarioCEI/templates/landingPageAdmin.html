@@ -113,10 +113,54 @@
                 }
             })
         })
+        $(document).ready(function(){
+            $('.PrestCheckbox').on("click", function () {
+                console.log($('.PrestCheckbox:checked').length)
+                if($('.PrestCheckbox:checked').length > 0){
+                    $('.prest-button').removeClass("disabled")
+                }
+                else{
+                    $('.prest-button').addClass("disabled")
+                }
+            })
+        })
+        $(document).ready(function(){
+            $('.ReservCheckbox').on("click", function () {
+                console.log($('.ReservCheckbox:checked').length)
+                if($('.ReservCheckbox:checked').length > 0){
+                    $('.reserv-button').removeClass("disabled")
+                }
+                else{
+                    $('.reserv-button').addClass("disabled")
+                }
+            })
+        })
+        $(document).ready(function(){
+            $('.ArtiCheckbox').on("click", function () {
+                console.log($('.ArtiCheckbox:checked').length)
+                if($('.ArtiCheckbox:checked').length > 0){
+                    $('.arti-button').removeClass("disabled")
+                }
+                else{
+                    $('.arti-button').addClass("disabled")
+                }
+            })
+        })
+        $(document).ready(function(){
+            $('.EspCheckbox').on("click", function () {
+                console.log($('.EspCheckbox:checked').length)
+                if($('.EspCheckbox:checked').length > 0){
+                    $('.esp-button').removeClass("disabled")
+                }
+                else{
+                    $('.esp-button').addClass("disabled")
+                }
+            })
+        })
     </script>
     <script>
         function aceptarReservas(){
-            var checkboxes = $('.reservaCheckbox:checked');
+            var checkboxes = $('.ReservCheckbox:checked');
             var reservasId = "";
             for (var i = 0; i < checkboxes.length; i++) {
                 var value = checkboxes[i].value;
@@ -125,12 +169,13 @@
                 }
                 else{
                     reservasId = reservasId.concat(",", value);
+                    console.log(reservasId);
                 }
             }
             document.location="/AceptarReservas/"+reservasId;
         }
         function rechazarReservas(){
-            var checkboxes = $('.reservaCheckbox:checked');
+            var checkboxes = $('.ReservCheckbox:checked');
             var reservasId = "";
             for (var i = 0; i < checkboxes.length; i++) {
                 var value = checkboxes[i].value;

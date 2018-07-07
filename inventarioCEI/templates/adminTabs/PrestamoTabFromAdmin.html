@@ -84,7 +84,10 @@
 {% block cuerpoTabla %}
     {% for prest in prestamos %}
         <tr class="{{ prest.estado_prestamo }} prestamos">
-            <th scope="row"> <input name="filas_prestamos" type="checkbox" value="{{ prest.id }}">  </th>
+            <th scope="row"> <input class="PrestCheckbox" name="filas_prestamos" type="checkbox" value="{{ prest.id }}"
+                {% if prest.estado_prestamo == "Recibido" %} disabled
+                {% elif prest.estado_prestamo == "Perdido" %} disabled
+                {% endif %}></th>
             <td> {{ prest.content_object.nombre }}</td>
             <td> {{ prest.profile.user.first_name }} {{ prest.profile.user.last_name }}</td>
             <td> {{ prest.fh_ini_prestamo }}</td>
@@ -115,8 +118,8 @@
 {% endblock %}
 
 {% block botonesCambioEstado %}
-    <button type="button" class="btn btn-success" style="float: right;  margin-bottom: 15px">Recibido</button>
+    <button type="button" class="btn btn-success prest-button disabled" style="float: right;  margin-bottom: 15px">Recibido</button>
 
-    <button type="button" class="btn btn-danger" style="float: right; margin-right: 12px; margin-bottom: 15px">Perdido</button>
+    <button type="button" class="btn btn-danger prest-button disabled" style="float: right; margin-right: 12px; margin-bottom: 15px">Perdido</button>
 {% endblock %}
 
