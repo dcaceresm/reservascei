@@ -105,16 +105,29 @@ def reserva_articulo(request):
         return HttpResponse("Whoops!")
 
 def index(request):
+
+    #Envia a la pagina de inicio
+    #Dependiendo si es admin o no
+
     if (request.user.is_authenticated):
-        return HttpResponseRedirect('profile')
+        if request.user.profile.isAdmin:
+            return HttpResponseRedirect(reverse('landingAdmin'))
+        else:
+            return HttpResponseRedirect(reverse('buscar'))
     return render(request, 'custom_login.html')
 
 
 def showProfile(request):
+
+    #Si no inicio sesion, se va al inicio
     if not (request.user.is_authenticated):
         return HttpResponseRedirect(reverse('index'))
+
+    #Obtener reservas y prestamos
     reservas = Reserva.objects.filter(profile__rut=request.user.profile.rut).order_by('-id')[:10]
     prestamos = Prestamo.objects.filter(profile__rut=request.user.profile.rut).order_by('-id')[:10]
+
+    #Enviarlos al perfil
     return render(request, 'user_profile.html', {'reservas': reservas, 'prestamos': prestamos})
 
 def get_user(email):
@@ -125,18 +138,27 @@ def get_user(email):
 
 
 def customlogin(request):
+
+    #Formulario recibe datos e inicia sesion
+
     email = request.POST['email']
     password = request.POST['password']
     username = get_user(email).username
     user = authenticate(username=username, password=password)
+
+    #Si el usuario existe
     if user is not None:
         if user.is_active:
             login(request, user)
+
+            #Redirigirlo si es admin o no
             if user.profile.isAdmin:
                 return HttpResponseRedirect(reverse('landingAdmin'))
             else:
                 return HttpResponseRedirect(reverse('buscar'))
         else:
+
+            #Validador
             messages.error(request, 'Correo y/o Contraseña incorrectos')
             return HttpResponseRedirect(reverse('index'))
     else:
@@ -145,6 +167,8 @@ def customlogin(request):
 
 
 def signup(request):
+
+    #Recibe datos por post y crea usuario
     if request.method == "POST":
         rut = request.POST['rut']
         mail = request.POST['mail']
@@ -153,6 +177,8 @@ def signup(request):
         password = request.POST['password1']
         password2 = request.POST['password2']
         user = get_user(mail)
+
+        #Valida que las contrasenas coincidan
         if password == password2:
             if user is None:
                 user = User.objects.create_user(rut, mail, password)
@@ -165,6 +191,8 @@ def signup(request):
                 user.save()
                 user = authenticate(username=user.username, password=password)
                 login(request, user)
+
+                #Iniciar y redigir si es admin o no
                 if user.profile.isAdmin:
                     return HttpResponseRedirect(reverse('landingAdmin'))
                 else:
@@ -177,6 +205,8 @@ def signup(request):
     return render(request, 'signup.html')
 
 def change_password(request):
+
+    #Recibe datos por post y actualiza contrasena
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
@@ -185,6 +215,8 @@ def change_password(request):
             messages.success(request, 'Su clave fue cambiada exitosamente')
             return redirect('change_password')
         else:
+
+            #Validador
             messages.error(request, 'No se pudo cambiar su clave. Verifique que la clave actual o que la clave nueva'
                                     ' y su repetición coincidan.')
     else:
