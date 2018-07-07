@@ -16,10 +16,6 @@ from .models import *
 from django.urls import reverse
 import json
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
-
-
 class LandingAdmin(TemplateView):
     template_name = "landingPageAdmin.html"
 
@@ -136,7 +132,10 @@ def customlogin(request):
     if user is not None:
         if user.is_active:
             login(request, user)
-            return HttpResponseRedirect(reverse('profile'))
+            if user.profile.isAdmin:
+                return HttpResponseRedirect(reverse('landingAdmin'))
+            else:
+                return HttpResponseRedirect(reverse('buscar'))
         else:
             messages.error(request, 'Correo y/o Contraseña incorrectos')
             return HttpResponseRedirect(reverse('index'))
@@ -166,7 +165,10 @@ def signup(request):
                 user.save()
                 user = authenticate(username=user.username, password=password)
                 login(request, user)
-                return redirect('profile')
+                if user.profile.isAdmin:
+                    return HttpResponseRedirect(reverse('landingAdmin'))
+                else:
+                    return HttpResponseRedirect(reverse('buscar'))
             else:
                 return render(request, 'signup.html')
         else:

@@ -1,14 +1,19 @@
+{% load static %}
+{% load staticfiles %}
+
 <div class="row">
     <div class="col-*-*">
         <form action="{% url 'deleteRes' %}" method="post">
             {% csrf_token %}
             <div style="overflow-y:auto; height: 350px;">
                 <table class="table table-bordered">
-                    <tr class="table-primary">
-                        <th>#</th>
-                        <th>Nombre de elemento reservado</th>
-                        <th>Estado</th>
-                    </tr>
+                    <thead class="thead-dark">
+                        <tr class="table-primary">
+                            <th>#</th>
+                            <th>Nombre del elemento reservado</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
                     {% for r in reservas %}
                         <tr>
                             {% ifnotequal r.estado_reserva "Pendiente" %}
@@ -17,7 +22,7 @@
                                 </th>
                                 <th style="cursor: pointer;" onclick="showData('{{r.content_object.descripcion}}',
                                         '{{r.content_object.image.url}}',
-                                        '{{r.content_object.nombre}}',
+                                        '{{r.fh_reserva}}',
                                         '{{r.fh_ini_reserva}}',
                                         '{{r.fh_fin_reserva}}')">
                                     {{r.content_object.nombre}}
@@ -31,7 +36,7 @@
                                 </th>
                                 <th style="cursor: pointer;" onclick="showData('{{r.content_object.descripcion}}',
                                         '{{r.content_object.image.url}}',
-                                        '{{r.content_object.nombre}}',
+                                        '{{r.fh_reserva}}',
                                         '{{r.fh_ini_reserva}}',
                                         '{{r.fh_fin_reserva}}')">
                                     {{r.content_object.nombre}}
@@ -44,21 +49,44 @@
                     {% endfor %}
                 </table>
             </div>
-            <input class="btn btn-primary btn-sm delete" name="delete_item" id="borrar" type="submit"
+            <input class="btn btn-primary btn-sm nav-link delete " name="delete_item" id="borrar" type="submit"
                    value="Borrar" disabled="disabled"/>
         </form>
     </div>
-    <div class="col-*-*" style="width: 700px; height: 350px;">
+    <div class="col-*-*" style="width: 720px; height: 350px;">
          <div class=" container">
             <div class="row">
                 <div class="col-*-*">
-                    <div id="photo" class="container" style="text-align: center">
 
-                    </div>
+                   <div class="card" style="width: 18rem; height: 23.4rem;">
+                       <div style="max-width: 400px;">
+                            <div id="foto" style="background-image: url('{% static 'img/Logo-Cei (bw).png' %}'); width: 100%;
+                            padding-top: 80%; background-size: auto 100%; background-position: center center;
+                            background-repeat: no-repeat;"></div>
+                            </div>
+                       <div class="card-body">
+                        <p class="card-text" id="desc">Descripción del elemento</p>
+                      </div>
+                   </div>
                 </div>
                 <div class="col-*-*" style="width: 400px">
-                    <div id="description" class="container">
-                        Click en un item para obtener la información.
+                    <div class="card" style="max-width: 18rem;height: 7.1rem;">
+                      <div class="card-header nav-link">Fecha de reserva</div>
+                      <div class="card-body">
+                        <p class="card-text" id="fecha_reserva">-</p>
+                      </div>
+                    </div>
+                    <div class="card" style="max-width: 18rem;height: 7.1rem;">
+                      <div class="card-header nav-link">Inicio de la reserva</div>
+                      <div class="card-body">
+                        <p class="card-text" id="fecha_ini">-</p>
+                      </div>
+                    </div>
+                    <div class="card" style="max-width: 18rem; height: 7.1rem;">
+                      <div class="card-header nav-link">Fin de la reserva</div>
+                      <div class="card-body">
+                        <p class="card-text" id="fecha_fin">-</p>
+                      </div>
                     </div>
                 </div>
             </div>
