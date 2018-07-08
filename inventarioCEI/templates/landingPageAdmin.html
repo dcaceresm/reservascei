@@ -32,35 +32,35 @@
     <div class="tab-content" id="pills-tabContent">
 
     <!-- aqui empieza tab de inicio /calendario -->
-        <div class="tab-pane fade show active" id="inicio" role="tabpanel" aria-labelledby="pills-inicio-tab">
-            {% include 'adminTabs/IndexTabFromAdmin.html' %}
-        </div>
+    <div class="tab-pane fade show active" id="inicio" role="tabpanel" aria-labelledby="pills-inicio-tab">
+        {% include 'adminTabs/IndexTabFromAdmin.html' %}
+    </div>
 
     <!-- aqui empieza tab de usuarios-->
-        <div class="tab-pane fade" id="usuarios" role="tabpanel" aria-labelledby="pills-usuarios-tab">
-            {% include 'adminTabs/UserTabFromAdmin.html' %}
-        </div>
+    <div class="tab-pane fade" id="usuarios" role="tabpanel" aria-labelledby="pills-usuarios-tab">
+        {% include 'adminTabs/UserTabFromAdmin.html' %}
+    </div>
 
     <!-- aqui empieza tab de reservas-->
-        <div class="tab-pane fade" id="reservas" role="tabpanel" aria-labelledby="pills-reservas-tab">
-            {% include 'adminTabs/ReservaTabFromAdmin.html' %}
+    <div class="tab-pane fade" id="reservas" role="tabpanel" aria-labelledby="pills-reservas-tab">
+        {% include 'adminTabs/ReservaTabFromAdmin.html' %}
 
-        </div>
+    </div>
 
     <!-- aqui empieza tab de prestamos-->
-        <div class="tab-pane fade" id="prestamos" role="tabpanel" aria-labelledby="pills-prestamos-tab">
-            {% include 'adminTabs/PrestamoTabFromAdmin.html' %}
-        </div>
+    <div class="tab-pane fade" id="prestamos" role="tabpanel" aria-labelledby="pills-prestamos-tab">
+        {% include 'adminTabs/PrestamoTabFromAdmin.html' %}
+    </div>
 
     <!-- aqui empieza tab de articulos-->
-        <div class="tab-pane fade" id="articulos" role="tabpanel" aria-labelledby="pills-articulos-tab">
-            {% include 'adminTabs/ArticuloTabFromAdmin.html' %}
-        </div>
+    <div class="tab-pane fade" id="articulos" role="tabpanel" aria-labelledby="pills-articulos-tab">
+        {% include 'adminTabs/ArticuloTabFromAdmin.html' %}
+    </div>
 
     <!-- aqui empieza tab de espacios-->
-        <div class="tab-pane fade" id="espacios" role="tabpanel" aria-labelledby="pills-espacios-tab">
-            {% include 'adminTabs/EspacioTabFromAdmin.html' %}
-        </div>
+    <div class="tab-pane fade" id="espacios" role="tabpanel" aria-labelledby="pills-espacios-tab">
+        {% include 'adminTabs/EspacioTabFromAdmin.html' %}
+    </div>
 
 
 {% endblock content %}
@@ -76,159 +76,181 @@
         // cambia atributo en la url cuando cambio de tab
         $('.nav-pills a').on('shown.bs.tab', function (e) {
             var searchParams = new URLSearchParams(window.location.search);
-            searchParams.set('tab',$(this).attr('href').replace('#', ''))
-            window.history.replaceState(null, null, '?'+searchParams.toString())
+            searchParams.set('tab', $(this).attr('href').replace('#', ''))
+            window.history.replaceState(null, null, '?' + searchParams.toString())
         })
         //filtros tablas
-        $("#filtro_estado_usuarios").change(function(){
+        $("#filtro_estado_usuarios").change(function () {
             $(".usuarios").hide();
-            $("."+$(this).val()).show();
+            $("." + $(this).val()).show();
         })
-        $("#filtro_estado_reservas").change(function(){
+        $("#filtro_estado_reservas").change(function () {
             $(".reservas").hide();
-            $("."+$(this).val()).show();
+            $("." + $(this).val()).show();
         })
-        $("#filtro_estado_prestamos").change(function(){
+        $("#filtro_estado_prestamos").change(function () {
             $(".prestamos").hide();
-            $("."+$(this).val()).show();
+            $("." + $(this).val()).show();
         })
-        $("#filtro_estado_articulos").change(function(){
+        $("#filtro_estado_articulos").change(function () {
             $(".articulos").hide();
-            $("."+$(this).val()).show();
+            $("." + $(this).val()).show();
         })
-        $("#filtro_estado_espacios").change(function(){
+        $("#filtro_estado_espacios").change(function () {
             $(".espacios").hide();
-            $("."+$(this).val()).show();
+            $("." + $(this).val()).show();
         })
     </script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.UserCheckbox').on("click", function () {
                 console.log($('.UserCheckbox:checked').length)
-                if($('.UserCheckbox:checked').length > 0){
+                if ($('.UserCheckbox:checked').length > 0) {
                     $('.user-button').removeClass("disabled")
                 }
-                else{
+                else {
                     $('.user-button').addClass("disabled")
                 }
             })
         })
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.PrestCheckbox').on("click", function () {
                 console.log($('.PrestCheckbox:checked').length)
-                if($('.PrestCheckbox:checked').length > 0){
+                if ($('.PrestCheckbox:checked').length > 0) {
                     $('.prest-button').removeClass("disabled")
                 }
-                else{
+                else {
                     $('.prest-button').addClass("disabled")
                 }
             })
         })
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.ReservCheckbox').on("click", function () {
                 console.log($('.ReservCheckbox:checked').length)
-                if($('.ReservCheckbox:checked').length > 0){
+                if ($('.ReservCheckbox:checked').length > 0) {
                     $('.reserv-button').removeClass("disabled")
                 }
-                else{
+                else {
                     $('.reserv-button').addClass("disabled")
                 }
             })
         })
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.ArtiCheckbox').on("click", function () {
                 console.log($('.ArtiCheckbox:checked').length)
-                if($('.ArtiCheckbox:checked').length > 0){
+                if ($('.ArtiCheckbox:checked').length > 0) {
                     $('.arti-button').removeClass("disabled")
                 }
-                else{
+                else {
                     $('.arti-button').addClass("disabled")
                 }
             })
         })
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.EspCheckbox').on("click", function () {
                 console.log($('.EspCheckbox:checked').length)
-                if($('.EspCheckbox:checked').length > 0){
+                if ($('.EspCheckbox:checked').length > 0) {
                     $('.esp-button').removeClass("disabled")
                 }
-                else{
+                else {
                     $('.esp-button').addClass("disabled")
                 }
             })
         })
     </script>
     <script>
-        $(document).ready( function () {
+        $(document).ready(function () {
             $('.table-admin').DataTable({
                 searching: false,
                 ordering: false,
                 "dom": 'tp',
                 language: {
                     "paginate": {
-                        "first":      "Primero",
-                        "last":       "Último",
-                        "next":       "Siguiente",
-                        "previous":   "Anterior",
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior",
                     },
                 }
-            } );
-        } );
+            });
+        });
 
 
-        function aceptarReservas(){
+        function aceptarReservas() {
             var checkboxes = $('.ReservCheckbox:checked');
             var reservasId = "";
             for (var i = 0; i < checkboxes.length; i++) {
                 var value = checkboxes[i].value;
-                if (reservasId == ""){
+                if (reservasId == "") {
                     reservasId = value;
                 }
-                else{
+                else {
                     reservasId = reservasId.concat(",", value);
                     console.log(reservasId);
                 }
             }
-            document.location="/AceptarReservas/"+reservasId;
+            document.location = "/AceptarReservas/" + reservasId;
         }
-        function rechazarReservas(){
+
+        function rechazarReservas() {
             var checkboxes = $('.ReservCheckbox:checked');
             var reservasId = "";
             for (var i = 0; i < checkboxes.length; i++) {
                 var value = checkboxes[i].value;
-                if (reservasId == ""){
+                if (reservasId == "") {
                     reservasId = value;
                 }
-                else{
+                else {
                     reservasId = reservasId.concat(",", value);
                 }
             }
-            document.location="/RechazarReservas/"+reservasId;
+            document.location = "/RechazarReservas/" + reservasId;
         }
     </script>
     <script>
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function() {
-        'use strict';
-        window.addEventListener('load', function() {
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            var forms = document.getElementsByClassName('needs-validation');
-            // Loop over them and prevent submission
-            var validation = Array.prototype.filter.call(forms, function(form) {
-                form.addEventListener('submit', function(event) {
-                    if (form.checkValidity() === false) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
                     }, false);
-            });
+                });
             }, false);
-    })();
+        })();
     </script>
     <script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function () {
+            // page is now ready, initialize the calendar...
+            /*$('#calendar').fullCalendar({
+            // put your options and callbacks here
+                weekends: false
+             })*/
+            $('#calendar').fullCalendar({
+                header: {center: 'month, agendaWeek'}, // buttons for switching between views
+                views: {
+                    month: { // name of view
+                        titleFormat: 'DD, MM, YYYY'
+                        // other view-specific options here
+                    }
+                },
+                events: {{eventsAdmin|safe}}
+            });
+
+        });
+
     </script>
 {% endblock scripts %}
