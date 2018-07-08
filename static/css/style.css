@@ -32,30 +32,58 @@
     border-color: #d6a252 !important;
 }
 .btn-info {
-    background-color: #D0793E !important;
-    border-color: #D0793E !important;
+    background-color: #D7753C !important;
+    border-color: #D7753C !important;
 }
 .btn-info:hover {
     background-color: #bf6d3a !important;
     border-color: #bf6d3a !important;
 }
 .btn-warning {
-    background-color: #ffd250; !important;
-    border-color: #ffd250; !important;
+    background-color: #ffd250 !important;
+    border-color: #ffd250 !important;
 }
 .btn-warning:hover {
-    background-color: #d7b143; !important;
-    border-color: #d7b143; !important;
+    background-color: #d7b143 !important;
+    border-color: #d7b143 !important;
 }
 
 .btn-primary {
-    background-color: #E8B059; !important;
-    border-color: #E8B059; !important;
+    background-color: #E8B059 !important;
+    border-color: #E8B059 !important;
 }
 
 .btn-primary:hover {
-    background-color: #c8984f; !important;
-    border-color: #c8984f; !important;
+    background-color: #c8984f !important;
+    border-color: #c8984f !important;
+}
+.dataTables_paginate {
+    padding-top: 10px;
+    float: left !important;
+    text-align: left !important;
+}
+
+.page-link{
+    background-color: white !important;
+    color: #B95933 !important;
+    border-color: #B95933 !important;
+}
+.page-link:hover{
+    color: white !important;
+    background-color: #D7753C !important;
+}
+.page-item.active .page-link{
+    color: white !important;
+    background-color: #B95933 !important;
+    border-color: #B95933 !important;
+}
+.page-item.disabled .page-link{
+    color: #999999 !important;
+}
+.landing-button{
+    float: right;
+    margin-bottom: 15px;
+    margin-top: 10px
 }
 
 thead {
@@ -81,10 +109,22 @@ td:not(.mailcito){
     height: 15vw;
     object-fit: cover;
 }
+.buscador-btn{
+    color: #B95933 !important;
+    border-color: #B95933 !important;
+}
+.buscador-btn:hover{
+    color: white !important;
+    background-color: #B95933 !important;
+    border-color: #B95933 !important;
+}
+.buscador-in{
+    border-color: #B95933 !important;
+}
 
 /*colores cei:
 verde: #79BCB5
 marron: #B95933
-naranjo: #D0793E
+naranjo: #D7753C
 amarillo: #E8B059
  */

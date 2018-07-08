@@ -8,11 +8,12 @@
                         </button>
                     </div>
                     <div class="col"></div>
+
                     <div class="col-sm">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="{% block buscadorPlace %}{% endblock %}">
+                            <input type="text" class="form-control buscador-in" placeholder="{% block buscadorPlace %}{% endblock %}">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button">Buscar</button>
+                                <button class="btn btn-outline-secondary buscador-btn" type="button">Buscar</button>
                             </div>
                         </div>
                     </div>
@@ -67,6 +68,6 @@
 
         <!-- botones cambio de estado-->
 
-            <div class="container" >
+            <div class="container shawarma" style="margin-top: -55px">
                 {% block botonesCambioEstado %}{% endblock %}
             </div>

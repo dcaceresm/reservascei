@@ -33,7 +33,7 @@
 
     <!-- aqui empieza tab de inicio /calendario -->
         <div class="tab-pane fade show active" id="inicio" role="tabpanel" aria-labelledby="pills-inicio-tab">
-            ...calendario, buscador y cosas
+            {% include 'adminTabs/IndexTabFromAdmin.html' %}
         </div>
 
     <!-- aqui empieza tab de usuarios-->
@@ -159,6 +159,23 @@
         })
     </script>
     <script>
+        $(document).ready( function () {
+            $('.table-admin').DataTable({
+                searching: false,
+                ordering: false,
+                "dom": 'tp',
+                language: {
+                    "paginate": {
+                        "first":      "Primero",
+                        "last":       "Último",
+                        "next":       "Siguiente",
+                        "previous":   "Anterior",
+                    },
+                }
+            } );
+        } );
+
+
         function aceptarReservas(){
             var checkboxes = $('.ReservCheckbox:checked');
             var reservasId = "";
