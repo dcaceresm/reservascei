@@ -90,8 +90,14 @@
                 {% endif %}>  </th>
             <td> {{ reserv.content_object.nombre }}</td>
             <td> {{ reserv.profile.user.first_name }} {{ reserv.profile.user.last_name }}</td>
-            <td> {{ reserv.fh_ini_reserva }}</td>
-            <td> {{ reserv.fh_fin_reserva }}</td>
+            <td> {{ reserv.fh_ini_reserva.day }} /
+                {{ reserv.fh_ini_reserva.month }} /
+                {{ reserv.fh_ini_reserva.year }} -
+                {{ reserv.fh_ini_reserva.time }}</td>
+            <td> {{ reserv.fh_fin_reserva.day }} /
+                {{ reserv.fh_fin_reserva.month }} /
+                {{ reserv.fh_fin_reserva.year }} -
+                {{ reserv.fh_fin_reserva.time }}</td>
             <td> {{ reserv.estado_reserva }}</td>
             <td>
                 <form action={% url 'landingAdmin' %} method="post" >
@@ -118,11 +124,11 @@
 {% endblock %}
 
 {% block botonesCambioEstado %}
-    <button type="button" class="btn btn-success reserv-button disabled"
-            onclick="aceptarReservas()" value="aceptar" style="float: right;  margin-bottom: 15px">Aceptar</button>
+    <button type="button" class="btn btn-success reserv-button landing-button disabled"
+            onclick="aceptarReservas()" value="aceptar" >Aceptar</button>
 
-    <button type="button" class="btn btn-danger reserv-button disabled"
-            onclick="rechazarReservas()" value="rechazar" style="float: right; margin-right: 12px; margin-bottom: 15px">Rechazar</button>
+    <button type="button" class="btn btn-danger reserv-button landing-button disabled"
+            onclick="rechazarReservas()" value="rechazar" style="margin-right: 12px;">Rechazar</button>
 {% endblock %}
 
 {#<!-- top buttons-->#}

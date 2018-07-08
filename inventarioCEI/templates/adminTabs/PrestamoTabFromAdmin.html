@@ -90,8 +90,14 @@
                 {% endif %}></th>
             <td> {{ prest.content_object.nombre }}</td>
             <td> {{ prest.profile.user.first_name }} {{ prest.profile.user.last_name }}</td>
-            <td> {{ prest.fh_ini_prestamo }}</td>
-            <td> {{ prest.fh_fin_prestamo }}</td>
+            <td> {{ prest.fh_ini_prestamo.day }} /
+                {{ prest.fh_ini_prestamo.month }} /
+                {{ prest.fh_ini_prestamo.year }} -
+                {{ prest.fh_ini_prestamo.time }}</td>
+            <td> {{ prest.fh_fin_prestamo.day }} /
+                {{ prest.fh_fin_prestamo.month }} /
+                {{ prest.fh_fin_prestamo.year }} -
+                {{ prest.fh_fin_prestamo.time }}</td>
             <td> {{ prest.estado_prestamo }}</td>
             <td>
                 <form action={% url 'verPrestamo' %} method="post" >
@@ -118,8 +124,8 @@
 {% endblock %}
 
 {% block botonesCambioEstado %}
-    <button type="button" class="btn btn-success prest-button disabled" style="float: right;  margin-bottom: 15px">Recibido</button>
+    <button type="button" class="btn btn-success prest-button landing-button disabled" style="float: right">Recibido</button>
 
-    <button type="button" class="btn btn-danger prest-button disabled" style="float: right; margin-right: 12px; margin-bottom: 15px">Perdido</button>
+    <button type="button" class="btn btn-danger prest-button landing-button disabled" style="float: right; margin-right: 12px">Perdido</button>
 {% endblock %}
 
