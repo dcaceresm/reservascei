@@ -18,6 +18,7 @@ urlpatterns = [
     path('update_articulo', views.update_articulo, name='update_articulo'),
     path('reserva_articulo', views.reserva_articulo, name='reserva_articulo'),
     path('landingAdmin/', views.LandingAdmin.as_view(), name='landingAdmin'),
+    path('calendarAdmin/', views.calendarAdmin, name = 'calendarAdmin'),
     path('landingUser/', views.buscar, name = 'buscar'),
     path('calendar/', views.calendar, name='calendar'),
     path('goToArticulos/', views.goToArticulos, name='goToArticulos'),
