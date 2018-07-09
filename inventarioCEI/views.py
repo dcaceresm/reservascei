@@ -22,6 +22,15 @@ import json
 class LandingAdmin(TemplateView):
     template_name = "landingPageAdmin.html"
 
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            if request.user.profile.isAdmin:
+                return super(LandingAdmin, self).get(request, *args, **kwargs)
+            else:
+                return HttpResponseRedirect(reverse('buscar'))
+        else:  # USER IS NOT LOGGED IN
+            return redirect('/')  # REDIRECT TO INDEX (LOGIN) PAGE
+
     def get_context_data(self, **kwargs):
         context = super(LandingAdmin, self).get_context_data(**kwargs)
         context['reservas'] = Reserva.objects.all().order_by("-pk")
