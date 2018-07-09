@@ -79,13 +79,32 @@
             </div>
             <div class="col-sm">
             <h2>Últimas Reservas</h2>
-            <div style="height:200px;overflow-y:scroll; width: 100%; border: 2px black solid; border-radius: 5px">
-            <ul>
-                {% for res in reservas %}
-                <li> Desde {{ res.fh_ini_reserva }} hasta {{ res.fh_fin_reserva }}</li>
-                {% endfor %}
-            </ul>
-            </div>
+            <div class="container">
+                        <table class="table table-bordered table-striped">
+                            <thead class="thead-dark thead-admin">
+                            <tr>
+                                <th scope="col">Desde</th>
+                                <th scope="col">Hasta</th>
+                            </tr>
+                            </thead>
+                            <tbody class="tbody-admin">
+                            <!-- filas de la tabla-->
+                            {% for res in reservas %}
+                                <tr>
+                                    <td>{{ res.fh_ini_reserva.day }} /
+                                        {{ res.fh_ini_reserva.month }} /
+                                        {{ res.fh_ini_reserva.year }} -
+                                        {{ res.fh_ini_reserva.time }}</td>
+                                    <td>{{ res.fh_fin_reserva.day }} /
+                                        {{ res.fh_fin_reserva.month }} /
+                                        {{ res.fh_fin_reserva.year }} -
+                                        {{ res.fh_fin_reserva.time }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+
+                        </table>
+                    </div>
             <br>
             </div>
         </div>
