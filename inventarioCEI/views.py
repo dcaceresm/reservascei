@@ -18,6 +18,7 @@ from datetime import date
 import json
 
 
+
 class LandingAdmin(TemplateView):
     template_name = "landingPageAdmin.html"
 
@@ -94,11 +95,35 @@ def reserva_articulo(request):
         articulo = Articulo.objects.get(pk=id)
         estado_reserva = request.POST['estado_reserva']
         fh_reserva = request.POST['fh_reserva']
-        fh_ini = request.POST['inicio'] + " " + request.POST['hora_inicio']
-        fh_termino = request.POST['termino'] + " " + request.POST['hora_termino']
+
+        fh_ini = request.POST['inicio']
+        h_ini = fh_ini.split(" ")[1]
+        ampm_ini = fh_ini.split(" ")[2]
+        if ampm_ini == 'PM':
+            h_ini_arr = h_ini.split(":")
+            hora_i = int(h_ini_arr[0]) + 12
+            h_ini = str(hora_i) + ":" + h_ini_arr[1]
+        d_ini = fh_ini.split(" ")[0].split("/")[0]
+        m_ini = fh_ini.split(" ")[0].split("/")[1]
+        y_ini = fh_ini.split(" ")[0].split("/")[2]
+        fh_ini_formated = y_ini + "-" + m_ini + "-" + d_ini + " " + h_ini
+
+        fh_termino = request.POST['termino']
+        h_ter = fh_termino.split(" ")[1]
+        ampm_ter = fh_termino.split(" ")[2]
+        if ampm_ter == 'PM':
+            h_ter_arr = h_ter.split(":")
+            hora_t = int(h_ter_arr[0]) + 12
+            h_ter = str(hora_t) + ":" + h_ter_arr[1]
+        d_ter = fh_termino.split(" ")[0].split("/")[0]
+        m_ter = fh_termino.split(" ")[0].split("/")[1]
+        y_ter = fh_termino.split(" ")[0].split("/")[2]
+        fh_ter_formated = y_ter + "-" + m_ter + "-" + d_ter + " " + h_ter
+
+
         ct = ContentType.objects.get_for_model(articulo)
-        reserva = Reserva.objects.create(profile=request.user.profile, fh_reserva=fh_reserva, fh_ini_reserva=fh_ini,
-                                         fh_fin_reserva=fh_termino, estado_reserva=estado_reserva, object_id=id,
+        reserva = Reserva.objects.create(profile=request.user.profile, fh_reserva=fh_reserva, fh_ini_reserva=fh_ini_formated,
+                                         fh_fin_reserva=fh_ter_formated, estado_reserva=estado_reserva, object_id=id,
                                          content_type=ct)
 
         reserva.save()
