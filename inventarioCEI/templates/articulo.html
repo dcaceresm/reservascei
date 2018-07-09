@@ -5,150 +5,180 @@
 
 
 {% block content %}
-     <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+    <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
         <li class="nav-item">
-            <a class="nav-link"  href="/"
-                aria-selected="false">Inicio</a>
+            <a class="nav-link" href="/"
+               aria-selected="false">Inicio</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link"  href="/profile"
-                aria-selected="false">Perfil</a>
+            <a class="nav-link" href="/profile"
+               aria-selected="false">Perfil</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/logout"
-                aria-selected="false">Cerrar Sesión</a>
+               aria-selected="false">Cerrar Sesión</a>
         </li>
 
     </ul>
     <div class="container">
-    {%  if articulo %} {# IF ARTICULO EXISTS IN CONTEXT #}
-        <div class="row">
-        {# DISPLAYS INFO #}
-            <div class="col-md-6">
-                <h2>Ficha</h2>
-                <table class="table">
-                    <tr>
-                        <td style="width: 30%">Nombre:</td>
-                        <td style="width: 70%">{{ articulo.nombre }}</td>
-                    </tr>
-                    <tr>
-                        <td>ID:</td>
-                        <td>{{ articulo.id }}</td>
-                    </tr>
-                    <tr>
-                        <td>Descripción:</td>
-                        <td>{{ articulo.descripcion }}</td>
-                    </tr>
-                    <tr>
-                        <td>Foto:</td>
-                        <td><div style="max-width: 400px;">
-                            <div style="background-image: url('{{ articulo.image.url }}'); width: 100%;
-                            padding-top: 80%; background-size: auto 100%; background-position: center center;
-                            background-repeat: no-repeat;"></div>
-                            </div></td>
-                    </tr>
-                    <tr>
-                        <td>Estado:</td>
-                        <td>{% if articulo.estado == 'Disponible' %} <span class="badge badge-success">Disponible</span>
-                            {% elif articulo.estado == 'En préstamo' %} <span class="badge badge-danger">En Préstamo</span>
-                            {% elif articulo.estado == 'En reparación' %}<span class="badge badge-danger">En Reparación</span>
+        {% if articulo %} {# IF ARTICULO EXISTS IN CONTEXT #}
+            <div class="row">
+                {# DISPLAYS INFO #}
+                <div class="col-md-6">
+                    <h2>Ficha</h2>
+                    <table class="table">
+                        <tr>
+                            <td style="width: 30%">Nombre:</td>
+                            <td style="width: 70%">{{ articulo.nombre }}</td>
+                        </tr>
+                        <tr>
+                            <td>ID:</td>
+                            <td>{{ articulo.id }}</td>
+                        </tr>
+                        <tr>
+                            <td>Descripción:</td>
+                            <td>{{ articulo.descripcion }}</td>
+                        </tr>
+                        <tr>
+                            <td>Foto:</td>
+                            <td>
+                                <div style="max-width: 400px;">
+                                    <div style="background-image: url('{{ articulo.image.url }}'); width: 100%;
+                                            padding-top: 80%; background-size: auto 100%; background-position: center center;
+                                            background-repeat: no-repeat;"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Estado:</td>
+                            <td>{% if articulo.estado == 'Disponible' %}
+                                <span class="badge badge-success">Disponible</span>
+                            {% elif articulo.estado == 'En préstamo' %}
+                                <span class="badge badge-danger">En Préstamo</span>
+                            {% elif articulo.estado == 'En reparación' %}
+                                <span class="badge badge-danger">En Reparación</span>
                             {% else %}<span class="badge badge-danger">Perdido</span>
                             {% endif %}</td>
-                    </tr>
-                    <tr>
-                        <td>Tags:</td>
-                        <td>{{ articulo.lista_tags }}</td>
-                    </tr>
-                </table>
-            </div>
-
-        <br>
-
-        {# LASTEST RESERVATIONS #}
-            <div class="col-sm">
-            <h2>Últimas Reservas</h2>
-                <div style="height:200px;overflow-y:scroll; width: 100%; border: 2px black solid; border-radius: 5px">
-                    <ul>
-                        {% for res in reservas %}
-                        <li> Desde {{ res.fh_ini_reserva }} hasta {{ res.fh_fin_reserva }}</li>
-                        {% endfor %}
-                    </ul>
+                        </tr>
+                        <tr>
+                            <td>Tags:</td>
+                            <td>{{ articulo.lista_tags }}</td>
+                        </tr>
+                    </table>
                 </div>
-            <br>
+                <br>
+                <div class="col-sm">
+                    <div class="form-reserva">
+                        {% if articulo.estado == 'Disponible' or articulo.estado == 'En préstamo' %}
+                            <h3>Reserva aqui:</h3>
+                            <form method="post" action="{% url 'reserva_articulo' %}">
+                                {% csrf_token %}
 
-            {# MAKE A RESERVATION #}
-
-                <div class="form-reserva">
-                {% if articulo.estado == 'Disponible' or articulo.estado == 'En préstamo' %}
-                <h3>Reserva aqui:</h3>
-                <form method="post" action="{% url 'reserva_articulo' %}">
-                {% csrf_token %}
-
-                {# STATIC INFO #}
-                <input type="hidden" value="{{ articulo.id }}" name="id"/>
-                <input type="hidden" value="articulo" name="tipo_objeto"/>
-                <input type="hidden" value="Pendiente" name="estado_reserva"/>
-                <input type="hidden" value="{{ time }}" name="fh_reserva"/>
+                                {# STATIC INFO #}
+                                <input type="hidden" value="{{ articulo.id }}" name="id"/>
+                                <input type="hidden" value="articulo" name="tipo_objeto"/>
+                                <input type="hidden" value="Pendiente" name="estado_reserva"/>
+                                <input type="hidden" value="{{ time }}" name="fh_reserva"/>
 
 
-                {# VARIABLE INFO #}
+                                {# VARIABLE INFO #}
 
-                    <div class="row">
-                        Fecha inicio:
-        <div class="col-sm-6">
-            <div class="form-group">
-                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="inicio"/>
-                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                <div class="row">
+                                    Fecha inicio:
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group date" id="datetimepicker1"
+                                                 data-target-input="nearest">
+                                                <input type="text" class="form-control datetimepicker-input"
+                                                       data-target="#datetimepicker1" name="inicio"/>
+                                                <div class="input-group-append" data-target="#datetimepicker1"
+                                                     data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            $('#datetimepicker1').datetimepicker();
+                                        });
+                                    </script>
+                                </div>
+
+                                <div class="row">
+                                    Fecha término:
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group date" id="datetimepicker2"
+                                                 data-target-input="nearest">
+                                                <input type="text" class="form-control datetimepicker-input"
+                                                       data-target="#datetimepicker2" name="termino"/>
+                                                <div class="input-group-append" data-target="#datetimepicker2"
+                                                     data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            $('#datetimepicker2').datetimepicker();
+                                        });
+                                    </script>
+                                </div>
+
+
+                                <button type="submit" class="btn btn-primary">Reservar</button>
+                                <br>
+                            </form>
+                        {% else %}
+                            <h2>No es posible reservar</h2>
+                        {% endif %}
                     </div>
-                </div>
-            </div>
-        </div>
-            <script type="text/javascript">
-                $(function () {
-                    $('#datetimepicker1').datetimepicker();
-                });
-            </script>
-        </div>
+                    <br>
 
-                    <div class="row">
-                        Fecha término:
-        <div class="col-sm-6">
-            <div class="form-group">
-                <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="termino"/>
-                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    {# LASTEST RESERVATIONS #}
+                    <h2>Últimas Reservas</h2>
+
+                    <br>
+                    <div class="container">
+                        <table class="table table-bordered table-striped">
+                            <thead class="thead-dark thead-admin">
+                            <tr>
+                                <th scope="col">Desde</th>
+                                <th scope="col">Hasta</th>
+                            </tr>
+                            </thead>
+                            <tbody class="tbody-admin">
+                            <!-- filas de la tabla-->
+                            {% for res in reservas %}
+                                <tr>
+                                    <td>{{ res.fh_ini_reserva.day }} /
+                                        {{ res.fh_ini_reserva.month }} /
+                                        {{ res.fh_ini_reserva.year }} -
+                                        {{ res.fh_ini_reserva.time }}</td>
+                                    <td>{{ res.fh_fin_reserva.day }} /
+                                        {{ res.fh_fin_reserva.month }} /
+                                        {{ res.fh_fin_reserva.year }} -
+                                        {{ res.fh_fin_reserva.time }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+
+                        </table>
                     </div>
+
+                    {# MAKE A RESERVATION #}
+
+
                 </div>
             </div>
-        </div>
-            <script type="text/javascript">
-                $(function () {
-                    $('#datetimepicker2').datetimepicker();
-                });
-            </script>
-        </div>
 
 
+        {% else %}
+            <h2>No existe artículo con id {{ id }}</h2>
 
-
-
-                <button type="submit" class="btn btn-primary">Reservar</button> <br>
-                </form>
-                {% else %}
-                    <h2>No es posible reservar</h2>
-                {% endif %}
-                </div>
-            </div>
-        </div>
-
-
-    {% else %}
-        <h2>No existe artículo con id {{ id }}</h2>
-
-    {% endif %}
+        {% endif %}
 
     </div>
 
@@ -158,14 +188,16 @@
 {# END OF CONTENT #}
 {% block scripts %}
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css"/>
 
 
 
@@ -173,7 +205,7 @@
 
 
     <script>
-    $('#datetimepicker').datetimepicker({ sideBySide: true, debug: true })
+        $('#datetimepicker').datetimepicker({sideBySide: true, debug: true})
     </script>
     <script>
         $.fn.datetimepicker.Constructor.Default = $.extend({}, $.fn.datetimepicker.Constructor.Default, {
@@ -187,25 +219,26 @@
                 today: 'far fa-calendar-check-o',
                 clear: 'far fa-trash',
                 close: 'far fa-times'
-            } });
+            }
+        });
     </script>
     <script>
-  $( function() {
-    $( "#datetimepicker1" ).datetimepicker({
-        format: 'DD/MM/YYYY LT',
-        daysOfWeekDisabled: [0,6],
+        $(function () {
+            $("#datetimepicker1").datetimepicker({
+                format: 'DD/MM/YYYY LT',
+                daysOfWeekDisabled: [0, 6],
 
 
-    });
-  } );
+            });
+        });
 
-  $( function() {
-    $( "#datetimepicker2" ).datetimepicker({
-        format: 'DD/MM/YYYY LT',
-        daysOfWeekDisabled: [0,6],
-    });
-  } );
-</script>
+        $(function () {
+            $("#datetimepicker2").datetimepicker({
+                format: 'DD/MM/YYYY LT',
+                daysOfWeekDisabled: [0, 6],
+            });
+        });
+    </script>
 
 
 
