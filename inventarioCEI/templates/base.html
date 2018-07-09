@@ -45,8 +45,13 @@
             <div class="col-*-*">
                 <div class="container">
                     <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-                            <img src="{% static "img/blank-profile-picture.png" %}" width="80" height="80" alt="">
+                        <button class="btn btn-default dropdown-toggle btn-cafe" type="button" id="menu1" data-toggle="dropdown">
+                            <div style="max-width: 400px; min-width: 100px; display: inline-block">
+                            <div style="background-image: url('{{ request.user.profile.image }}'); width: 100%;
+                            padding-top: 80%; background-size: auto 100%; background-position: center center;
+                            background-repeat: no-repeat;"></div>
+                            </div>
+{#                            <img src="{{ request.user.profile.image }}" width="80" height="80" alt="">#}
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">

@@ -27,6 +27,10 @@
     background-color: #E8B059 !important;
     border-color: #E8B059 !important;
 }
+.btn-cafe {
+    background-color: rgba(0,0,0,0.15) !important;
+    border-color: #7bbcb5 !important;
+}
 .btn-dark:hover {
     background-color: #d6a252 !important;
     border-color: #d6a252 !important;
@@ -84,6 +88,9 @@
     float: right;
     margin-bottom: 15px;
     margin-top: 10px
+}
+a {
+    color: #B95933 !important;
 }
 
 thead {

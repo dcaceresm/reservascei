@@ -21,6 +21,7 @@ class Profile(models.Model):
     mail = models.CharField(max_length=200, blank=True, null=True)
     isAdmin = models.BooleanField(default=False)
     hab = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Habilitado')
+    image = models.ImageField(upload_to='../media/usuarios')
 
     def __str__(self):
         return self.user.username
