@@ -1,11 +1,21 @@
 {% extends 'adminTabs/BaseAdminTab.html' %}
 
+<!-- identificador del modal, para activarlo-->
 {% block modalID %}PrestamoModal{% endblock %}
+
+<!-- texto del boton que activará el modal-->
 {% block modalButton %}Crear nuevo préstamo{% endblock %}
+
+<!-- placeholder del buscador-->
 {% block buscadorPlace %}Busca un préstamo{% endblock %}
-{% block modalID2 %}PrestamoModal{% endblock %} <!-- debe ser igual a modalID -->
+
+<!-- id del modal, debe ser igual a modalID -->
+{% block modalID2 %}PrestamoModal{% endblock %}
+
+<!-- titulo del modal -->
 {% block modaTitle %}Nuevo préstamo{% endblock %}
 
+<!-- formulario dentro del modal -->
 {% block modalFormBody %}
     <div class="form-row">
         <div class="col" style="margin-bottom: 16px">
@@ -64,8 +74,12 @@
     </div>
 {% endblock %}
 
-{% block modalSaveButton %}<button type="submit" class="btn btn-info">Guardar</button>{% endblock %}
+<!-- boton para crear elemento desde el modal, por ahora no tiene ninguna funcion asociada -->
+{% block modalSaveButton %}
+    <button type="submit" class="btn btn-info">Guardar</button>
+{% endblock %}
 
+<!-- columnas tabla de prestamos -->
 {% block columnasTabla %}
     <th scope="col">Objeto</th>
     <th scope="col">Usuario</th>
@@ -100,6 +114,7 @@
                 {{ prest.fh_fin_prestamo.time }}</td>
             <td> {{ prest.estado_prestamo }}</td>
             <td>
+                <!-- por ahora este boton solo redirige a pagina con testo, deberia ir a la ficha del prestamo -->
                 <form action={% url 'verPrestamo' %} method="post" >
                     {% csrf_token %}
                     <input name="identificador" value="{{ prest.id }}" type="hidden">
@@ -123,6 +138,7 @@
     {% endfor %}
 {% endblock %}
 
+<!-- botones cambio de estado, por ahora no tienen funcion relacionada -->
 {% block botonesCambioEstado %}
     <button type="button" class="btn btn-success prest-button landing-button disabled" style="float: right">Recibido</button>
 

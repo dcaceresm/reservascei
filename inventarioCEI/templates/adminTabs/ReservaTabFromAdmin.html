@@ -1,11 +1,21 @@
 {% extends 'adminTabs/BaseAdminTab.html' %}
 
+<!-- identificador del modal, para activarlo-->
 {% block modalID %}ReservaModal{% endblock %}
+
+<!-- texto del boton que activará el modal-->
 {% block modalButton %}Crear nueva reserva{% endblock %}
+
+<!-- placeholder del buscador-->
 {% block buscadorPlace %}Busca una reserva{% endblock %}
-{% block modalID2 %}ReservaModal{% endblock %} <!-- debe ser igual a modalID -->
+
+<!-- id del modal, debe ser igual a modalID -->
+{% block modalID2 %}ReservaModal{% endblock %}
+
+<!-- titulo del modal -->
 {% block modaTitle %}Nueva reserva{% endblock %}
 
+<!-- formulario dentro del modal -->
 {% block modalFormBody %}
     <div class="form-row">
         <div class="col" style="margin-bottom: 16px">
@@ -64,8 +74,12 @@
     </div>
 {% endblock %}
 
-{% block modalSaveButton %}<button type="submit" class="btn btn-info">Guardar</button>{% endblock %}
+<!-- boton para crear elemento desde el modal, por ahora no tiene ninguna funcion asociada -->
+{% block modalSaveButton %}
+    <button type="submit" class="btn btn-info">Guardar</button>
+{% endblock %}
 
+<!-- columnas tabla de reservas -->
 {% block columnasTabla %}
     <th scope="col">Objeto</th>
     <th scope="col">Usuario</th>
@@ -100,6 +114,7 @@
                 {{ reserv.fh_fin_reserva.time }}</td>
             <td> {{ reserv.estado_reserva }}</td>
             <td>
+                <!-- por ahora este boton solo redirige al landing, deberia ir a la ficha de la reserva -->
                 <form action={% url 'landingAdmin' %} method="post" >
                     {% csrf_token %}
                     <input name="identificador" value="{{ reserv.id }}" type="hidden">
@@ -123,6 +138,8 @@
     {% endfor %}
 {% endblock %}
 
+<!-- botones cambio de estado, relacionadas a funciones -->
+<!-- estas funciones están en los scripts de landingAdmin.html -->
 {% block botonesCambioEstado %}
     <button type="button" class="btn btn-success reserv-button landing-button disabled"
             onclick="aceptarReservas()" value="aceptar" >Aceptar</button>
@@ -130,103 +147,3 @@
     <button type="button" class="btn btn-danger reserv-button landing-button disabled"
             onclick="rechazarReservas()" value="rechazar" style="margin-right: 12px;">Rechazar</button>
 {% endblock %}
-
-{#<!-- top buttons-->#}
-{#            <div class="container">#}
-{#                <!-- Button trigger modal -->#}
-{#                <div class="row">#}
-{#                    <div class="col">#}
-{#                        <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#{% block modalID %}{% endblock %}">#}
-{#                            Crear nueva reserva#}
-{#                        </button>#}
-{#                    </div>#}
-{#                    <div class="col"></div>#}
-{#                    <div class="col-sm">#}
-{#                        <div class="input-group mb-3">#}
-{#                            <input type="text" class="form-control" placeholder="Busca una reserva">#}
-{#                            <div class="input-group-append">#}
-{#                                <button class="btn btn-outline-secondary" type="button">Buscar</button>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{##}
-{##}
-{##}
-{#                <!-- Modal -->#}
-{#                <div class="modal fade" id="{% block modalID2 %}{% endblock %}" tabindex="-1" role="dialog" aria-hidden="true">#}
-{#                    <div class="modal-dialog modal-dialog-centered" role="document">#}
-{#                        <div class="modal-content">#}
-{#                            <form class="needs-validation" novalidate>#}
-{#                                <div class="modal-header">#}
-{#                                    <h5 class="modal-title">{% block modaTitle %}{% endblock %}</h5>#}
-{#                                    <button type="button" class="close" data-dismiss="modal">#}
-{#                                        <span aria-hidden="true">&times;</span>#}
-{#                                    </button>#}
-{#                                </div>#}
-{#                                <div class="modal-body">#}
-{#                                    <div class="container">#}
-{#                                        {% block modalFormBody %}{% endblock %}#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                                <div class="modal-footer">#}
-{#                                    <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>#}
-{#                                    <button type="submit" class="btn btn-info">Guardar</button>#}
-{#                                </div>#}
-{#                                </form>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{##}
-{#            </div>#}
-{##}
-{#        <!-- tabla de reservas -->#}
-{#            <div class="container">#}
-{#                <table class="table" >#}
-{#                    <thead class="thead-dark">#}
-{#                        <tr>#}
-{#                            <th scope="col">#</th>#}
-{#                            <th scope="col">Usuario</th>#}
-{#                            <th scope="col">Articulo</th>#}
-{#                            <th scope="col">Fecha inicio</th>#}
-{#                            <th scope="col">Fecha fin</th>#}
-{#                            <th scope="col">Estado#}
-{#                                <select id="filtro_estado_reservas">#}
-{#                                    <option value="reservas">---</option>#}
-{#                                    {% for estado,valor in estados_reservas %}#}
-{#                                        <option value="{{ valor }}">{{ valor }}</option>#}
-{#                                    {% endfor %}#}
-{#                                </select>#}
-{#                            </th>#}
-{#                            <th scope="col">Tipo</th>#}
-{#                            <th scope="col">Modificar</th>#}
-{#                            <th scope="col">Eliminar</th>#}
-{#                        </tr>#}
-{#                    </thead>#}
-{#                    <tbody>#}
-{#                        {% for reserv in reservas %}#}
-{#                            <tr class="{{ reserv.estado_reserva }} reservas">#}
-{#                                <th scope="row"> <input class="reservaCheckbox" type="checkbox" value="{{ reserv.id }}">  </th>#}
-{#                                <td>{{ reserv.profile.user.username }}</td>#}
-{#                                <td>{{ reserv.content_object.nombre }}</td>#}
-{#                                <td>{{ reserv.fh_ini_reserva }}</td>#}
-{#                                <td>{{ reserv.fh_fin_reserva }}</td>#}
-{#                                <td>{{ reserv.estado_reserva }}</td>#}
-{#                                <td >{{ reserv.content_type }}</td>#}
-{#                                <td>{{ reserv.content_object.nombre }}</td>#}
-{#                                <td>{{ reserv.content_object.nombre }}</td>#}
-{#                            </tr>#}
-{#                        {% endfor %}#}
-{#                    </tbody>#}
-{##}
-{#                </table>#}
-{#            </div>#}
-{##}
-{#        <!-- botones cambio de estado-->#}
-{#            <div class="container">#}
-{#                <button type="button" class="btn btn-success" onclick="aceptarReservas()"#}
-{#                        value="aceptar" style="float: right">Aceptar reservas</button>#}
-{#                &nbsp;&nbsp;&nbsp;&nbsp;#}
-{#                <button type="button" class="btn btn-danger" onclick="rechazarReservas()"#}
-{#                        value="rechazar" style="float: right; margin-right: 12px">Rechazar reservas</button>#}
-{#            </div>#}
