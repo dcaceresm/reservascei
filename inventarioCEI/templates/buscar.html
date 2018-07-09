@@ -2,68 +2,86 @@
 {% load static %}
 {% load staticfiles %}
 
-
-
-
 {% block content %}
 
-    <ul class="ul1" style="margin-top: 2%">
-        <li>
-            <button type="button" class="btn btn-success user-button disabled" style="margin-bottom: 15px; padding-left: 20px; padding-right: 20px">Artículos</button>
+    <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active"  href="/"
+               aria-selected="false">Inicio</a>
         </li>
-        <li>
-            <form action="{% url 'goToEspacios' %}" method="post">
-                    {% csrf_token %}
-                    <button class="btn btn-danger user-button" style="margin-right: 12px; margin-bottom: 15px; padding-left: 20px; padding-right: 20px" >Espacios</button>
-            </form>
+        <li class="nav-item">
+            <a class="nav-link"  href="/profile"
+               aria-selected="false">Mi Perfil</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link"  href="/logout"
+               aria-selected="false">Cerrar Sesión</a>
         </li>
     </ul>
 
-    <div class="col-sm">
-        <form action="{% url 'buscar' %}" method="post">
-        {% csrf_token %}
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" name="elemento" id="elemento">
-                <div class="input-group-append">
-                    <button type="submit" class="btn btn-outline-secondary">Buscar</button>
-                </div>
-            </div>
-        </form>
+    <div class="row">
+        <ul class="ul1" style="margin-top: 2%">
+            <li>
+                <button type="button" class="btn btn-secondary user-button" style="margin-bottom: 15px; padding-left: 20px; padding-right: 20px">Artículos</button>
+            </li>
+            <li>
+                <form action="{% url 'goToEspacios' %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-info user-button disabled" style="margin-right: 12px; margin-bottom: 15px; padding-left: 20px; padding-right: 20px" >Espacios</button>
+                </form>
+            </li>
+        </ul>
     </div>
 
-    <div style="float: right; margin-right: 13px">
+    <div class="row" style="margin-left: 5%; margin-right: 5%">
+        <div class="col-sm">
+            <form action="{% url 'buscar' %}" method="post">
+            {% csrf_token %}
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="elemento" id="elemento">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-outline-secondary">Buscar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row" style="float: right; margin-right: 6%">
         <a href="{% url 'busquedaAvanzada'%}">
             <p style="color:black;font-size:15px;">Busqueda Avanzada</p>
         </a>
     </div>
 
-    <div class="card-deck">
-    {% for articulo in lista %}
-        <div class="card" style="max-width: 202px;" onclick="location.href='/ficha/{{articulo.id}}';" >
+    <div class="row" style="margin-left: 5%; margin-right: 5%; margin-top: 4%">
+        <div class="card-deck">
+            {% for articulo in lista %}
+                <div class="card" style="max-width: 202px;" onclick="location.href='/ficha/{{articulo.id}}';" >
 
-            <!-- Heading -->
-            <div class="card-body">
-            <h4 class="card-title">{{articulo.nombre}}</h4>
-            {% if articulo.estado == "Disponible" %}
-                    <h6 class="card-subtitle text-muted"><span class="badge badge-success">Disponible</span></h6>
-                {% elif articulo.estado == "En préstamo"%}
-                    <h6 class="card-subtitle text-muted"><span class="badge badge-primary">En Prestamo</span></h6>
-                {% elif articulo.estado == "En reparación"%}
-                    <h6 class="card-subtitle text-muted"><span class="badge badge-warning">En Reparación</span></h6>
-                {% else %}
-                    <h6 class="card-subtitle text-muted"><span class="badge badge-danger">Perdido</span></h6>
-                {% endif %}
+                    <!-- Heading -->
+                    <div class="card-body">
+                    <h4 class="card-title">{{articulo.nombre}}</h4>
+                    {% if articulo.estado == "Disponible" %}
+                            <h6 class="card-subtitle text-muted"><span class="badge badge-success">Disponible</span></h6>
+                        {% elif articulo.estado == "En préstamo"%}
+                            <h6 class="card-subtitle text-muted"><span class="badge badge-primary">En Prestamo</span></h6>
+                        {% elif articulo.estado == "En reparación"%}
+                            <h6 class="card-subtitle text-muted"><span class="badge badge-warning">En Reparación</span></h6>
+                        {% else %}
+                            <h6 class="card-subtitle text-muted"><span class="badge badge-danger">Perdido</span></h6>
+                        {% endif %}
 
-            </div>
+                    </div>
 
-            <!-- Image -->
-            <img class="card-img-top" src={{articulo.image.url}}>
+                    <!-- Image -->
+                    <img class="card-img-top" src={{articulo.image.url}}>
 
+                </div>
+            {% endfor %}
         </div>
-
-
-    {% endfor %}
     </div>
+
+
 
 {% endblock content %}
 
