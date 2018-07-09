@@ -440,45 +440,45 @@ def RechazarReservas(request, string_id=""):
 
 
 def borrarPrestamo(request):
-    # id_prestamo =request.POST["identificador"]
-    # prestamo= get_object_or_404(Prestamo,pk=id_prestamo)
-    # prestamo.delete()
+    id_prestamo =request.POST["identificador"]
+    prestamo= get_object_or_404(Prestamo,pk=id_prestamo)
+    prestamo.delete()
     response = redirect('landingAdmin')
     response['Location'] += '?tab=prestamos'
     return response
 
 
 def borrarUsuario(request):
-    # rut_usuario =request.POST["identificador"]
-    # profile = get_object_or_404(Profile, rut=rut_usuario)
-    # profile.delete()
+    rut_usuario =request.POST["identificador"]
+    profile = get_object_or_404(Profile, rut=rut_usuario)
+    profile.delete()
     response = redirect('inventario:landingAdmin')
     response['Location'] += '?tab=usuarios'
     return response
 
 
 def borrarEspacio(request):
-    # id_espacio =request.POST["identificador"]
-    # espacio= get_object_or_404(Espacio,pk=id_espacio)
-    # espacio.delete()
+    id_espacio =request.POST["identificador"]
+    espacio= get_object_or_404(Espacio,pk=id_espacio)
+    espacio.delete()
     response = redirect('inventario:landingAdmin')
     response['Location'] += '?tab=espacios'
     return response
 
 
 def borrarArticulo(request):
-    # id_articulo =request.POST["identificador"]
-    # articulo= get_object_or_404(Articulo,pk=id_articulo)
-    # articulo.delete()
+    id_articulo =request.POST["identificador"]
+    articulo= get_object_or_404(Articulo,pk=id_articulo)
+    articulo.delete()
     response = redirect('inventario:landingAdmin')
     response['Location'] += '?tab=articulos'
     return response
 
 
 def borrarReserva(request):
-    # id_reserva =request.POST["identificador"]
-    # reserva= get_object_or_404(Espacio,pk=id_reserva)
-    # reserva.delete()
+    id_reserva =request.POST["identificador"]
+    reserva= get_object_or_404(Espacio,pk=id_reserva)
+    reserva.delete()
     response = redirect('inventario:landingAdmin')
     response['Location'] += '?tab=reservas'
     return response

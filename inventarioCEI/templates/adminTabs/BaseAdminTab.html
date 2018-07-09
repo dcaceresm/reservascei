@@ -1,14 +1,15 @@
-<!-- top buttons-->
+<!-- botones superiores-->
             <div class="container">
-                <!-- Button trigger modal -->
+                <!-- Boton que activa el modal para creacion de un nuevo elemento -->
                 <div class="row">
                     <div class="col">
                         <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#{% block modalID %}{% endblock %}">
+                            <!-- bloque con texto del boton-->
                             {% block modalButton %}{% endblock %}
                         </button>
                     </div>
                     <div class="col"></div>
-
+                    <!-- input group: texto y boton del buscador-->
                     <div class="col-sm">
                         <div class="input-group mb-3">
                             <input type="text" class="form-control buscador-in" placeholder="{% block buscadorPlace %}{% endblock %}">
@@ -54,12 +55,14 @@
                     <thead class="thead-dark thead-admin">
                         <tr>
                             <th scope="col">#</th>
+                            <!-- columnas personalizadas de la tabla-->
                             {% block columnasTabla %}{% endblock %}
                             <th scope="col">Modificar</th>
                             <th scope="col">Eliminar</th>
                         </tr>
                     </thead>
                     <tbody class="tbody-admin">
+                        <!-- filas de la tabla-->
                         {% block cuerpoTabla %}{% endblock %}
                     </tbody>
 

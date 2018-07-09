@@ -1,12 +1,21 @@
 {% extends 'adminTabs/BaseAdminTab.html' %}
 
-
+<!-- identificador del modal, para activarlo-->
 {% block modalID %}UserModal{% endblock %}
+
+<!-- texto del boton que activará el modal-->
 {% block modalButton %}Crear nuevo usuario{% endblock %}
+
+<!-- placeholder del buscador-->
 {% block buscadorPlace %}Busca un usuario{% endblock %}
-{% block modalID2 %}UserModal{% endblock %} <!-- debe ser igual a modalID -->
+
+<!-- id del modal, debe ser igual a modalID -->
+{% block modalID2 %}UserModal{% endblock %}
+
+<!-- titulo del modal -->
 {% block modaTitle %}Nuevo usuario{% endblock %}
 
+<!-- formulario dentro del modal -->
 {% block modalFormBody %}
 
     <div class="form-row">
@@ -77,8 +86,12 @@
     </div>
 {% endblock %}
 
-{% block modalSaveButton %}<button type="submit" class="btn btn-info">Guardar</button>{% endblock %}
+<!-- boton para crear elemento desde el modal, por ahora no tiene ninguna funcion asociada -->
+{% block modalSaveButton %}
+    <button type="submit" class="btn btn-info">Guardar</button>
+{% endblock %}
 
+<!-- columnas tabla de usuarios -->
 {% block columnasTabla %}
     <th scope="col">Nombre</th>
     <th scope="col">Rut</th>
@@ -102,6 +115,7 @@
             <td class="mailcito"> {{ user.mail }}</td>
             <td> {{ user.hab }}</td>
             <td>
+                <!-- por ahora este boton solo redirige al landing, deberia ir a la ficha del usuario -->
                 <form action={% url 'landingAdmin' %} method="post" >
                     {% csrf_token %}
                     <input name="identificador" value="{{ user.rut }}" type="hidden">
@@ -121,8 +135,8 @@
     {% endfor %}
 {% endblock %}
 
+<!-- botones cambio de estado, por ahora no tienen funcion relacionada -->
 {% block botonesCambioEstado %}
-
     <button type="button" class="btn btn-success user-button landing-button disabled" style="float: right; " >Habilitar usuario</button>
 
     <button type="button" class="btn btn-danger user-button landing-button disabled" style="float: right; margin-right: 12px; " >Inhabilitar usuario</button>
