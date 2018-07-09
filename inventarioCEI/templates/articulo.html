@@ -83,9 +83,9 @@
 
                                 {# VARIABLE INFO #}
 
-                                <div class="row" style="padding-left: 5%">
+                                <div class="row" style="padding-left: 15%">
                                     Fecha inicio:
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-6" style="margin-left: 6%">
                                         <div class="form-group">
                                             <div class="input-group date" id="datetimepicker1"
                                                  data-target-input="nearest">
@@ -105,9 +105,9 @@
                                     </script>
                                 </div>
 
-                                <div class="row" style="padding-left: 5%">
+                                <div class="row" style="padding-left: 15%">
                                     Fecha término:
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-6" style="margin-left: 2.5%">
                                         <div class="form-group">
                                             <div class="input-group date" id="datetimepicker2"
                                                  data-target-input="nearest">
@@ -128,7 +128,7 @@
                                 </div>
 
 
-                                <button type="submit" class="btn btn-primary">Reservar</button>
+                                <div style="float: right; margin-right: 23%"><button type="submit" class="btn btn-primary">Reservar</button></div>
                                 <br>
                             </form>
                         {% else %}
@@ -232,7 +232,8 @@
                 minDate: moment().add(1,'hours'),
                 disabledHours: [0, 1, 2, 3, 4, 5, 6, 7, 8, 18, 19, 20, 21, 22, 23, 24],
                 useCurrent: true,
-                ignoreReadonly: true
+                ignoreReadonly: true,
+
 
 
 
@@ -243,7 +244,8 @@
                 daysOfWeekDisabled: [0, 6],
                 disabledHours: [0, 1, 2, 3, 4, 5, 6, 7, 8, 18, 19, 20, 21, 22, 23, 24],
                 useCurrent: false,
-                ignoreReadonly: true
+                ignoreReadonly: true,
+                minDate:moment().add(1,'hours'),
 
 
 

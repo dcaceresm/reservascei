@@ -63,13 +63,17 @@
                                     </a>
                                     {% endif %}
                                 </li>
+                                {% if request.user.profile.isAdmin %}
+                                    <hr>
+                                {% else %}
+                                    <hr>
+                                    <li role="presentation">
+                                        <a role="menuitem" tabindex="-1" href="{% url 'profile' %}">
+                                            Perfil
+                                        </a>
+                                    </li>
                                 <hr>
-                                <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="{% url 'profile' %}">
-                                        Perfil
-                                    </a>
-                                </li>
-                                <hr>
+                                {% endif %}
                                 <li role="presentation">
                                     <a role="menuitem" tabindex="-1" href="{% url 'change_password' %}">
                                         Cambiar Contraseña

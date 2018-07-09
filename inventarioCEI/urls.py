@@ -31,6 +31,7 @@ urlpatterns = [
     path('borrarUsuario/', views.borrarUsuario, name='borrarUsuario'),
     path('verPrestamo/', views.verPrestamo, name='verPrestamo'),
     path('AceptarReservas/<str:string_id>', views.AceptarReservas, name="AceptarReservas"),
+    path('calendarAdmin/', views.calendarAdmin, name='calendarAdmin'),
     path('RechazarReservas/<str:string_id>', views.RechazarReservas, name="RechazarReservas"),
     re_path(r'ficha/(?P<id>[0-9]*)/$', views.ficha, name='ficha')
     ]
