@@ -57,6 +57,11 @@
     background-color: #c8984f !important;
     border-color: #c8984f !important;
 }
+
+.btn-outline-secondary {
+    background-color: white !important;
+}
+
 .dataTables_paginate {
     padding-top: 10px;
     float: left !important;
@@ -122,6 +127,15 @@ td:not(.mailcito){
     border-color: #B95933 !important;
 }
 
+.btn-secondary{
+    background-color: #B95933 !important;
+    border-color: #B95933 !important;
+}
+
+.btn-info{
+    background-color: #79BCB5 !important;
+    border-color: #79BCB5 !important;
+}
 /*colores cei:
 verde: #79BCB5
 marron: #B95933
