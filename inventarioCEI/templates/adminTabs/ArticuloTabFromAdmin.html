@@ -94,11 +94,7 @@
             <td> {{ arti.estado }}</td>
             <td>
                 <!-- por ahora este boton solo redirige al landing, deberia ir a la ficha del articulo -->
-                <form action={% url 'landingAdmin' %} method="post" >
-                    {% csrf_token %}
-                    <input name="identificador" value="{{ arti.pk }}" type="hidden">
-                    <button type="submit" class="btn btn-dark" formmethod="post">Modificar</button>
-                </form>
+                <a href='/ficha/{{ arti.id }}'><button class="btn btn-dark">Modificar</button></a>
             </td>
             <td>
                 <form action={% url 'borrarArticulo' %} method="post" >
