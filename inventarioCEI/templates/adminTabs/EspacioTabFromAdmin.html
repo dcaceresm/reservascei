@@ -1,11 +1,21 @@
 {% extends 'adminTabs/BaseAdminTab.html' %}
 
+<!-- identificador del modal, para activarlo-->
 {% block modalID %}SpaceModal{% endblock %}
+
+<!-- texto del boton que activará el modal-->
 {% block modalButton %}Crear nuevo espacio{% endblock %}
+
+<!-- placeholder del buscador-->
 {% block buscadorPlace %}Busca un espacio{% endblock %}
-{% block modalID2 %}SpaceModal{% endblock %} <!-- debe ser igual a modalID -->
+
+<!-- id del modal, debe ser igual a modalID -->
+{% block modalID2 %}SpaceModal{% endblock %}
+
+<!-- titulo del modal -->
 {% block modaTitle %}Nuevo espacio{% endblock %}
 
+<!-- formulario dentro del modal -->
 {% block modalFormBody %}
     <div class="form-row">
         <div class="col-md-6 mb-3">
@@ -57,8 +67,12 @@
     </div>
 {% endblock %}
 
-{% block modalSaveButton %}<button type="submit" class="btn btn-info">Guardar</button>{% endblock %}
+<!-- boton para crear elemento desde el modal, por ahora no tiene ninguna funcion asociada -->
+{% block modalSaveButton %}
+    <button type="submit" class="btn btn-info">Guardar</button>
+{% endblock %}
 
+<!-- columnas tabla de espacios -->
 {% block columnasTabla %}
     <th scope="col">Nombre</th>
     <th scope="col">Capacidad</th>
@@ -80,6 +94,7 @@
             <td> {{ esp.capacidad }}</td>
             <td> {{ esp.estado }}</td>
             <td>
+                <!-- por ahora este boton solo redirige al landing, deberia ir a la ficha del espacio -->
                 <form action={% url 'landingAdmin' %} method="post" >
                     {% csrf_token %}
                     <input name="identificador" value="{{ esp.pk }}" type="hidden">
@@ -99,6 +114,7 @@
     {% endfor %}
 {% endblock %}
 
+<!-- botones cambio de estado, por ahora no tienen funcion relacionada -->
 {% block botonesCambioEstado %}
     <button type="button" class="btn btn-success esp-button landing-button disabled" style="float: right;">Habilitar espacio</button>
 

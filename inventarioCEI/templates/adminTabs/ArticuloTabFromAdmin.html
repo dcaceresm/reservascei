@@ -1,11 +1,21 @@
 {% extends 'adminTabs/BaseAdminTab.html' %}
 
+<!-- identificador del modal, para activarlo-->
 {% block modalID %}ArticleModal{% endblock %}
+
+<!-- texto del boton que activará el modal-->
 {% block modalButton %}Crear nuevo artículo{% endblock %}
+
+<!-- placeholder del buscador-->
 {% block buscadorPlace %}Busca un artículo{% endblock %}
-{% block modalID2 %}ArticleModal{% endblock %} <!-- debe ser igual a modalID -->
+
+<!-- id del modal, debe ser igual a modalID -->
+{% block modalID2 %}ArticleModal{% endblock %}
+
+<!-- titulo del modal -->
 {% block modaTitle %}Nuevo artículo{% endblock %}
 
+<!-- formulario dentro del modal -->
 {% block modalFormBody %}
     <div class="form-row">
         <div class="col-md-6 mb-3">
@@ -57,8 +67,12 @@
     </div>
 {% endblock %}
 
-{% block modalSaveButton %}<button type="submit" class="btn btn-info">Guardar</button>{% endblock %}
+<!-- boton para crear elemento desde el modal, por ahora no tiene ninguna funcion asociada -->
+{% block modalSaveButton %}
+    <button type="submit" class="btn btn-info">Guardar</button>
+{% endblock %}
 
+<!-- columnas tabla de articulos -->
 {% block columnasTabla %}
     <th scope="col">Nombre</th>
     <th scope="col">Estado
@@ -74,10 +88,12 @@
 {% block cuerpoTabla %}
     {% for arti in articulos %}
         <tr class="{{ arti.estado }} articulos">
-            <th scope="row"> <input class="ArtiCheckbox" name="filas_articulos" type="checkbox" value="{{ arti.pk }}">  </th>
+            <th scope="row">
+                <input class="ArtiCheckbox" name="filas_articulos" type="checkbox" value="{{ arti.pk }}">  </th>
             <td> {{ arti.nombre }} </td>
             <td> {{ arti.estado }}</td>
             <td>
+                <!-- por ahora este boton solo redirige al landing, deberia ir a la ficha del articulo -->
                 <form action={% url 'landingAdmin' %} method="post" >
                     {% csrf_token %}
                     <input name="identificador" value="{{ arti.pk }}" type="hidden">
@@ -97,6 +113,7 @@
     {% endfor %}
 {% endblock %}
 
+<!-- botones cambio de estado, por ahora no tienen funcion relacionada -->
 {% block botonesCambioEstado %}
     <button type="button" class="btn btn-success arti-button landing-button disabled" style="float: right; ">Artículo disponible</button>
 
