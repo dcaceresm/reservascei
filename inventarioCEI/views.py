@@ -52,41 +52,6 @@ class LandingAdmin(TemplateView):
         return context
 
 
-def calendarAdmin(request):
-    events = []
-
-    ct = ContentType.objects.get_for_model(Espacio)
-
-    prestamos = Prestamo.objects.all()
-
-    reservas = Reserva.objects.all()
-
-    for i in range(0, len(prestamos)):
-
-        event = prestamos[i]
-
-        if event.content_type == ct:
-            di = event.fh_ini_prestamo
-            df = event.fh_fin_prestamo
-
-            event_json = event_adding(event, di, df, 1)
-            events.append(event_json)
-
-    for i in range(0, len(reservas)):
-
-        event = reservas[i]
-
-        if event.content_type == ct:
-            di = event.fh_ini_reserva
-            df = event.fh_fin_reserva
-
-            event_json = event_adding(event, di, df, 2)
-            events.append(event_json)
-
-    events_string = json.dumps(events)
-    return render(request, 'adminTabs/IndexTabFromAdmin.html', {'events': events_string})
-
-
 def ficha(request, id):
     if request.user.is_authenticated:
         print(settings.SITE_ROOT)
@@ -477,38 +442,47 @@ def goToEspacios(request):
         return render(request, 'buscar.html')
 
 def calendarAdmin(request):
-    events = []
+    if request.user.is_authenticated:
+        if request.user.profile.isAdmin:
 
-    ct = ContentType.objects.get_for_model(Espacio)
+            events = []
 
-    prestamos = Prestamo.objects.all()
+            ct = ContentType.objects.get_for_model(Espacio)
 
-    reservas = Reserva.objects.all()
+            prestamos = Prestamo.objects.all()
 
-    for i in range(0, len(prestamos)):
+            reservas = Reserva.objects.all()
 
-        event = prestamos[i]
+            for i in range(0, len(prestamos)):
 
-        if event.content_type == ct:
-            di = event.fh_ini_prestamo
-            df = event.fh_fin_prestamo
+                event = prestamos[i]
 
-            event_json = event_adding(event, di, df, 1)
-            events.append(event_json)
+                if event.content_type == ct:
+                    di = event.fh_ini_prestamo
+                    df = event.fh_fin_prestamo
 
-    for i in range(0, len(reservas)):
+                    event_json = event_adding(event, di, df, 1)
+                    events.append(event_json)
 
-        event = reservas[i]
+            for i in range(0, len(reservas)):
 
-        if event.content_type == ct:
-            di = event.fh_ini_reserva
-            df = event.fh_fin_reserva
+                event = reservas[i]
 
-            event_json = event_adding(event, di, df, 2)
-            events.append(event_json)
+                if event.content_type == ct:
+                    di = event.fh_ini_reserva
+                    df = event.fh_fin_reserva
 
-    events_string = json.dumps(events)
-    return render(request, 'adminTabs/IndexTabFromAdmin.html', {'events': events_string})
+                    event_json = event_adding(event, di, df, 2)
+                    events.append(event_json)
+
+            events_string = json.dumps(events)
+            return render(request, 'adminTabs/IndexTabFromAdmin.html', {'events': events_string})
+
+        else:
+            return redirect('/')
+            #return redirect('landingUser/')
+    else:  # USER IS NOT LOGGED IN
+        return redirect('/')  # REDIRECT TO INDEX (LOGIN) PAGE
 
 
 def AceptarReservas(request, string_id=""):
@@ -565,7 +539,7 @@ def borrarUsuario(request):
     rut_usuario =request.POST["identificador"]
     profile = get_object_or_404(Profile, rut=rut_usuario)
     profile.delete()
-    response = redirect('inventario:landingAdmin')
+    response = redirect('landingAdmin')
     response['Location'] += '?tab=usuarios'
     return response
 
@@ -574,7 +548,7 @@ def borrarEspacio(request):
     id_espacio =request.POST["identificador"]
     espacio= get_object_or_404(Espacio,pk=id_espacio)
     espacio.delete()
-    response = redirect('inventario:landingAdmin')
+    response = redirect('landingAdmin')
     response['Location'] += '?tab=espacios'
     return response
 
@@ -583,16 +557,16 @@ def borrarArticulo(request):
     id_articulo =request.POST["identificador"]
     articulo= get_object_or_404(Articulo,pk=id_articulo)
     articulo.delete()
-    response = redirect('inventario:landingAdmin')
+    response = redirect('landingAdmin')
     response['Location'] += '?tab=articulos'
     return response
 
 
 def borrarReserva(request):
     id_reserva =request.POST["identificador"]
-    reserva= get_object_or_404(Espacio,pk=id_reserva)
+    reserva= get_object_or_404(Reserva,pk=id_reserva)
     reserva.delete()
-    response = redirect('inventario:landingAdmin')
+    response = redirect('landingAdmin')
     response['Location'] += '?tab=reservas'
     return response
 
@@ -606,4 +580,4 @@ def verPrestamo(request):
 
 
 def crearPrestamo(request):
-    return redirect('inventario:landingAdmin')
+    return redirect('landingAdmin')
