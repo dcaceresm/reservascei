@@ -188,7 +188,7 @@ def customlogin(request):
 
             # Redirigirlo si es admin o no
             if user.profile.isAdmin:
-                return HttpResponseRedirect(reverse('landingAdmin'))
+                return HttpResponseRedirect(reverse('calendarAdmin'))
             else:
                 return HttpResponseRedirect(reverse('buscar'))
         else:
@@ -266,6 +266,16 @@ def deleteRes(request):
     Reserva.objects.filter(id__in=delList).delete()
     return HttpResponseRedirect(reverse('profile'))
 
+def restarHoras(hora):
+    if hora == 0:
+        return 20
+    if hora == 1:
+        return 21
+    if hora == 2:
+        return 22
+    if hora == 3:
+        return 23
+    return hora - 4
 
 # event_adding: agrega un evento en el formato necesario para ser tomado por el calendario
 def event_adding(event, di, df, type):
@@ -372,7 +382,7 @@ def buscar(request):
             lista = Articulo.objects.filter(lista_tags__contains=busqueda)
             return render(request, 'buscar.html', {'lista': lista})
         else:
-            lista = Articulo.objects.all()
+            lista = Articulo.objects.all()[:5]
             return render(request, 'buscar.html', {'lista': lista})
     else:  # USER IS NOT LOGGED IN
         return redirect('/')  # REDIRECT TO INDEX (LOGIN) PAGE
@@ -430,6 +440,40 @@ def goToEspacios(request):
         return redirect('calendar')
     else:
         return render(request, 'buscar.html')
+
+def calendarAdmin(request):
+    events = []
+
+    ct = ContentType.objects.get_for_model(Espacio)
+
+    prestamos = Prestamo.objects.all()
+
+    reservas = Reserva.objects.all()
+
+    for i in range(0, len(prestamos)):
+
+        event = prestamos[i]
+
+        if event.content_type == ct:
+            di = event.fh_ini_prestamo
+            df = event.fh_fin_prestamo
+
+            event_json = event_adding(event, di, df, 1)
+            events.append(event_json)
+
+    for i in range(0, len(reservas)):
+
+        event = reservas[i]
+
+        if event.content_type == ct:
+            di = event.fh_ini_reserva
+            df = event.fh_fin_reserva
+
+            event_json = event_adding(event, di, df, 2)
+            events.append(event_json)
+
+    events_string = json.dumps(events)
+    return render(request, 'adminTabs/IndexTabFromAdmin.html', {'events': events_string})
 
 
 def AceptarReservas(request, string_id=""):

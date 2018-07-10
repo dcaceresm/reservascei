@@ -1,1 +1,77 @@
-aqui no hay nada
+{% extends "base.html" %}
+{% load static %}
+{% load staticfiles %}
+
+
+{% block content %}
+
+    <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="pills-inicio-tab" href="#"
+               aria-selected="true">Inicio</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-usuarios-tab" href="/landingAdmin/?tab=usuarios"
+               aria-selected="false">Usuarios</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-reservas-tab"  href="/landingAdmin/?tab=reservas"
+               aria-selected="false">Reservas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-prestamos-tab"  href="/landingAdmin/?tab=prestamos"
+                aria-selected="false">Préstamos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-articulos-tab"  href="/landingAdmin/?tab=articulos"
+               aria-selected="false">Artículos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-espacios-tab" href="/landingAdmin/?tab=espacios"
+               aria-selected="false">Espacios</a>
+        </li>
+    </ul>
+
+        <div class="row" style="margin: 5%">
+            <div id='calendar'></div>
+        </div>
+
+
+
+{% endblock content %}
+
+
+{# END OF CONTENT #}
+{% block scripts %}
+   <link rel='stylesheet' href="{% static 'fullcalendar/fullcalendar.css' %}">
+    <script src="{% static 'fullcalendar/jquery.min.js' %}"></script>
+    <script src="{% static 'fullcalendar/moment.min.js' %}"></script>
+    <script src="{% static 'fullcalendar/fullcalendar.js' %}"></script>
+
+    <script>
+        $(function() {
+            // page is now ready, initialize the calendar...
+            /*$('#calendar').fullCalendar({
+            // put your options and callbacks here
+                weekends: false
+             })*/
+            $('#calendar').fullCalendar({
+                aspectRatio: 2.7,
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay,listMonth'
+                },
+              //header: { center: 'month, agendaWeek' }, // buttons for switching between views
+              views: {
+                month: { // name of view
+                  titleFormat: 'YYYY, MM, DD'
+                  // other view-specific options here
+                }
+              },
+              events: {{events|safe}}
+            });
+        });
+    </script>
+
+{% endblock scripts %}
