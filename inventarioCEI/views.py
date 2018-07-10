@@ -191,7 +191,7 @@ def index(request):
 
     if (request.user.is_authenticated):
         if request.user.profile.isAdmin:
-            return HttpResponseRedirect(reverse('landingAdmin'))
+            return HttpResponseRedirect(reverse('calendarAdmin'))
         else:
             return HttpResponseRedirect(reverse('buscar'))
     return render(request, 'custom_login.html')
