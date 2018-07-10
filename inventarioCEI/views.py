@@ -52,6 +52,41 @@ class LandingAdmin(TemplateView):
         return context
 
 
+def calendarAdmin(request):
+    events = []
+
+    ct = ContentType.objects.get_for_model(Espacio)
+
+    prestamos = Prestamo.objects.all()
+
+    reservas = Reserva.objects.all()
+
+    for i in range(0, len(prestamos)):
+
+        event = prestamos[i]
+
+        if event.content_type == ct:
+            di = event.fh_ini_prestamo
+            df = event.fh_fin_prestamo
+
+            event_json = event_adding(event, di, df, 1)
+            events.append(event_json)
+
+    for i in range(0, len(reservas)):
+
+        event = reservas[i]
+
+        if event.content_type == ct:
+            di = event.fh_ini_reserva
+            df = event.fh_fin_reserva
+
+            event_json = event_adding(event, di, df, 2)
+            events.append(event_json)
+
+    events_string = json.dumps(events)
+    return render(request, 'adminTabs/IndexTabFromAdmin.html', {'events': events_string})
+
+
 def ficha(request, id):
     if request.user.is_authenticated:
         print(settings.SITE_ROOT)

@@ -25,9 +25,9 @@
             <form action="{% url 'buscar' %}" method="post">
             {% csrf_token %}
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="elemento" id="elemento">
+                    <input type="text" class="form-control buscador-in" name="elemento" id="elemento">
                     <div class="input-group-append">
-                        <button type="submit" class="btn btn-outline-secondary">Buscar</button>
+                        <button type="submit" class="btn btn-outline-secondary buscador-btn">Buscar</button>
                     </div>
                 </div>
             </form>
