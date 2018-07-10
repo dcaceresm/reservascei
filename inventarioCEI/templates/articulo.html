@@ -83,14 +83,14 @@
 
                                 {# VARIABLE INFO #}
 
-                                <div class="row">
+                                <div class="row" style="padding-left: 5%">
                                     Fecha inicio:
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <div class="input-group date" id="datetimepicker1"
                                                  data-target-input="nearest">
                                                 <input type="text" class="form-control datetimepicker-input"
-                                                       data-target="#datetimepicker1" name="inicio"/>
+                                                       data-target="#datetimepicker1" name="inicio" readonly="readonly" style="background-color: white"/>
                                                 <div class="input-group-append" data-target="#datetimepicker1"
                                                      data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -105,14 +105,14 @@
                                     </script>
                                 </div>
 
-                                <div class="row">
+                                <div class="row" style="padding-left: 5%">
                                     Fecha término:
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <div class="input-group date" id="datetimepicker2"
                                                  data-target-input="nearest">
                                                 <input type="text" class="form-control datetimepicker-input"
-                                                       data-target="#datetimepicker2" name="termino"/>
+                                                       data-target="#datetimepicker2" name="termino" readonly="readonly" style="background-color: white"/>
                                                 <div class="input-group-append" data-target="#datetimepicker2"
                                                      data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -222,21 +222,36 @@
             }
         });
     </script>
+
     <script>
+
         $(function () {
             $("#datetimepicker1").datetimepicker({
                 format: 'DD/MM/YYYY LT',
                 daysOfWeekDisabled: [0, 6],
+                minDate: moment().add(1,'hours'),
+                disabledHours: [0, 1, 2, 3, 4, 5, 6, 7, 8, 18, 19, 20, 21, 22, 23, 24],
+                useCurrent: true,
+                ignoreReadonly: true
+
 
 
             });
-        });
 
-        $(function () {
             $("#datetimepicker2").datetimepicker({
                 format: 'DD/MM/YYYY LT',
                 daysOfWeekDisabled: [0, 6],
+                disabledHours: [0, 1, 2, 3, 4, 5, 6, 7, 8, 18, 19, 20, 21, 22, 23, 24],
+                useCurrent: false,
+                ignoreReadonly: true
+
+
+
             });
+            $("#datetimepicker1").on("change.datetimepicker", function (e) {
+            $('#datetimepicker2').datetimepicker('minDate', e.date);
+
+        });
         });
     </script>
 
