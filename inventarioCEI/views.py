@@ -136,7 +136,7 @@ def reserva_articulo(request):
                                          content_type=ct)
 
         reserva.save()
-        return redirect('/')
+        return redirect('/profile')
     else:
         return HttpResponse("Whoops!")
 
