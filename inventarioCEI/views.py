@@ -53,39 +53,48 @@ class LandingAdmin(TemplateView):
 
 
 def calendarAdmin(request):
-    events = []
+    if request.user.is_authenticated:
 
-    ct = ContentType.objects.get_for_model(Espacio)
+        if request.user.profile.isAdmin:
 
-    prestamos = Prestamo.objects.all()
+            events = []
 
-    reservas = Reserva.objects.all()
+            ct = ContentType.objects.get_for_model(Espacio)
 
-    for i in range(0, len(prestamos)):
+            prestamos = Prestamo.objects.all()
 
-        event = prestamos[i]
+            reservas = Reserva.objects.all()
 
-        if event.content_type == ct:
-            di = event.fh_ini_prestamo
-            df = event.fh_fin_prestamo
+            for i in range(0, len(prestamos)):
 
-            event_json = event_adding(event, di, df, 1)
-            events.append(event_json)
+                event = prestamos[i]
 
-    for i in range(0, len(reservas)):
+                if event.content_type == ct:
+                    di = event.fh_ini_prestamo
+                    df = event.fh_fin_prestamo
 
-        event = reservas[i]
+                    event_json = event_adding(event, di, df, 1)
+                    events.append(event_json)
 
-        if event.content_type == ct:
-            di = event.fh_ini_reserva
-            df = event.fh_fin_reserva
+            for i in range(0, len(reservas)):
 
-            event_json = event_adding(event, di, df, 2)
-            events.append(event_json)
+                event = reservas[i]
 
-    events_string = json.dumps(events)
-    return render(request, 'adminTabs/IndexTabFromAdmin.html', {'events': events_string})
+                if event.content_type == ct:
+                    di = event.fh_ini_reserva
+                    df = event.fh_fin_reserva
 
+                    event_json = event_adding(event, di, df, 2)
+                    events.append(event_json)
+
+            events_string = json.dumps(events)
+            return render(request, 'adminTabs/IndexTabFromAdmin.html', {'events': events_string})
+
+        else:
+            return HttpResponse("Whoops!")
+            #return redirect('landingUser/')
+    else:  # USER IS NOT LOGGED IN
+        return redirect('/')  # REDIRECT TO INDEX (LOGIN) PAGE
 
 def ficha(request, id):
     if request.user.is_authenticated:
