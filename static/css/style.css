@@ -131,8 +131,9 @@ td:not(.mailcito){
     background-color: #B95933 !important;
     border-color: #B95933 !important;
 }
-
-
+.dropdown a{
+    color: #B95933 !important;
+}
 /*colores cei:
 verde: #79BCB5
 marron: #B95933
