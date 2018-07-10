@@ -40,6 +40,7 @@
     <script src="{% static 'fullcalendar/jquery.min.js' %}"></script>
     <script src="{% static 'fullcalendar/moment.min.js' %}"></script>
     <script src="{% static 'fullcalendar/fullcalendar.js' %}"></script>
+    <script src='{% static 'fullcalendar/es.js'%}'></script>
     <!--<link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>-->
 
     <script>
@@ -50,6 +51,7 @@
                 weekends: false
              })*/
             $('#calendar').fullCalendar({
+                lang: 'es',
                 aspectRatio: 2.7,
                 header: {
                     left: 'prev,next today',
@@ -63,7 +65,9 @@
                   // other view-specific options here
                 }
               },
-              events: {{events|safe}}
+              events: {{events|safe}},
+
+              eventColor: '#efa17c'
             });
         });
     </script>
