@@ -337,39 +337,43 @@ def event_adding(event, di, df, type):
 # calendar: chequea los eventos que deben estar en la grilla
 def calendar(request):
     if request.user.is_authenticated:
-        events = []
+        if request.user.profile.isAdmin:
+            return redirect('/')
+        else:
 
-        ct = ContentType.objects.get_for_model(Espacio)
+            events = []
 
-        prestamos = Prestamo.objects.all()
+            ct = ContentType.objects.get_for_model(Espacio)
 
-        reservas = Reserva.objects.all()
+            prestamos = Prestamo.objects.all()
 
-        for i in range(0, len(prestamos)):
+            reservas = Reserva.objects.all()
 
-            event = prestamos[i]
+            for i in range(0, len(prestamos)):
 
-            if event.content_type == ct:
-                di = event.fh_ini_prestamo
-                df = event.fh_fin_prestamo
+                event = prestamos[i]
 
-                event_json = event_adding(event, di, df, 1)
-                events.append(event_json)
+                if event.content_type == ct:
+                    di = event.fh_ini_prestamo
+                    df = event.fh_fin_prestamo
 
-        for i in range(0, len(reservas)):
+                    event_json = event_adding(event, di, df, 1)
+                    events.append(event_json)
 
-            event = reservas[i]
+            for i in range(0, len(reservas)):
 
-            if event.content_type == ct:
-                di = event.fh_ini_reserva
-                df = event.fh_fin_reserva
+                event = reservas[i]
 
-                event_json = event_adding(event, di, df, 2)
-                events.append(event_json)
+                if event.content_type == ct:
+                    di = event.fh_ini_reserva
+                    df = event.fh_fin_reserva
 
-        events_string = json.dumps(events)
+                    event_json = event_adding(event, di, df, 2)
+                    events.append(event_json)
 
-        return render(request, 'calendario.html', {'events': events_string})
+            events_string = json.dumps(events)
+
+            return render(request, 'calendario.html', {'events': events_string})
     else:  # USER IS NOT LOGGED IN
         return redirect('/')  # REDIRECT TO INDEX (LOGIN) PAGE
 
@@ -377,47 +381,53 @@ def calendar(request):
 # buscar: retorna una lista con los articulos que concuerdan con la busqueda
 def buscar(request):
     if request.user.is_authenticated:
-        if request.method == "POST":
-            busqueda = request.POST['elemento']
-            lista = Articulo.objects.filter(lista_tags__contains=busqueda)
-            return render(request, 'buscar.html', {'lista': lista})
+        if request.user.profile.isAdmin:
+            return redirect('/')
         else:
-            lista = Articulo.objects.all()[:5]
-            return render(request, 'buscar.html', {'lista': lista})
+            if request.method == "POST":
+                busqueda = request.POST['elemento']
+                lista = Articulo.objects.filter(lista_tags__contains=busqueda)
+                return render(request, 'buscar.html', {'lista': lista})
+            else:
+                lista = Articulo.objects.all()[:5]
+                return render(request, 'buscar.html', {'lista': lista})
     else:  # USER IS NOT LOGGED IN
         return redirect('/')  # REDIRECT TO INDEX (LOGIN) PAGE
 
 
 def busquedaAvanzada(request):
     if request.user.is_authenticated:
-        if request.method == "POST":
-            busqueda = request.POST['elemento']
-            lista = Articulo.objects.filter(lista_tags__contains=busqueda)
-
-            """id_elemento = request.POST['id_elemento']
-            lista = Articulo.objects.filter(id = id_elemento)"""
-
-            estado = request.POST['estado']
-            if estado != "Todos":
-                lista = lista.filter(estado__contains=estado)
-            fecha_inicio = request.POST['fechaInicioBusq']
-            fecha_fin = request.POST['fechaFinBusq']
-
-            if (fecha_inicio != "") & (fecha_fin != ""):
-                reservas = Reserva.objects.filter(estado_reserva="Aceptada") & \
-                           (Reserva.objects.filter(fh_ini_reserva__range=[fecha_inicio, fecha_fin]) | \
-                            Reserva.objects.filter(fh_fin_reserva__range=[fecha_inicio, fecha_fin]))
-
-                for reserva in reservas:
-                    id_object = reserva.object_id
-                    object = Articulo.objects.get(id=id_object)
-                    if object in lista:
-                        lista = lista.exclude(id=id_object)
-
-            return render(request, 'busquedaAvanzada.html', {'lista': lista})
+        if request.user.profile.isAdmin:
+            return redirect('/')
         else:
-            lista = []
-            return render(request, 'busquedaAvanzada.html', {'lista': lista})
+            if request.method == "POST":
+                busqueda = request.POST['elemento']
+                lista = Articulo.objects.filter(lista_tags__contains=busqueda)
+
+                """id_elemento = request.POST['id_elemento']
+                lista = Articulo.objects.filter(id = id_elemento)"""
+
+                estado = request.POST['estado']
+                if estado != "Todos":
+                    lista = lista.filter(estado__contains=estado)
+                fecha_inicio = request.POST['fechaInicioBusq']
+                fecha_fin = request.POST['fechaFinBusq']
+
+                if (fecha_inicio != "") & (fecha_fin != ""):
+                    reservas = Reserva.objects.filter(estado_reserva="Aceptada") & \
+                               (Reserva.objects.filter(fh_ini_reserva__range=[fecha_inicio, fecha_fin]) | \
+                                Reserva.objects.filter(fh_fin_reserva__range=[fecha_inicio, fecha_fin]))
+
+                    for reserva in reservas:
+                        id_object = reserva.object_id
+                        object = Articulo.objects.get(id=id_object)
+                        if object in lista:
+                            lista = lista.exclude(id=id_object)
+
+                return render(request, 'busquedaAvanzada.html', {'lista': lista})
+            else:
+                lista = []
+                return render(request, 'busquedaAvanzada.html', {'lista': lista})
     else:  # USER IS NOT LOGGED IN
         return redirect('/')  # REDIRECT TO INDEX (LOGIN) PAGE
 
