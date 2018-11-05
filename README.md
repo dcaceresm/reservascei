@@ -1,3 +1,3 @@
-# 2018-1-200-100-requisitos-los-que-querai-T3
+# Plataforma de Reservas CEI
 
-#Test2
+*Plataforma para gestionar las reservas de los artículos y espacios gestionados por el Centro de Alumnos de Ingeniería, para la Facultad de Cs. Físicas y Matemáticas, Universidad de Chile.*
