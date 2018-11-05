@@ -11,7 +11,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     url(r'^profile/$', views.showProfile, name='profile'),
     url(r'^login/$', views.customlogin, name='login'),
-    url(r'^logout/$', auth_views.logout, {'next_page': 'index'}, name='logout'),
+    url(r'^logout/$', auth_views.LogoutView.as_view(), {'next_page': 'index'}, name='logout'),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^deleting/$', views.deleteRes, name='deleteRes'),
     url(r'^password/$', views.change_password, name='change_password'),
@@ -43,5 +43,3 @@ urlpatterns = [
 
 
 urlpatterns += staticfiles_urlpatterns()
-
-
