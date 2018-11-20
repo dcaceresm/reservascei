@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% load static %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container">
+  <div class="row simpleadmin-row">
+    <div class="col-12 float-right">
+      <a class="btn btn-primary" href="/calendarAdmin/" role="button">Vista Avanzada</a>
+    </div>
+  </div>
+  <div class="row simpleadmin-row">
+    <div class="col-12">
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link simpleadmintab" id="reservas-tab" data-toggle="tab"
+              href="#reservas" aria-controls="reservas" aria-selected="false">Reservas
+              <span class="badge badge-info" >{{reservas_hoy|length}}</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link simpleadmintab" id="prestamos-tab" data-toggle="tab"
+              href="#prestamos" aria-controls="prestamos" aria-selected="false">Préstamos
+              <span class="badge badge-info" >{{prestamos_hoy|length}}</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link simpleadmintab" id="no-recibidos-tab" data-toggle="tab"
+              href="#no_recibidos" aria-controls="no_recibidos" aria-selected="false">Préstamos No Recibidos
+              <span class="badge badge-info" >{{prestamos_no_recibidos|length}}</span></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="reservas" role="tabpanel" aria-labelledby="reservas-tab">
+      <div class="row simpleadmin-row">
+        <div class="col-12 simpleadmin-lcol">
+          <h2> Reservas de Hoy </h2>
+          <!-- Acá va la tabla con las reservas -->
+          <form method="POST" action="{% url 'simpleAdminAction' %}">
+            {% csrf_token %}
+          <div class="rp-tablecontainer">
+            <table class="table">
+              <thead>
+                <th scope="col">#</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Artículo</th>
+                <th scope="col">Hora de Inicio</th>
+                <th scope="col">Hora de finalización</th>
+                <th scope="col"><i class="far fa-calendar-check"></i></th>
+              </thead>
+              <tbody>
+
+                {% for r in reservas_hoy %}
+                <tr>
+                  <th scope="row"> {{ r.pk }} </th>
+                  <td> {{ r.profile.user.get_full_name }} </td>
+                  <td>  {{ r.content_object }}</td>
+                  <td>{{ r.fh_ini_reserva|date:'H:i'}}</td>
+                  <td>{{ r.fh_fin_reserva|date:'H:i'}}</td>
+                  <td style="text-align:center;"><input style="position:static;margin-left:auto;" class="form-check-input" type="checkbox" name="checked" value="{{r.pk}}" id="r_{{r.pk}}"></td>
+                </tr>
+
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="row float-right buttonrow">
+            <div>
+              <input type="hidden" name="rp" value="r"></input>
+              <button name="action" type="submit" class="btn btn-success" value="A" >Aceptar</button> <button name="action" type="submit" class="btn btn-danger" value="R">Rechazar</button>
+            </div>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="no_recibidos" role="tabpanel" aria-labelledby="no-recibidos-tab">
+      <div class="row simpleadmin-row">
+        <div class="col-12 simpleadmin-lcol">
+          <h2> Préstamos No Recibidos </h2>
+          <!-- Acá va la tabla con las reservas -->
+          <form method="POST" action="">
+            {% csrf_token %}
+          <div class="rp-tablecontainer">
+          <table class="table">
+            <thead>
+              <th scope="col">#</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Artículo</th>
+              <th scope="col">Fecha de Entrega</th>
+              <th scope="col"><i class="far fa-calendar-check"></i></th>
+            </thead>
+            <tbody>
+
+              {% for p in prestamos_no_recibidos %}
+              <tr>
+                <th scope="row"> {{ p.pk }} </th>
+                <td> {{ p.profile.user.get_full_name }} </td>
+                <td>  {{ p.content_object }}</td>
+                <td>{{ p.fh_fin_prestamo|date:'j/n/Y H:i'}}</td>
+
+                <td style="text-align:center;"><input style="position:static;margin-left:auto;" class="form-check-input" type="checkbox" name="checked" value="{{p.pk}}" id="pn_{{p.pk}}"></td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+          </div>
+          <div class="row float-right buttonrow">
+          <div>
+            <input type="hidden" name="rp" value="pn"></input>
+            <button name="action" type="submit" class="btn btn-success" value="A" >Marcar Recibido</button>
+          </div>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="prestamos" role="tabpanel" aria-labelledby="prestamos-tab">
+      <div class="row">
+        <div class="col-12 simpleadmin-lcol">
+          <h2> Préstamos de Hoy </h2>
+          <!-- Acá va la tabla con los prestamos -->
+          <form method="POST" action="{% url 'simpleAdminAction' %}">
+            {% csrf_token %}
+          <div class="rp-tablecontainer">
+          <table class="table">
+            <thead>
+              <th scope="col">#</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Artículo</th>
+              <th scope="col">Hora de Inicio</th>
+              <th scope="col">Hora de finalización</th>
+              <th scope="col"><i class="far fa-calendar-check"></i></th>
+            </thead>
+            <tbody>
+
+              {% for p in prestamos_hoy %}
+
+              <tr>
+                <th scope="row"> {{ p.pk }} </th>
+                <td> {{ p.profile.user.get_full_name }} </td>
+                <td>  {{ p.content_object }}</td>
+                <td>{{ p.fh_ini_prestamo|date:'H:i'}}</td>
+                <td>{{ p.fh_fin_prestamo|date:'H:i'}}</td>
+                <td><input class="form-check-input" type="checkbox" name="checked" value="{{p.pk}}" id="p_{{r.pk}}"></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          </div>
+          <div class="row float-right buttonrow">
+          <div>
+            <input type="hidden" name="rp" value="p"></input>
+            <button name="action" type="submit" class="btn btn-success" value="A" >Marcar Recibido</button>
+            <button name="action" type="submit" class="btn btn-danger" value="R">Marcar Perdido</button>
+
+          </div>
+          </div>
+          </form>
+        </div>
+      </div>
+      {% if prestamos_hoy_recibidos %}
+      <div class="row">
+        <div class="col-12 simpleadmin-lcol">
+          <h2> Préstamos Recibidos </h2>
+          <table class="table">
+            <thead>
+              <th scope="col">#</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Artículo</th>
+            </thead>
+            <tbody>
+              {% for p in prestamos_hoy_recibidos %}
+              <tr>
+                <th scope="row"> {{ p.pk }} </th>
+                <td> {{ p.profile.user.get_full_name }} </td>
+                <td>  {{ p.content_object }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container" style="width: 500px;">
+    <div class="container" style="width: 500px; margin-top:2em;">
         <h1>Inicio de sesión</h1>
         <form action="{% url 'login' %}" method="post">
             {% csrf_token %}

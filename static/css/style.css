@@ -140,3 +140,35 @@ marron: #B95933
 naranjo: #D7753C
 amarillo: #E8B059
  */
+
+.buttonrow{
+  margin: 0.5em 0.1em;
+}
+.simpleadmin-row{
+ margin: 2em 0;
+
+}
+.simpleadmin-lcol{
+
+ text-align: center;
+ //border-right: 1px solid #dee2e6;
+ margin: 0.5em 0;
+
+}
+
+.simpleadmintab{
+  border: 1px solid #dee2e6 !important;
+  border-radius: 3px 3px 0px 0px!important;
+  background-color: white !important;
+  color: black !important;
+}
+.simpleadmintab.active {border-color: #dee2e6 #dee2e6 #fff !important;} 
+
+.rp-tablecontainer{
+  max-height: 25em;
+  overflow: scroll;
+}
+.simpleadmin-rcol{
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+}

@@ -1,14 +1,14 @@
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Articulo, Reserva
+from .models import Articulo, Reserva, Prestamo
 import datetime
 from T3_INGSW import settings
 from django.contrib.contenttypes.models import ContentType
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
@@ -50,6 +50,64 @@ class LandingAdmin(TemplateView):
         context['estados_espacio'] = Espacio.ESTADO_CHOICES
 
         return context
+
+
+class SimpleAdmin(TemplateView):
+    template_name = "simpleAdmin/landingAdminSimple.html"
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            if request.user.profile.isAdmin:
+                return super(SimpleAdmin, self).get(request, *args, **kwargs)
+            else:
+                return HttpResponseRedirect(reverse('buscar'))
+        else:
+            return redirect('/')
+
+
+    def get_context_data(self, **kwargs):
+        dt_today = datetime.datetime.now()
+        dt_today_ini = dt_today.replace(hour=9, minute=0, second=0, microsecond=0)
+        dt_today_ter = dt_today.replace(hour=18, minute=0, second=0, microsecond=0)
+        dt_ayer = dt_today_ter - datetime.timedelta(days=1)
+        context = super(SimpleAdmin, self).get_context_data(**kwargs)
+        context['reservas_hoy'] = Reserva.objects.filter(estado_reserva = 'Pendiente', fh_ini_reserva__gte=dt_today_ini, fh_fin_reserva__lte=dt_today_ter)
+        context['prestamos_hoy'] = Prestamo.objects.filter(fh_ini_prestamo__gte=dt_today_ini, fh_fin_prestamo__lte=dt_today_ter, estado_prestamo='Vigente')
+        context['prestamos_hoy_recibidos'] = Prestamo.objects.filter(fh_ini_prestamo__gte=dt_today_ini, fh_fin_prestamo__lte=dt_today_ter, estado_prestamo='Recibido')
+        context['prestamos_hoy_perdidos'] = Prestamo.objects.filter(fh_ini_prestamo__gte=dt_today_ini, fh_fin_prestamo__lte=dt_today_ter, estado_prestamo='Perdido')
+        context['prestamos_no_recibidos'] = Prestamo.objects.filter(fh_fin_prestamo__lte=dt_ayer, estado_prestamo='Vigente')
+
+        return context
+
+def simpleAdminAction(request):
+    if request.method=='POST':
+        r_or_p = request.POST['rp']
+        to_modify = request.POST.getlist('checked')
+        act = request.POST['action']
+
+        if r_or_p == 'r':
+            dict_action = {'A': 1, 'R':2}
+            for reservation_id in to_modify:
+                reserva = Reserva.objects.get(pk=reservation_id)
+                reserva.estado_reserva = Reserva.ESTADO_CHOICES[dict_action[act]][0]
+                reserva.save()
+                if act == 'A':
+
+                    nuevo_prestamo = Prestamo(profile=reserva.profile, fh_ini_prestamo=reserva.fh_ini_reserva,
+                                                     fh_fin_prestamo=reserva.fh_fin_reserva, estado_prestamo='Vigente'
+                                                     , content_type=reserva.content_type, object_id=reserva.object_id)
+                    nuevo_prestamo.save()
+            return HttpResponseRedirect(reverse('simpleAdmin'))
+
+        elif r_or_p == 'p':
+            dict_action = {'A': 3, 'R':2}
+            for prestamo_id in to_modify:
+                prestamo = Prestamo.objects.get(pk=prestamo_id)
+                prestamo.estado_prestamo = Prestamo.ESTADO_CHOICES[dict_action[act]][0]
+                prestamo.save()
+            return HttpResponseRedirect(reverse('simpleAdmin'))
+
+
+
 
 
 def ficha(request, id):
@@ -117,6 +175,7 @@ def reserva_articulo(request):
         y_ini = fh_ini.split(" ")[0].split("/")[2]
         fh_ini_formated = y_ini + "-" + m_ini + "-" + d_ini + " " + h_ini
 
+
         fh_termino = request.POST['termino']
         h_ter = fh_termino.split(" ")[1]
         ampm_ter = fh_termino.split(" ")[2]
@@ -129,10 +188,11 @@ def reserva_articulo(request):
         y_ter = fh_termino.split(" ")[0].split("/")[2]
         fh_ter_formated = y_ter + "-" + m_ter + "-" + d_ter + " " + h_ter
 
-
+        new_fh_ini = datetime.datetime.strptime(fh_ini, "%d/%m/%Y %I:%M %p")
+        new_fh_ter = datetime.datetime.strptime(fh_termino, "%d/%m/%Y %I:%M %p")
         ct = ContentType.objects.get_for_model(articulo)
-        reserva = Reserva.objects.create(profile=request.user.profile, fh_reserva=fh_reserva, fh_ini_reserva=fh_ini_formated,
-                                         fh_fin_reserva=fh_ter_formated, estado_reserva=estado_reserva, object_id=id,
+        reserva = Reserva.objects.create(profile=request.user.profile, fh_reserva=fh_reserva, fh_ini_reserva=new_fh_ini,
+                                         fh_fin_reserva=new_fh_ter, estado_reserva=estado_reserva, object_id=id,
                                          content_type=ct)
 
         reserva.save()
@@ -147,7 +207,7 @@ def index(request):
 
     if (request.user.is_authenticated):
         if request.user.profile.isAdmin:
-            return HttpResponseRedirect(reverse('calendarAdmin'))
+            return HttpResponseRedirect(reverse('simpleAdmin'))
         else:
             return HttpResponseRedirect(reverse('buscar'))
     return render(request, 'custom_login.html')
@@ -178,17 +238,15 @@ def customlogin(request):
 
     email = request.POST['email']
     password = request.POST['password']
-    username = get_user(email).username
-    user = authenticate(username=username, password=password)
-
-    # Si el usuario existe
-    if user is not None:
+    username = get_user(email)
+    if username is not None:
+        user = authenticate(username=username.username, password=password)
         if user.is_active:
             login(request, user)
 
             # Redirigirlo si es admin o no
             if user.profile.isAdmin:
-                return HttpResponseRedirect(reverse('calendarAdmin'))
+                return HttpResponseRedirect(reverse('simpleAdmin'))
             else:
                 return HttpResponseRedirect(reverse('buscar'))
         else:
@@ -199,6 +257,11 @@ def customlogin(request):
     else:
         messages.error(request, 'Correo y/o Contraseña incorrectos')
         return HttpResponseRedirect(reverse('index'))
+
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect("/")
 
 
 def signup(request):
