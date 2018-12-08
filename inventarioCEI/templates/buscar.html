@@ -48,15 +48,7 @@
                     <!-- Heading -->
                     <div class="card-body">
                     <h4 class="card-title">{{articulo.nombre}}</h4>
-                    {% if articulo.estado == "Disponible" %}
-                            <h6 class="card-subtitle text-muted"><span class="badge badge-success">Disponible</span></h6>
-                        {% elif articulo.estado == "En préstamo"%}
-                            <h6 class="card-subtitle text-muted"><span class="badge badge-primary">En Prestamo</span></h6>
-                        {% elif articulo.estado == "En reparación"%}
-                            <h6 class="card-subtitle text-muted"><span class="badge badge-warning">En Reparación</span></h6>
-                        {% else %}
-                            <h6 class="card-subtitle text-muted"><span class="badge badge-danger">Perdido</span></h6>
-                        {% endif %}
+                    
 
                     </div>
 

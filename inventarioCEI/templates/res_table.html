@@ -19,34 +19,34 @@
                     {% for r in reservas %}
                         <tr>
                             <!--Agrega checkbox solo a los pendientes-->
-                            {% ifnotequal r.estado_reserva "Pendiente" %}
+                            {% ifnotequal r.get_estado_reserva_display "Pendiente" %}
                                 <th>
                                     <input type="checkbox" class="checkbox" name="element" value="{{r.id}}" disabled>
                                 </th>
                                 <!-- showData recibe datos y pasan por javascript -->
-                                <th style="cursor: pointer;" onclick="showData('{{r.content_object.descripcion}}',
-                                        '{{r.content_object.image.url}}',
+                                <th style="cursor: pointer;" onclick="showDataR('{{r.related.first.articulo.descripcion}}',
+                                        '{{r.related.first.articulo.image.url}}',
                                         '{{r.fh_reserva}}',
                                         '{{r.fh_ini_reserva}}',
                                         '{{r.fh_fin_reserva}}')">
-                                    {{r.content_object.nombre}}
+                                    {{r.related.first.articulo}} ({{r.related.all|length}})
                                 </th>
                                 <th>
-                                    {{r.estado_reserva}}
+                                    {{r.get_estado_reserva_display}}
                                 </th>
                             {% else %}
                                 <th>
                                     <input type="checkbox" class="checkbox" name="element" value="{{r.id}}">
                                 </th>
-                                <th style="cursor: pointer;" onclick="showData('{{r.content_object.descripcion}}',
-                                        '{{r.content_object.image.url}}',
+                                <th style="cursor: pointer;" onclick="showDataR('{{r.related.first.articulo.descripcion}}',
+                                        '{{r.related.first.articulo.image.url}}',
                                         '{{r.fh_reserva}}',
                                         '{{r.fh_ini_reserva}}',
                                         '{{r.fh_fin_reserva}}')">
-                                    {{r.content_object.nombre}}
+                                    {{r.related.first.articulo}} ({{r.related.all|length}})
                                 </th>
                                 <th>
-                                    {{r.estado_reserva}}
+                                    {{r.get_estado_reserva_display}}
                                 </th>
                             {% endifnotequal %}
                         </tr>
@@ -67,7 +67,7 @@
                 <div class="col-*-*">
                    <div class="card" style="width: 18rem; height: 23.4rem;">
                        <div style="max-width: 400px;">
-                            <div id="foto" style="background-image: url('{% static 'img/Logo-Cei (bw).png' %}'); width: 100%;
+                            <div id="fotoR" style="background-image: url('{% static 'img/Logo-Cei (bw).png' %}'); width: 100%;
                             padding-top: 80%; background-size: auto 100%; background-position: center center;
                             background-repeat: no-repeat;"></div>
                             </div>

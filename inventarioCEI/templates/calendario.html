@@ -19,58 +19,150 @@
                aria-selected="false">Mi Perfil</a>
         </li>
     </ul>
+    <div class="content">
+    <div class="col-12">
+      <div class="row" style="margin:2% 5% 0 5%">
+        <i>Seleccione un horario para crear una reservación:</i>
+      </div>
+    </div></div>
+    <div class="col-12">
+          <div class="row" style="margin: 5% 5% -2.5% 5%;">
+            <div class="col-12" style="padding: 0px;" >
+            <button id="modalResBtn" type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal" disabled>
+              Reservar Espacio
+            </button></div>
+          </div>
+          <div class="row" style="margin: 0 5%">
+              <div id='calendar'></div>
+          </div>
+
+    </div>
 
 
-
-        <div class="row" style="margin: 5%">
-            <div id='calendar'></div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" onclick="hideModal()">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Reservar Espacio</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form>
+          <div class="modal-body">
+            Selecciona el espacio que quieres reservar:
+            <select id="spaceSelect" class="form-control" style="margin-bottom:1em;"></select>
+            <span style="font-size:0.5em"id="notSpaceWarning"></span><br>
+            <b>Fecha: </b><span id="fechares"></span><br>
+            <b>Hora Inicio: </b><span id="inires"></span><br>
+            <b>Hora Término: </b><span id="finres"></span>
+          </div>
+          <div class="modal-footer">
+            <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal" >Cerrar</button> -->
+            <button type="submit" class="btn btn-primary">Reservar</button>
+          </div>
+        </form>
         </div>
-
-
-
+      </div>
+    </div>
 {% endblock content %}
 
 {# END OF CONTENT #}
 {% block scripts %}
 
     <link rel='stylesheet' href="{% static 'fullcalendar/fullcalendar.css' %}">
-    <!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">-->
     <link rel="stylesheet" href="{% static 'css/inventarioCEI.css' %}">
-    <script src="{% static 'fullcalendar/jquery.min.js' %}"></script>
     <script src="{% static 'fullcalendar/moment.min.js' %}"></script>
     <script src="{% static 'fullcalendar/fullcalendar.js' %}"></script>
     <script src='{% static 'fullcalendar/es.js'%}'></script>
     <!--<link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>-->
 
     <script>
+
         $(function() {
+
             // page is now ready, initialize the calendar...
             /*$('#calendar').fullCalendar({
             // put your options and callbacks here
                 weekends: false
              })*/
             $('#calendar').fullCalendar({
-                nowIndicator: true,
-                lang: 'es',
-                aspectRatio: 2.7,
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay,listMonth'
-                },
+              nowIndicator: true,
+              lang: 'es',
+              aspectRatio: 2.4,
+              defaultView: 'agendaWeek',
+              header: {
+                  left: 'prev,next',
+                  center: 'title',
+                  right: ''
+              },
+              selectable: true,
+              selectMinDistance: 1,
+              selectAllow: function(selectInfo){
+                if(selectInfo.start.day()== selectInfo.end.day()){
+                  return true;
+                } else{
+                  return false;
+                }
+              },
+              snapDuration: moment.duration("00:15"),
+              select: function(start,end){
+                console.log("hice una selectione")
+                console.log(start.format("HH:mm"))
+                console.log(end.format("HH:mm"))
+                $("#modalResBtn").prop("disabled", false)
+                $("#fechares").text(start.format("DD/MM/YYYY"))
+                $("#inires").text(start.format("HH:mm"))
+                $("#finres").text(end.format("HH:mm"))
+                //hacer peticion AJAX para saber los espacios disponibles en ese horario
+                console.log("casi ajax")
+                $.ajax({
+                  url: '/ajax/checkFreeSpaces/',
+                  data: {
+                    'f_ini': start.format(),
+                    'f_ter': end.format()
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                    $("#notSpaceWarning").empty();
+                    $("#spaceSelect").empty();
+                    if(data.length>0){
+                      for(index in data){
+                        $("#spaceSelect").prop('disabled', false);
+                        $("#spaceSelect").append('<option value="'+data[index][0]+'">'+data[index][1]+'</option>')
+                      }
+                    } else {
+                      $("#spaceSelect").prop('disabled', true);
+                      $("#notSpaceWarning").append("<i>No hay espacios disponibles para reservar</i>")
+                    }
+
+                  }
+                });
+                //agregarlos al dropdown del modal
+
+
+              },
               //header: { center: 'month, agendaWeek' }, // buttons for switching between views
               views: {
-                month: { // name of view
-                  titleFormat: 'YYYY, MM, DD'
+
+                agendaWeek: { // name of view
+                  allDaySlot: false,
+                  minTime: "09:00:00",
+                  maxTime: "18:00:00",
+                  hiddenDays: [0,6],
                   // other view-specific options here
                 }
               },
               events: {{events|safe}},
-
               eventColor: '#efa17c'
             });
         });
+    </script>
+    <script>
+      function hideModal(){
+        $("#modalResBtn").prop("disabled", true)
+      }
     </script>
 
 {% endblock scripts %}

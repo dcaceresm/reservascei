@@ -31,9 +31,17 @@
                aria-selected="false">Espacios</a>
         </li>
     </ul>
+        <div class="row simpleadmin-row">
+          <div class="container">
 
-        <div class="row" style="margin: 5%">
-            <div id='calendar'></div>
+              <a class="btn btn-primary" href="/simpleAdmin/" role="button">Vista Simple</a>
+
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="row" style="margin: 5%">
+              <div id='calendar'></div>
+          </div>
         </div>
 
 
@@ -57,23 +65,28 @@
                 weekends: false
              })*/
             $('#calendar').fullCalendar({
-                nowIndicator: true,
-                aspectRatio: 2.7,
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay,listMonth'
-                },
-              //header: { center: 'month, agendaWeek' }, // buttons for switching between views
-              views: {
-                month: { // name of view
-                  titleFormat: 'YYYY, MM, DD'
-                  // other view-specific options here
-                }
+              nowIndicator: true,
+              lang: 'es',
+              aspectRatio: 2.5,
+              defaultView: 'agendaWeek',
+              header: {
+                  left: 'prev,next',
+                  center: 'title',
+                  right: ''
               },
-              events: {{events|safe}},
+            //header: { center: 'month, agendaWeek' }, // buttons for switching between views
+            views: {
 
-                eventColor: '#efa17c'
+              agendaWeek: { // name of view
+                allDaySlot: false,
+                minTime: "09:00:00",
+                maxTime: "18:00:00",
+                hiddenDays: [0,6]
+                // other view-specific options here
+              }
+            },
+            events: {{events|safe}},
+            eventColor: '#efa17c'
             });
         });
     </script>

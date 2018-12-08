@@ -97,10 +97,10 @@
 
 {% block cuerpoTabla %}
     {% for prest in prestamos %}
-        <tr class="{{ prest.estado_prestamo }} prestamos">
+        <tr class="{{ prest.get_estado_prestamo_display }} prestamos">
             <th scope="row"> <input class="PrestCheckbox" name="filas_prestamos" type="checkbox" value="{{ prest.id }}"
-                {% if prest.estado_prestamo == "Recibido" %} disabled
-                {% elif prest.estado_prestamo == "Perdido" %} disabled
+                {% if prest.get_estado_prestamo_display == "Recibido" %} disabled
+                {% elif prest.get_estado_prestamo_display == "Perdido" %} disabled
                 {% endif %}></th>
             <td> {{ prest.content_object.nombre }}</td>
             <td> {{ prest.profile.user.first_name }} {{ prest.profile.user.last_name }}</td>
@@ -112,7 +112,7 @@
                 {{ prest.fh_fin_prestamo.month }} /
                 {{ prest.fh_fin_prestamo.year }} -
                 {{ prest.fh_fin_prestamo.time }}</td>
-            <td> {{ prest.estado_prestamo }}</td>
+            <td> {{ prest.get_estado_prestamo_display }}</td>
             <td>
                 <!-- por ahora este boton solo redirige a pagina con testo, deberia ir a la ficha del prestamo -->
                 <form action={% url 'verPrestamo' %} method="post" >
@@ -144,4 +144,3 @@
 
     <button type="button" class="btn btn-danger prest-button landing-button disabled" style="float: right; margin-right: 12px">Perdido</button>
 {% endblock %}
-

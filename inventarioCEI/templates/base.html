@@ -32,14 +32,12 @@
             <div class="col-*-*">
 
                 <!-- Nombre, rut correo y habilitado -->
-                {{ request.user.first_name }} {{ request.user.last_name }}
-                <br>{{ request.user.profile.rut }}
-                <br>{{ request.user.profile.mail }}
-                {% if request.user.profile.hab %}
+                Hola, <b>{{ request.user.first_name }} {{ request.user.last_name }}</b>
+                <i>{% if request.user.profile.hab %}
                     <br>Habilitado
                 {% else %}
                     <br>No Habilitado
-                {% endif %}
+                {% endif %}</i>
             </div>
 
             <!--Menu dropdown desde la pestana de foto de perfil-->
@@ -47,10 +45,9 @@
                 <div class="container">
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-                            <img src="{% static "img/blank-profile-picture.png" %}" width="80" height="80" alt="">
-                            <span class="caret"></span>
+                            <i class="fas fa-chevron-circle-down  fa-2x"></i>                            
                         </button>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu1">
                             <div class="container">
                                 <li role="presentation">
                                     {% if request.user.profile.isAdmin %}
@@ -94,16 +91,10 @@
         {% else %}
         {% endif %}
     </nav>
-
-
-    <div id="content">
-        {% block content %}{% endblock %}
-
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
+    <script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
             integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
             crossorigin="anonymous"></script>
@@ -113,5 +104,12 @@
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     {% block scripts %}{% endblock %}
+
+    <div id="content">
+        {% block content %}{% endblock %}
+
+    </div>
+
+
 </body>
 </html>

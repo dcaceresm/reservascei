@@ -1,17 +1,17 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Articulo, Reserva, Prestamo
 import datetime
 from T3_INGSW import settings
 from django.contrib.contenttypes.models import ContentType
-
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
+from django.db.models import Q
 from .models import *
 from django.urls import reverse
 from datetime import date
@@ -70,11 +70,11 @@ class SimpleAdmin(TemplateView):
         dt_today_ter = dt_today.replace(hour=18, minute=0, second=0, microsecond=0)
         dt_ayer = dt_today_ter - datetime.timedelta(days=1)
         context = super(SimpleAdmin, self).get_context_data(**kwargs)
-        context['reservas_hoy'] = Reserva.objects.filter(estado_reserva = 'Pendiente', fh_ini_reserva__gte=dt_today_ini, fh_fin_reserva__lte=dt_today_ter)
-        context['prestamos_hoy'] = Prestamo.objects.filter(fh_ini_prestamo__gte=dt_today_ini, fh_fin_prestamo__lte=dt_today_ter, estado_prestamo='Vigente')
-        context['prestamos_hoy_recibidos'] = Prestamo.objects.filter(fh_ini_prestamo__gte=dt_today_ini, fh_fin_prestamo__lte=dt_today_ter, estado_prestamo='Recibido')
-        context['prestamos_hoy_perdidos'] = Prestamo.objects.filter(fh_ini_prestamo__gte=dt_today_ini, fh_fin_prestamo__lte=dt_today_ter, estado_prestamo='Perdido')
-        context['prestamos_no_recibidos'] = Prestamo.objects.filter(fh_fin_prestamo__lte=dt_ayer, estado_prestamo='Vigente')
+        context['reservas_hoy'] = Reserva.objects.filter(estado_reserva = 'P', fh_ini_reserva__gte=dt_today_ini, fh_fin_reserva__lte=dt_today_ter)
+        context['prestamos_hoy'] = Prestamo.objects.filter(fh_ini_prestamo__gte=dt_today_ini, fh_fin_prestamo__lte=dt_today_ter, estado_prestamo='V')
+        context['prestamos_hoy_recibidos'] = Prestamo.objects.filter(fh_ini_prestamo__gte=dt_today_ini, fh_fin_prestamo__lte=dt_today_ter, estado_prestamo='R')
+        context['prestamos_hoy_perdidos'] = Prestamo.objects.filter(fh_ini_prestamo__gte=dt_today_ini, fh_fin_prestamo__lte=dt_today_ter, estado_prestamo='P')
+        context['prestamos_no_recibidos'] = Prestamo.objects.filter(fh_fin_prestamo__lte=dt_ayer, estado_prestamo='V')
 
         return context
 
@@ -92,9 +92,16 @@ def simpleAdminAction(request):
                 reserva.save()
                 if act == 'A':
 
-                    nuevo_prestamo = Prestamo(profile=reserva.profile, fh_ini_prestamo=reserva.fh_ini_reserva,
-                                                     fh_fin_prestamo=reserva.fh_fin_reserva, estado_prestamo='Vigente'
-                                                     , content_type=reserva.content_type, object_id=reserva.object_id)
+                    nuevo_prestamo = Prestamo.objects.create(profile=reserva.profile,fh_ini_prestamo=reserva.fh_ini_reserva,
+                                                     fh_fin_prestamo=reserva.fh_fin_reserva, estado_prestamo='V')
+                    if reserva.tipo == 'A':
+                        nuevo_prestamo.tipo = 'A'
+                        rels = reserva.related.filter(Model=InstanciaArticulo)
+                    else:
+                        nuevo_prestamo.tipo = 'E'
+                        rels = reserva.related.filter(Model=Espacio)
+                    for rel in rels:
+                        nuevo_prestamo.related.add(rel)
                     nuevo_prestamo.save()
             return HttpResponseRedirect(reverse('simpleAdmin'))
 
@@ -112,12 +119,24 @@ def simpleAdminAction(request):
 
 def ficha(request, id):
     if request.user.is_authenticated:
-        print(settings.SITE_ROOT)
+
         try:  # IF ITEM ID EXISTS
             obj = Articulo.objects.get(pk=id)
 
             # GET LASTEST RESERVATIONS
-            reservas = Reserva.objects.filter(object_id=id).order_by('-id')[:10]
+            instancias = InstanciaArticulo.objects.filter(articulo=obj)
+
+            #Dado el cambio para aceptar múltiples objetos al mismo tiempo
+            #Ahora hay que hacer la consulta manualmente :(
+            all_reservas = Reserva.objects.filter(tipo='A').order_by('-pk')
+            reservas = list()
+            count = 0
+            #Obtiene las primeras 10 reservas asociadas al articulo
+            for r in all_reservas:
+                if (count==10): break
+                if r.related.first().articulo == obj:
+                    reservas.append(r)
+                    count += 1
 
             # render
             if request.user.profile.isAdmin:  # IF USER IS STAFF OR ADMIN
@@ -130,7 +149,8 @@ def ficha(request, id):
                 time = str(datetime.datetime.today())
                 context = {'articulo': obj, 'rut': rut, 'time': time, 'reservas': reservas}
                 return render(request, 'articulo.html', context)
-        except:
+        except Exception as e:
+            print(e)
             if request.user.profile.isAdmin:  # IF USER IS STAFF OR ADMIN
                 context = {'id': id}
                 return render(request, 'articulo_admin.html', context)
@@ -160,42 +180,28 @@ def reserva_articulo(request):
     if request.method == 'POST':
         id = request.POST['id']
         articulo = Articulo.objects.get(pk=id)
-        estado_reserva = request.POST['estado_reserva']
-        fh_reserva = request.POST['fh_reserva']
+        libres = list(map(int, request.POST['libres'].split(',')))
+        cantidad = int(request.POST['qty-select'])
+        raw_fecha = request.POST['fecha']
+        raw_h_ini = request.POST['hinicio']
+        raw_h_ter = request.POST['htermino']
 
-        fh_ini = request.POST['inicio']
-        h_ini = fh_ini.split(" ")[1]
-        ampm_ini = fh_ini.split(" ")[2]
-        if ampm_ini == 'PM':
-            h_ini_arr = h_ini.split(":")
-            hora_i = int(h_ini_arr[0]) + 12
-            h_ini = str(hora_i) + ":" + h_ini_arr[1]
-        d_ini = fh_ini.split(" ")[0].split("/")[0]
-        m_ini = fh_ini.split(" ")[0].split("/")[1]
-        y_ini = fh_ini.split(" ")[0].split("/")[2]
-        fh_ini_formated = y_ini + "-" + m_ini + "-" + d_ini + " " + h_ini
+        # armar datetime de inicio y fin
+        fecha = datetime.datetime.strptime(raw_fecha, "%d/%m/%Y")
+        h_ini = datetime.datetime.strptime(raw_h_ini,"%I:%M %p")
+        h_ter = datetime.datetime.strptime(raw_h_ter,"%I:%M %p")
+        dt_ini=datetime.datetime.combine(fecha.date(),h_ini.time())
+        dt_ter=datetime.datetime.combine(fecha.date(),h_ter.time())
+        fh_reserva = datetime.datetime.now()
+        #OBTENER LAS INSTANCIAS
+        instancias = InstanciaArticulo.objects.filter(articulo = articulo, num_articulo__in=libres)[:cantidad]
+        #GENERAR LA RESERVA
+        r = Reserva.objects.create(profile = request.user.profile, fh_reserva=fh_reserva,
+                                    fh_ini_reserva=dt_ini, fh_fin_reserva=dt_ter,tipo='A')
+        for i in instancias:
+            r.related.add(i)
 
-
-        fh_termino = request.POST['termino']
-        h_ter = fh_termino.split(" ")[1]
-        ampm_ter = fh_termino.split(" ")[2]
-        if ampm_ter == 'PM':
-            h_ter_arr = h_ter.split(":")
-            hora_t = int(h_ter_arr[0]) + 12
-            h_ter = str(hora_t) + ":" + h_ter_arr[1]
-        d_ter = fh_termino.split(" ")[0].split("/")[0]
-        m_ter = fh_termino.split(" ")[0].split("/")[1]
-        y_ter = fh_termino.split(" ")[0].split("/")[2]
-        fh_ter_formated = y_ter + "-" + m_ter + "-" + d_ter + " " + h_ter
-
-        new_fh_ini = datetime.datetime.strptime(fh_ini, "%d/%m/%Y %I:%M %p")
-        new_fh_ter = datetime.datetime.strptime(fh_termino, "%d/%m/%Y %I:%M %p")
-        ct = ContentType.objects.get_for_model(articulo)
-        reserva = Reserva.objects.create(profile=request.user.profile, fh_reserva=fh_reserva, fh_ini_reserva=new_fh_ini,
-                                         fh_fin_reserva=new_fh_ter, estado_reserva=estado_reserva, object_id=id,
-                                         content_type=ct)
-
-        reserva.save()
+        r.save()
         return redirect('/profile')
     else:
         return HttpResponse("Whoops!")
@@ -239,8 +245,11 @@ def customlogin(request):
     email = request.POST['email']
     password = request.POST['password']
     username = get_user(email)
+    print(username)
     if username is not None:
+        print(username.username)
         user = authenticate(username=username.username, password=password)
+        print(user)
         if user.is_active:
             login(request, user)
 
@@ -383,9 +392,9 @@ def event_adding(event, di, df, type):
         minute_f = str(df.minute)
 
     if type == 1:
-        name = (Espacio.objects.get(id=event.object_id)).nombre + "-" + event.estado_prestamo
+        name = (Espacio.objects.get(id=event.related.first().pk)).nombre + "-" + event.estado_prestamo
     else:
-        name = (Espacio.objects.get(id=event.object_id)).nombre + "-" + event.estado_reserva
+        name = (Espacio.objects.get(id=event.related.first().pk)).nombre + "-" + event.estado_reserva
 
     time_i = str(di.year) + "-" + str(month_i) + "-" + str(day_i) + "T" + hour_i + ":" + minute_i
     time_f = str(df.year) + "-" + str(month_f) + "-" + str(day_f) + "T" + hour_f + ":" + minute_f
@@ -405,33 +414,22 @@ def calendar(request):
         else:
 
             events = []
-
-            ct = ContentType.objects.get_for_model(Espacio)
-
             prestamos = Prestamo.objects.all()
 
             reservas = Reserva.objects.all()
 
-            for i in range(0, len(prestamos)):
-
-                event = prestamos[i]
-
-                if event.content_type == ct:
-                    di = event.fh_ini_prestamo
-                    df = event.fh_fin_prestamo
-
-                    event_json = event_adding(event, di, df, 1)
+            for p in prestamos:
+                if p.tipo == 'E':
+                    di = p.fh_ini_prestamo
+                    df = p.fh_fin_prestamo
+                    event_json = event_adding(p, di, df, 1)
                     events.append(event_json)
 
-            for i in range(0, len(reservas)):
-
-                event = reservas[i]
-
-                if event.content_type == ct:
-                    di = event.fh_ini_reserva
-                    df = event.fh_fin_reserva
-
-                    event_json = event_adding(event, di, df, 2)
+            for r in reservas:
+                if r.tipo == 'E':
+                    di = r.fh_ini_reserva
+                    df = r.fh_fin_reserva
+                    event_json = event_adding(r, di, df, 2)
                     events.append(event_json)
 
             events_string = json.dumps(events)
@@ -522,31 +520,21 @@ def calendarAdmin(request):
 
             ct = ContentType.objects.get_for_model(Espacio)
 
-            prestamos = Prestamo.objects.all()
+            prestamos = Prestamo.objects.filter(tipo='E')
 
-            reservas = Reserva.objects.all()
+            reservas = Reserva.objects.filter(tipo='E')
 
-            for i in range(0, len(prestamos)):
+            for event in prestamos:
+                di = event.fh_ini_prestamo
+                df = event.fh_fin_prestamo
+                event_json = event_adding(event, di, df, 1)
+                events.append(event_json)
 
-                event = prestamos[i]
-
-                if event.content_type == ct:
-                    di = event.fh_ini_prestamo
-                    df = event.fh_fin_prestamo
-
-                    event_json = event_adding(event, di, df, 1)
-                    events.append(event_json)
-
-            for i in range(0, len(reservas)):
-
-                event = reservas[i]
-
-                if event.content_type == ct:
-                    di = event.fh_ini_reserva
-                    df = event.fh_fin_reserva
-
-                    event_json = event_adding(event, di, df, 2)
-                    events.append(event_json)
+            for event in reservas:
+                di = event.fh_ini_reserva
+                df = event.fh_fin_reserva
+                event_json = event_adding(event, di, df, 2)
+                events.append(event_json)
 
             events_string = json.dumps(events)
             return render(request, 'adminTabs/IndexTabFromAdmin.html', {'events': events_string})
@@ -654,3 +642,49 @@ def verPrestamo(request):
 
 def crearPrestamo(request):
     return redirect('landingAdmin')
+
+
+
+def ajax_check_free_spaces(request):
+    dt_ini = datetime.datetime.strptime(request.GET.get('f_ini', None),"%Y-%m-%dT%H:%M:%S")
+    dt_ter = datetime.datetime.strptime(request.GET.get('f_ter', None),"%Y-%m-%dT%H:%M:%S")
+    all_res = Reserva.objects.filter(Q(fh_ini_reserva__lte=dt_ini,
+                                      fh_fin_reserva__gte=dt_ini) | Q(fh_ini_reserva__gte=dt_ini,
+                                                                      fh_fin_reserva__lte=dt_ter) | Q(fh_ini_reserva__lte=dt_ter,
+                                                                      fh_fin_reserva__gte=dt_ter) | Q(fh_ini_reserva__lte=dt_ini, fh_fin_reserva__gte=dt_ter),
+                                                                      tipo='E')
+    ocupados = set([r.related.first() for r in all_res])
+    all_spaces = set(Espacio.objects.all())
+    opciones = [[e.pk, e.nombre] for e in all_spaces-ocupados]
+    print(opciones)
+
+    return JsonResponse(list(opciones), safe=False)
+def ajax_reservations_from_article(request, id):
+    obj = Articulo.objects.get(pk=id)
+    instancias = InstanciaArticulo.objects.filter(articulo=obj)
+    inst_set = set(instancias.values_list("num_articulo", flat=True))
+    # armar datetime inicio fin
+    raw_fecha = request.GET.get('fecha', None)
+    raw_h_ini = request.GET.get('h_ini', None)
+    raw_h_ter = request.GET.get('h_ter', None)
+    fecha = datetime.datetime.strptime(raw_fecha, "%d/%m/%Y")
+    h_ini = datetime.datetime.strptime(raw_h_ini,"%I:%M %p")
+    h_ter = datetime.datetime.strptime(raw_h_ter,"%I:%M %p")
+    dt_ini=datetime.datetime.combine(fecha.date(),h_ini.time())
+    dt_ter=datetime.datetime.combine(fecha.date(),h_ter.time())
+    all_res = Reserva.objects.filter(Q(fh_ini_reserva__lte=dt_ini,
+                                      fh_fin_reserva__gte=dt_ini) | Q(fh_ini_reserva__gte=dt_ini,
+                                                                      fh_fin_reserva__lte=dt_ter) | Q(fh_ini_reserva__lte=dt_ter,
+                                                                      fh_fin_reserva__gte=dt_ter) | Q(fh_ini_reserva__lte=dt_ini, fh_fin_reserva__gte=dt_ter),
+                                                                      tipo='A')
+
+    ocupados = set()
+    for r in all_res:
+        articulos = set([ia.num_articulo for ia in r.related.filter(Model=InstanciaArticulo)])
+        ocupados = ocupados | articulos
+    perdidos = set([ia.num_articulo for ia in InstanciaArticulo.objects.filter(Q(estado='En Reparación')|Q(estado='Perdido'))])
+    print(perdidos)
+    libres = list(inst_set - ocupados - perdidos)
+    qty = list(range(1,len(libres)+1))
+    context = { 'libres':libres, 'cantidades': qty }
+    return JsonResponse(context, safe=False)

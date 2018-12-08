@@ -56,7 +56,11 @@
                 <tr>
                   <th scope="row"> {{ r.pk }} </th>
                   <td> {{ r.profile.user.get_full_name }} </td>
-                  <td>  {{ r.content_object }}</td>
+                  {% if r.tipo == 'A' %}
+                  <td>  {{ r.related.first.articulo.nombre }}</td>
+                  {% else %}
+                  <td>  {{ r.related.first.nombre }}</td>
+                  {% endif %}
                   <td>{{ r.fh_ini_reserva|date:'H:i'}}</td>
                   <td>{{ r.fh_fin_reserva|date:'H:i'}}</td>
                   <td style="text-align:center;"><input style="position:static;margin-left:auto;" class="form-check-input" type="checkbox" name="checked" value="{{r.pk}}" id="r_{{r.pk}}"></td>
@@ -98,7 +102,11 @@
               <tr>
                 <th scope="row"> {{ p.pk }} </th>
                 <td> {{ p.profile.user.get_full_name }} </td>
-                <td>  {{ p.content_object }}</td>
+                {% if p.tipo == 'A' %}
+                <td>  {{ p.related.first.articulo.nombre }}</td>
+                {% else %}
+                <td>  {{ p.related.first.nombre }}</td>
+                {% endif %}
                 <td>{{ p.fh_fin_prestamo|date:'j/n/Y H:i'}}</td>
 
                 <td style="text-align:center;"><input style="position:static;margin-left:auto;" class="form-check-input" type="checkbox" name="checked" value="{{p.pk}}" id="pn_{{p.pk}}"></td>
@@ -142,7 +150,11 @@
               <tr>
                 <th scope="row"> {{ p.pk }} </th>
                 <td> {{ p.profile.user.get_full_name }} </td>
-                <td>  {{ p.content_object }}</td>
+                {% if p.tipo == 'A' %}
+                <td>  {{ p.related.first.articulo.nombre }}</td>
+                {% else %}
+                <td>  {{ p.related.first.nombre }}</td>
+                {% endif %}
                 <td>{{ p.fh_ini_prestamo|date:'H:i'}}</td>
                 <td>{{ p.fh_fin_prestamo|date:'H:i'}}</td>
                 <td><input class="form-check-input" type="checkbox" name="checked" value="{{p.pk}}" id="p_{{r.pk}}"></td>
@@ -177,7 +189,11 @@
               <tr>
                 <th scope="row"> {{ p.pk }} </th>
                 <td> {{ p.profile.user.get_full_name }} </td>
-                <td>  {{ p.content_object }}</td>
+                {% if p.tipo == 'A' %}
+                <td>  {{ p.related.first.articulo.nombre }}</td>
+                {% else %}
+                <td>  {{ p.related.first.nombre }}</td>
+                {% endif %}
               </tr>
               {% endfor %}
             </tbody>

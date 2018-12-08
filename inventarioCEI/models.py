@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericRelation
+from gm2m import GM2MField
 
 class Profile(models.Model):
     ESTADO_CHOICES = (
@@ -49,8 +50,8 @@ class Espacio(models.Model):
     estado = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Disponible')
     capacidad = models.IntegerField(default=0)
 
-    reservas = GenericRelation('Reserva')
-    prestamos = GenericRelation('Prestamo')
+    # reservas = GenericRelation('Reserva')
+    # prestamos = GenericRelation('Prestamo')
 
     def __str__(self):
         return self.nombre
@@ -63,66 +64,80 @@ class Articulo(models.Model):
         ('En reparación', 'En reparación'),
         ('Perdido', 'Perdido'),
     )
-
     nombre = models.CharField(max_length=100)
     image = models.ImageField(upload_to='../media/articulos')
     descripcion = models.CharField(max_length=200)
-    estado = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Disponible')
     lista_tags = models.CharField(max_length=200)
 
-    reservas = GenericRelation('Reserva')
-    prestamos = GenericRelation('Prestamo')
+    # reservas = GenericRelation('Reserva')
+    # prestamos = GenericRelation('Prestamo')
 
     def __str__(self):
         return self.nombre
 
+class InstanciaArticulo(models.Model):
+    ESTADO_CHOICES = (
+        ('Disponible', 'Disponible'),
+        ('En préstamo', 'En préstamo'),
+        ('En reparación', 'En reparación'),
+        ('Perdido', 'Perdido'),
+    )
+    articulo = models.ForeignKey(Articulo, on_delete=models.CASCADE)
+    num_articulo = models.PositiveSmallIntegerField()
+    estado = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Disponible')
+
+    def __str__(self):
+        return self.articulo.nombre + " " + str(self.num_articulo)
+
 class Reserva(models.Model):
     ESTADO_CHOICES = (
-        ('Pendiente', 'Pendiente'),
-        ('Aceptada', 'Aceptada'),
-        ('Rechazada', 'Rechazada'),
+        ('P', 'Pendiente'),
+        ('A', 'Aceptada'),
+        ('R', 'Rechazada'),
     )
     TIPO_CHOICES=(
-        ('Artículo', 'Artículo'),
-        ('Espacio','Espacio'),
+        ('A', 'Artículo'),
+        ('E','Espacio'),
     )
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
 
     fh_reserva = models.DateTimeField()
     fh_ini_reserva = models.DateTimeField()
     fh_fin_reserva = models.DateTimeField()
-    estado_reserva = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Pendiente')
+    estado_reserva = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='P')
+    tipo = models.CharField(max_length=50, choices=TIPO_CHOICES)
+    related = GM2MField()
+    # limit = models.Q(app_label='inventarioCEI', model='articulo') | models.Q(app_label='inventarioCEI', model='espacio')
+    # content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=limit)
+    # object_id = models.PositiveIntegerField()
+    # content_object = GenericForeignKey()
 
-    limit = models.Q(app_label='inventarioCEI', model='articulo') | models.Q(app_label='inventarioCEI', model='espacio')
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=limit)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey()
-
-    def __str__(self):
-        return str(self.profile.user.username) + " " + str(self.content_object.nombre)
+    # def __str__(self):
+    #     return str(self.profile.user.username) + " " + str(self.content_object.nombre)
 
 
 class Prestamo(models.Model):
     ESTADO_CHOICES=(
-        ('Vigente', 'Vigente'),
-        ('Caducado','Caducado'),
-        ('Perdido', 'Perdido'),
-        ('Recibido', 'Recibido'),
+        ('V', 'Vigente'),
+        ('C','Caducado'),
+        ('P', 'Perdido'),
+        ('R', 'Recibido'),
     )
     TIPO_CHOICES = (
-        ('Artículo', 'Artículo'),
-        ('Espacio', 'Espacio'),
+        ('A', 'Artículo'),
+        ('E', 'Espacio'),
     )
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
 
     fh_ini_prestamo = models.DateTimeField()
     fh_fin_prestamo = models.DateTimeField()
-    estado_prestamo = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='Vigente')
-
-    limit = models.Q(app_label='inventarioCEI', model='articulo') | models.Q(app_label='inventarioCEI', model='espacio')
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=limit)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey()
-
-    def __str__(self):
-        return str(self.profile.user.username) + " " + str(self.content_object.nombre)
+    estado_prestamo = models.CharField(max_length=50, choices=ESTADO_CHOICES, default='V')
+    tipo = models.CharField(max_length=50, choices=TIPO_CHOICES)
+    related = GM2MField()
+    # limit = models.Q(app_label='inventarioCEI', model='articulo') | models.Q(app_label='inventarioCEI', model='espacio')
+    # content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=limit)
+    # object_id = models.PositiveIntegerField()
+    # content_object = GenericForeignKey()
+    #
+    # def __str__(self):
+    #     return str(self.profile.user.username) + " " + str(self.content_object.nombre)

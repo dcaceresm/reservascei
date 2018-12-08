@@ -11,7 +11,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     url(r'^profile/$', views.showProfile, name='profile'),
     url(r'^login/$', views.customlogin, name='login'),
-    #url(r'^logout/$', auth_views.LogoutView.as_view(), {'next_page': 'index'}, name='logout'),
     url(r'^logout/$', views.logout_view, name='logout'),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^deleting/$', views.deleteRes, name='deleteRes'),
@@ -36,7 +35,9 @@ urlpatterns = [
     path('AceptarReservas/<str:string_id>', views.AceptarReservas, name="AceptarReservas"),
     path('calendarAdmin/', views.calendarAdmin, name='calendarAdmin'),
     path('RechazarReservas/<str:string_id>', views.RechazarReservas, name="RechazarReservas"),
-    re_path(r'ficha/(?P<id>[0-9]*)/$', views.ficha, name='ficha')
+    re_path(r'ficha/(?P<id>[0-9]*)/$', views.ficha, name='ficha'),
+    re_path(r'ajax/resFromArticle/(?P<id>[0-9]*)/$', views.ajax_reservations_from_article),
+    re_path(r'ajax/checkFreeSpaces/$', views.ajax_check_free_spaces)
     ]
 
 #urlpatterns += patterns('', url(r'^media/(?P<path>.*)$','django.views.static.serve', {

@@ -97,12 +97,12 @@
 
 {% block cuerpoTabla %}
     {% for reserv in reservas %}
-        <tr class="{{ reserv.estado_reserva }} reservas">
+        <tr class="{{ reserv.get_estado_reserva_display }} reservas">
             <th scope="row"> <input class="ReservCheckbox" name="filas_reservas" type="checkbox" value="{{ reserv.id }}"
                 {% if reserv.estado_reserva == "Aceptada" %} disabled
                 {% elif reserv.estado_reserva == "Rechazada" %} disabled
                 {% endif %}>  </th>
-            <td> {{ reserv.content_object.nombre }}</td>
+            <td> {{ reserv.related.first.articulo.nombre }}</td>
             <td> {{ reserv.profile.user.first_name }} {{ reserv.profile.user.last_name }}</td>
             <td> {{ reserv.fh_ini_reserva.day }} /
                 {{ reserv.fh_ini_reserva.month }} /
@@ -112,7 +112,7 @@
                 {{ reserv.fh_fin_reserva.month }} /
                 {{ reserv.fh_fin_reserva.year }} -
                 {{ reserv.fh_fin_reserva.time }}</td>
-            <td> {{ reserv.estado_reserva }}</td>
+            <td> {{ reserv.get_estado_reserva_display }}</td>
             <td>
                 <!-- por ahora este boton solo redirige al landing, deberia ir a la ficha de la reserva -->
                 <form action={% url 'landingAdmin' %} method="post" >

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'inventarioCEI.apps.inventarioCEIConfig',
+    'gm2m',
 
 ]
 
@@ -130,4 +131,3 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
 MEDIA_ROOT = os.path.join(SITE_ROOT, 'media/')
-

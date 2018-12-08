@@ -49,7 +49,7 @@
 
 {% block scripts %}
     <script>
-        function showData(text, fotoURL, fh_res, fh_ini, fh_fin){
+        function showDataR(text, fotoURL, fh_res, fh_ini, fh_fin){
 
             //Recibe los datos del objeto y los escribe en
             //las cajas correspondientes.
@@ -74,7 +74,31 @@
             var f_fin = document.createTextNode(fh_fin);
             f_fin_box.appendChild(f_fin);
 
-            var foto = document.getElementById("foto");
+            var foto = document.getElementById("fotoR");
+            foto.style = "background-image: url("+fotoURL+"); width: 100%;padding-top: 80%; background-size: " +
+                "auto 100%; background-position: center center;background-repeat: no-repeat;"
+        }
+        function showDataP(text, fotoURL, fh_ini, fh_fin){
+
+            //Recibe los datos del objeto y los escribe en
+            //las cajas correspondientes.
+
+            var f_ini_box = document.getElementById("fecha_ini_p");
+            f_ini_box.innerHTML = "";
+            var f_ini = document.createTextNode(fh_ini);
+            f_ini_box.appendChild(f_ini);
+
+            var desc = document.getElementById("desc_p");
+            desc.innerHTML = "";
+            var desc_txt = document.createTextNode(text);
+            desc.appendChild(desc_txt);
+
+            var f_fin_box = document.getElementById("fecha_fin_p");
+            f_fin_box.innerHTML = "";
+            var f_fin = document.createTextNode(fh_fin);
+            f_fin_box.appendChild(f_fin);
+
+            var foto = document.getElementById("fotoP");
             foto.style = "background-image: url("+fotoURL+"); width: 100%;padding-top: 80%; background-size: " +
                 "auto 100%; background-position: center center;background-repeat: no-repeat;"
         }

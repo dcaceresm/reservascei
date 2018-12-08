@@ -1,3 +1,6 @@
+{% load static %}
+{% load staticfiles %}
+
 <div class="row">
     <div class="col-*-*">
             <div style="overflow-y:auto; height: 350px;">
@@ -6,16 +9,16 @@
                         <th>Nombre de elemento prestado</th>
                         <th>Estado</th>
                     </tr>
-                    {% for r in prestamos %}
+                    {% for p in prestamos %}
                         <tr>
-                            <th style="cursor: pointer;" onclick="showData('{{r.content_object.descripcion}}',
-                                    '{{r.content_object.image.url}}',
-                                    '{{r.content_object.nombre}}',
-                                    '{{r.fh_ini_prestamo}}',
-                                    '{{r.fh_fin_prestamo}}')">
+                            <th style="cursor: pointer;" onclick="showDataP('{{p.related.first.articulo.descripcion}}',
+                                    '{{p.related.first.articulo.image.url}}',
+                                    '{{p.fh_ini_prestamo}}',
+                                    '{{p.fh_fin_prestamo}}')">
+                                    {{p.related.first.articulo.nombre}}
                             </th>
                             <th>
-                                {{r.estado_prestamo}}
+                                {{p.get_estado_prestamo_display}}
                             </th>
                         </tr>
                     {% endfor %}
@@ -25,16 +28,36 @@
     <div class="col-*-*" style="width: 700px; height: 350px;">
          <div class=" container">
             <div class="row">
-                <div class="col-*-*">
-                    <div id="photo" class="container" style="text-align: center">
+              <!--Foto y descripcion-->
+              <div class="col-*-*">
+                 <div class="card" style="width: 18rem; height: 23.4rem;">
+                     <div style="max-width: 400px;">
+                          <div id="fotoP" style="background-image: url('{% static 'img/Logo-Cei (bw).png' %}'); width: 100%;
+                          padding-top: 80%; background-size: auto 100%; background-position: center center;
+                          background-repeat: no-repeat;"></div>
+                          </div>
+                     <div class="card-body">
+                      <p class="card-text" id="desc_p"></p>
+                    </div>
+                 </div>
+              </div>
 
+              <!-- Fechas -->
+              <div class="col-*-*" style="width: 400px">
+                  <div class="card" style="max-width: 18rem;height: 11.7rem;">
+                    <div class="card-header nav-link">Inicio del préstamo</div>
+                    <div class="card-body">
+                      <p class="card-text" id="fecha_ini_p">-</p>
                     </div>
-                </div>
-                <div class="col-*-*" style="width: 400px">
-                    <div id="description" class="container">
-                        Click en un item para obtener la información.
+                  </div>
+                  <div class="card" style="max-width: 18rem; height: 11.7rem;">
+                    <div class="card-header nav-link">Fin del préstamo</div>
+                    <div class="card-body">
+                      <p class="card-text" id="fecha_fin_p">-</p>
                     </div>
-                </div>
+                  </div>
+              </div>
+                
             </div>
          </div>
     </div>
