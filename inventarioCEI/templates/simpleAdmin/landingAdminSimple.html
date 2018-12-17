@@ -6,7 +6,7 @@
 <div class="container">
   <div class="row simpleadmin-row">
     <div class="col-12 float-right">
-      <a class="btn btn-primary" href="/calendarAdmin/" role="button">Vista Avanzada</a>
+      <a class="btn btn-primary disabled" href="/calendarAdmin/" role="button disabled" >Vista Avanzada</a>
     </div>
   </div>
   <div class="row simpleadmin-row">
@@ -45,7 +45,7 @@
               <thead>
                 <th scope="col">#</th>
                 <th scope="col">Nombre</th>
-                <th scope="col">Artículo</th>
+                <th scope="col">Artículo/Espacio</th>
                 <th scope="col">Hora de Inicio</th>
                 <th scope="col">Hora de finalización</th>
                 <th scope="col"><i class="far fa-calendar-check"></i></th>
@@ -57,8 +57,12 @@
                   <th scope="row"> {{ r.pk }} </th>
                   <td> {{ r.profile.user.get_full_name }} </td>
                   {% if r.tipo == 'A' %}
-                  <td>  {{ r.related.first.articulo.nombre }}</td>
-                  {% else %}
+
+                    <td><a href="#" data-toggle="tooltip" id="reserva_{{r.pk}}" title="{{r.related.first.articulo.nombre}}(s): {% for a in r.related.all %}[{{a.num_articulo}}] {% endfor %}" data-placement="right">
+                        {{ r.related.first.articulo.nombre }}
+                    </a></td>
+
+                  {% else%}
                   <td>  {{ r.related.first.nombre }}</td>
                   {% endif %}
                   <td>{{ r.fh_ini_reserva|date:'H:i'}}</td>
@@ -92,7 +96,7 @@
             <thead>
               <th scope="col">#</th>
               <th scope="col">Nombre</th>
-              <th scope="col">Artículo</th>
+              <th scope="col">Artículo/Espacio</th>
               <th scope="col">Fecha de Entrega</th>
               <th scope="col"><i class="far fa-calendar-check"></i></th>
             </thead>
@@ -103,7 +107,10 @@
                 <th scope="row"> {{ p.pk }} </th>
                 <td> {{ p.profile.user.get_full_name }} </td>
                 {% if p.tipo == 'A' %}
-                <td>  {{ p.related.first.articulo.nombre }}</td>
+
+                <td>
+                  {{ p.related.first.articulo.nombre }}
+                </td>
                 {% else %}
                 <td>  {{ p.related.first.nombre }}</td>
                 {% endif %}
@@ -138,7 +145,7 @@
             <thead>
               <th scope="col">#</th>
               <th scope="col">Nombre</th>
-              <th scope="col">Artículo</th>
+              <th scope="col">Artículo/Espacio</th>
               <th scope="col">Hora de Inicio</th>
               <th scope="col">Hora de finalización</th>
               <th scope="col"><i class="far fa-calendar-check"></i></th>
@@ -151,7 +158,8 @@
                 <th scope="row"> {{ p.pk }} </th>
                 <td> {{ p.profile.user.get_full_name }} </td>
                 {% if p.tipo == 'A' %}
-                <td>  {{ p.related.first.articulo.nombre }}</td>
+                <td><a href="#" data-toggle="tooltip" id="prestamo_{{r.pk}}" title="{{p.related.first.articulo.nombre}}(s): {% for a in p.related.all %}[{{a.num_articulo}}] {% endfor %}" data-placement="right">
+                  {{ p.related.first.articulo.nombre }}</a></td>
                 {% else %}
                 <td>  {{ p.related.first.nombre }}</td>
                 {% endif %}
@@ -182,7 +190,7 @@
             <thead>
               <th scope="col">#</th>
               <th scope="col">Nombre</th>
-              <th scope="col">Artículo</th>
+              <th scope="col">Artículo/Espacio</th>
             </thead>
             <tbody>
               {% for p in prestamos_hoy_recibidos %}
@@ -190,7 +198,9 @@
                 <th scope="row"> {{ p.pk }} </th>
                 <td> {{ p.profile.user.get_full_name }} </td>
                 {% if p.tipo == 'A' %}
-                <td>  {{ p.related.first.articulo.nombre }}</td>
+                <td><a href="#" data-toggle="tooltip" id="prestamoRec_{{r.pk}}" title="{{p.related.first.articulo.nombre}}(s): {% for a in p.related.all %}[{{a.num_articulo}}] {% endfor %}" data-placement="right">
+                  {{ p.related.first.articulo.nombre }}
+                </a></td>
                 {% else %}
                 <td>  {{ p.related.first.nombre }}</td>
                 {% endif %}
@@ -207,4 +217,14 @@
   </div>
 
 </div>
+
+
 {% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+{% endblock scripts %}

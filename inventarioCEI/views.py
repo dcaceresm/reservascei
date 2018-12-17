@@ -425,19 +425,10 @@ def calendar(request):
         else:
 
             events = []
-            prestamos = Prestamo.objects.all()
 
-            reservas = Reserva.objects.all()
-
-            for p in prestamos:
-                if p.tipo == 'E':
-                    di = p.fh_ini_prestamo
-                    df = p.fh_fin_prestamo
-                    event_json = event_adding(p, di, df, 1)
-                    events.append(event_json)
-
+            reservas = Reserva.objects.filter(tipo='E')
             for r in reservas:
-                if r.tipo == 'E':
+                if r.estado_reserva != 'R':
                     di = r.fh_ini_reserva
                     df = r.fh_fin_reserva
                     event_json = event_adding(r, di, df, 2)

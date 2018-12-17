@@ -11,12 +11,21 @@
                     </tr>
                     {% for p in prestamos %}
                         <tr>
+                            {% if p.tipo == 'A'%}
                             <th style="cursor: pointer;" onclick="showDataP('{{p.related.first.articulo.descripcion}}',
                                     '{{p.related.first.articulo.image.url}}',
                                     '{{p.fh_ini_prestamo}}',
                                     '{{p.fh_fin_prestamo}}')">
-                                    {{p.related.first.articulo.nombre}}
+                                    {{p.related.first.articulo.nombre}} ( {{p.related.all|length}} ítem(s) )
                             </th>
+                            {% else %}
+                            <th style="cursor: pointer;" onclick="showDataP('{{p.related.first.descripcion}}',
+                                    '{{p.related.first.image.url}}',
+                                    '{{p.fh_ini_prestamo}}',
+                                    '{{p.fh_fin_prestamo}}')">
+                                    {{p.related.first.nombre}}
+                            </th>
+                            {% endif %}
                             <th>
                                 {{p.get_estado_prestamo_display}}
                             </th>
@@ -57,7 +66,7 @@
                     </div>
                   </div>
               </div>
-                
+
             </div>
          </div>
     </div>

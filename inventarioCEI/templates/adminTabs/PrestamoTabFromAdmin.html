@@ -102,7 +102,12 @@
                 {% if prest.get_estado_prestamo_display == "Recibido" %} disabled
                 {% elif prest.get_estado_prestamo_display == "Perdido" %} disabled
                 {% endif %}></th>
-            <td> {{ prest.content_object.nombre }}</td>
+            {% if prest.tipo == 'A'%}
+            <td> {{ prest.related.first.articulo.nombre }}</td>
+            {% else %}
+            <td> {{ prest.related.first.nombre }}</td>
+            {% endif %}
+
             <td> {{ prest.profile.user.first_name }} {{ prest.profile.user.last_name }}</td>
             <td> {{ prest.fh_ini_prestamo.day }} /
                 {{ prest.fh_ini_prestamo.month }} /

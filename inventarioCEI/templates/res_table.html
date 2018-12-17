@@ -30,7 +30,7 @@
                                         '{{r.fh_reserva}}',
                                         '{{r.fh_ini_reserva}}',
                                         '{{r.fh_fin_reserva}}')">
-                                    {{r.related.first.articulo}} ({{r.related.all|length}})
+                                    {{r.related.first.articulo}} ({{r.related.all|length}} ítem(s))
                                 </th>
                                 {% else %}
                                 <th style="cursor: pointer;" onclick="showDataR('{{r.related.first.descripcion}}',
@@ -54,7 +54,7 @@
                                         '{{r.fh_reserva}}',
                                         '{{r.fh_ini_reserva}}',
                                         '{{r.fh_fin_reserva}}')">
-                                    {{r.related.first.articulo}} ({{r.related.all|length}})
+                                    {{r.related.first.articulo}} ( {{r.related.all|length}} ítem(s) )
                                 </th>
                                 {% else %}
                                 <th style="cursor: pointer;" onclick="showDataR('{{r.related.first.descripcion}}',

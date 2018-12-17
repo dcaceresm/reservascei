@@ -102,7 +102,11 @@
                 {% if reserv.estado_reserva == "Aceptada" %} disabled
                 {% elif reserv.estado_reserva == "Rechazada" %} disabled
                 {% endif %}>  </th>
+            {% if reserv.tipo == 'A'%}
             <td> {{ reserv.related.first.articulo.nombre }}</td>
+            {% else %}
+            <td> {{ reserv.related.first.nombre }}</td>
+            {% endif %}
             <td> {{ reserv.profile.user.first_name }} {{ reserv.profile.user.last_name }}</td>
             <td> {{ reserv.fh_ini_reserva.day }} /
                 {{ reserv.fh_ini_reserva.month }} /
