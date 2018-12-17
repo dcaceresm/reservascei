@@ -24,6 +24,7 @@
                                     <input type="checkbox" class="checkbox" name="element" value="{{r.id}}" disabled>
                                 </th>
                                 <!-- showData recibe datos y pasan por javascript -->
+                                {% if r.tipo == 'A'%}
                                 <th style="cursor: pointer;" onclick="showDataR('{{r.related.first.articulo.descripcion}}',
                                         '{{r.related.first.articulo.image.url}}',
                                         '{{r.fh_reserva}}',
@@ -31,6 +32,15 @@
                                         '{{r.fh_fin_reserva}}')">
                                     {{r.related.first.articulo}} ({{r.related.all|length}})
                                 </th>
+                                {% else %}
+                                <th style="cursor: pointer;" onclick="showDataR('{{r.related.first.descripcion}}',
+                                        '{{r.related.first.image.url}}',
+                                        '{{r.fh_reserva}}',
+                                        '{{r.fh_ini_reserva}}',
+                                        '{{r.fh_fin_reserva}}')">
+                                    {{r.related.first.nombre}}
+                                </th>
+                                {% endif%}
                                 <th>
                                     {{r.get_estado_reserva_display}}
                                 </th>
@@ -38,6 +48,7 @@
                                 <th>
                                     <input type="checkbox" class="checkbox" name="element" value="{{r.id}}">
                                 </th>
+                                {% if r.tipo == 'A'%}
                                 <th style="cursor: pointer;" onclick="showDataR('{{r.related.first.articulo.descripcion}}',
                                         '{{r.related.first.articulo.image.url}}',
                                         '{{r.fh_reserva}}',
@@ -45,6 +56,15 @@
                                         '{{r.fh_fin_reserva}}')">
                                     {{r.related.first.articulo}} ({{r.related.all|length}})
                                 </th>
+                                {% else %}
+                                <th style="cursor: pointer;" onclick="showDataR('{{r.related.first.descripcion}}',
+                                        '{{r.related.first.image.url}}',
+                                        '{{r.fh_reserva}}',
+                                        '{{r.fh_ini_reserva}}',
+                                        '{{r.fh_fin_reserva}}')">
+                                    {{r.related.first.nombre}}
+                                </th>
+                                {% endif%}
                                 <th>
                                     {{r.get_estado_reserva_display}}
                                 </th>

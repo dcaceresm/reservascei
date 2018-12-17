@@ -49,11 +49,14 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form>
+          <form action="{% url 'reserva_espacio' %}" method="post">
+            {% csrf_token %}
           <div class="modal-body">
             Selecciona el espacio que quieres reservar:
-            <select id="spaceSelect" class="form-control" style="margin-bottom:1em;"></select>
-            <span style="font-size:0.5em"id="notSpaceWarning"></span><br>
+            <select id="spaceSelect" class="form-control" style="margin-bottom:1em;" name="id_espacio"></select>
+            <span style="font-size:0.9em"id="notSpaceWarning"></span><br>
+            <input type="hidden" id="form_i" name="inicio" value="">
+            <input type="hidden" id="form_f" name="fin" value="">
             <b>Fecha: </b><span id="fechares"></span><br>
             <b>Hora Inicio: </b><span id="inires"></span><br>
             <b>Hora Término: </b><span id="finres"></span>
@@ -114,7 +117,9 @@
                 $("#modalResBtn").prop("disabled", false)
                 $("#fechares").text(start.format("DD/MM/YYYY"))
                 $("#inires").text(start.format("HH:mm"))
+                $("#form_i").val(start.format())
                 $("#finres").text(end.format("HH:mm"))
+                $("#form_f").val(end.format())
                 //hacer peticion AJAX para saber los espacios disponibles en ese horario
                 console.log("casi ajax")
                 $.ajax({
@@ -155,7 +160,7 @@
                 }
               },
               events: {{events|safe}},
-              eventColor: '#efa17c'
+              eventColor: 'rgba(37, 158, 219, 0.5)',              
             });
         });
     </script>

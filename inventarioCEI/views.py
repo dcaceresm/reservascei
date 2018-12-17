@@ -74,7 +74,7 @@ class SimpleAdmin(TemplateView):
         context['prestamos_hoy'] = Prestamo.objects.filter(fh_ini_prestamo__gte=dt_today_ini, fh_fin_prestamo__lte=dt_today_ter, estado_prestamo='V')
         context['prestamos_hoy_recibidos'] = Prestamo.objects.filter(fh_ini_prestamo__gte=dt_today_ini, fh_fin_prestamo__lte=dt_today_ter, estado_prestamo='R')
         context['prestamos_hoy_perdidos'] = Prestamo.objects.filter(fh_ini_prestamo__gte=dt_today_ini, fh_fin_prestamo__lte=dt_today_ter, estado_prestamo='P')
-        context['prestamos_no_recibidos'] = Prestamo.objects.filter(fh_fin_prestamo__lte=dt_ayer, estado_prestamo='V')
+        context['prestamos_no_recibidos'] = Prestamo.objects.filter(fh_fin_prestamo__lte=dt_ayer, estado_prestamo__in=['V', 'P'])
 
         return context
 
@@ -91,7 +91,6 @@ def simpleAdminAction(request):
                 reserva.estado_reserva = Reserva.ESTADO_CHOICES[dict_action[act]][0]
                 reserva.save()
                 if act == 'A':
-
                     nuevo_prestamo = Prestamo.objects.create(profile=reserva.profile,fh_ini_prestamo=reserva.fh_ini_reserva,
                                                      fh_fin_prestamo=reserva.fh_fin_reserva, estado_prestamo='V')
                     if reserva.tipo == 'A':
@@ -175,6 +174,20 @@ def update_articulo(request):
     else:
         return HttpResponse("Whoops!")
 
+def reserva_espacio(request):
+    if request.method == 'POST':
+        id = request.POST['id_espacio']
+        raw_fh_ini = request.POST['inicio']
+        raw_fh_fin = request.POST['fin']
+        dt_ini = datetime.datetime.strptime(raw_fh_ini,"%Y-%m-%dT%H:%M:%S")
+        dt_ter = datetime.datetime.strptime(raw_fh_fin,"%Y-%m-%dT%H:%M:%S")
+        r = Reserva.objects.create(fh_reserva=datetime.datetime.now(), profile=request.user.profile,
+                                    fh_ini_reserva=dt_ini, fh_fin_reserva=dt_ter, tipo="E")
+        r.related.add(Espacio.objects.get(pk=id))
+        r.save()
+        return redirect('/calendar')
+    else:
+        return HttpResponse("Method not allowed")
 
 def reserva_articulo(request):
     if request.method == 'POST':
@@ -204,7 +217,7 @@ def reserva_articulo(request):
         r.save()
         return redirect('/profile')
     else:
-        return HttpResponse("Whoops!")
+        return HttpResponse("Method not allowed")
 
 
 def index(request):
@@ -244,17 +257,15 @@ def customlogin(request):
 
     email = request.POST['email']
     password = request.POST['password']
-    username = get_user(email)
-    print(username)
-    if username is not None:
-        print(username.username)
-        user = authenticate(username=username.username, password=password)
-        print(user)
-        if user.is_active:
-            login(request, user)
+    usuario = get_user(email)
+    if usuario is not None:
+        logged_user = authenticate(username=usuario.username, password=password)
+        print(logged_user)
+        if usuario.is_active:
+            login(request, logged_user)
 
             # Redirigirlo si es admin o no
-            if user.profile.isAdmin:
+            if logged_user.profile.isAdmin:
                 return HttpResponseRedirect(reverse('simpleAdmin'))
             else:
                 return HttpResponseRedirect(reverse('buscar'))

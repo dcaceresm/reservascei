@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^password/$', views.change_password, name='change_password'),
     path('update_articulo', views.update_articulo, name='update_articulo'),
     path('reserva_articulo', views.reserva_articulo, name='reserva_articulo'),
+    path('reserva_espacio', views.reserva_espacio, name='reserva_espacio'),
     path('landingAdmin/', views.LandingAdmin.as_view(), name='landingAdmin'),
     path('simpleAdmin/', views.SimpleAdmin.as_view(), name='simpleAdmin'),
     path('calendarAdmin/', views.calendarAdmin, name = 'calendarAdmin'),
