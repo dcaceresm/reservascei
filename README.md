@@ -14,11 +14,13 @@ Cabe notar que actualmente las reservas se realizan por correo, por lo que lleva
 - ***Django*** **2.1.3**
 - ***Pillow*** **5.3.0**
 - ***django-gm2m*** **0.6.1** \*
+- ***FullCalendar*** **3.9.0** \*\*
 
 Todas estas librerías pueden instalarse automáticamente ejecutando `pip install -r requirements.txt`.
 
 \* La librería ***django-gm2m*** se utiliza para realizar *reservas* y *préstamos* de *artículos* y *espacios* sin tener que crear modelos especiales (Por ejemplo, *ReservaEspacio*, *ReservaArtículo*, etc.). Su documentación se puede encontrar [aquí](https://django-gm2m.readthedocs.io/en/stable/).
 
+\*\* Viene incluida en los archivos estáticos del sitio.
 
 ### Modelo de Datos:
 
@@ -68,23 +70,37 @@ El modelo de datos de la aplicación está compuesto por las siguientes instanci
 ### Nueva Información Obtenida:
 A partir de las reuniones desarrolladas, se obtuvo la siguiente información sobre lo que se debe desarrollar en el sistema:
 - La plataforma desarrollada en **CC4401** sólo permite prestar 1 artículo a la vez. Esto no es consistente con las necesidades reales del sistema puesto que se piden varios artículos partiendo de una sola reserva (Por ejemplo, se piden 20 toldos para un evento, caso en el que no tiene sentido hacer 20 reservas).
+
 - Se debe limitar las reservas al horario en el que se encuentra abierta la *casa CEI*, esto es, de 9:00 AM a 17:45 PM, con el fin de que se alcancen a devolver los artículos en este intervalo de tiempo.
+
 - Por el momento sólo se puede reservar la *Sala de Reuniones 1*. El *Quincho* y la *Sala de Reuniones 2* se encuentran en reparaciones.
+
 - Cuando el *Quincho* se encuentre habilitado, se debe pedir con una semana (como mínimo) de anticipación. 2 días antes se debe firmar una carta de compromiso y realizar el pago de garantía.
+
 - El sistema de administración desarrollado en **CC4401** resulta demasiado complejo para el usuario final que administrará las reservas, por lo que se debe realizar un sistema más simple con las funciones justas y necesarias.
+
 - Aprovechando la persistencia de los datos generados, se debe pensar en un sistema para sancionar a los alumnos que inclumplan las normas de uso de los artículos o los entreguen en mal estado. Esto incluye las peticiones por parte de Grupos Organizados, donde se propone sancionar al grupo completo.
 
 ### Modificaciones Realizadas:
-- Se toma como base la solución implementada por el *Grupo 6* de **CC4401** para la primera iteración de desarrollo. Aunque no implementa todos los requisitos entregados durante el desarrollo del curso, la forma en que está organizado el modelo de datos y como está estructurado el código lo convierten en el candidato ideal para comenzar el desarrollo de este sistema.
-- La primera modificación realizada corresponde a la corrección de todos los *bugs* del sistema: No era posible hacer login y algunas vistas no eran accesibles. Además se agregó un archivo `requirements.txt` para facilitar la instalación de dependencias.
-- Se modificó el esquema de la base de datos. Para esto, se creó el modelo **InstanciaArtículo**; luego, para poder generar reservas de múltiples artículos a la vez, se utilizó la librería `django-gm2m`. Esta librería permite generar relaciones ManyToMany sin especificar el modelo con el que se genera la relación. Esto permite guardar en un mismo campo de las Reservas/Préstamos el espacio o los múltiples artículos a reservar. Uno de los beneficios de utilizar esta librería es que los objetos creados en **Python** son iterables, por lo que se pueden acceder en las vistas y en los templates.
+- Se toma como base la solución implementada por el *Grupo 6* de **CC4401** para la primera iteración de desarrollo. Aunque no implementa todos los requisitos entregados durante el desarrollo del curso, es el candidato ideal para servir de base a este sistema. El modelo de datos calza bien con los requisitos previos y con la nueva información obtenida; además, el código está bien estructurado y contiene pocos *bugs*.
+
+- La primera modificación realizada corresponde a la corrección los *bugs* del sistema: No era posible hacer login y algunas vistas no eran accesibles. Además se agregó un archivo `requirements.txt` para facilitar la instalación de dependencias.
+
+- Se modificó el esquema de la base de datos. Para esto, se creó el modelo **InstanciaArtículo**; luego, para poder generar reservas de múltiples artículos a la vez, se utilizó la librería `django-gm2m`. Esta librería permite generar relaciones ManyToMany sin especificar el modelo con el que se genera la relación. Esto permite guardar en un mismo campo de las Reservas/Préstamos el espacio o los múltiples artículos a reservar. Uno de los beneficios de utilizar esta librería es que los objetos creados son iterables en los templates permitiendo utilizar el *template-tag* `{% for %}` para recorrerlos sin necesidad de tener que transformarlos a una lista en los *views*.
+
 - Se creó una vista simplificada enfocada únicamente en la aceptación de Reservas y la recepción de Préstamos, con el fin de recrear las acciones que hoy en día se realizan por correo dentro de la plataforma.
+
 - Se implementaron las reservas de artículos. Se verifica en tiempo real (haciendo una petición AJAX) el horario ingresado por el usuario para su reserva, con tal de no interferir con el resto, mostrándole la cantidad efectiva de instancias que puede reservar; las que además no se escogen a mano: sólo se pregunta cuántas instancias se quieren reservar.
+
 - Se implementaron las reservas de espacios tomando como base la librería [FullCalendar](https://fullcalendar.io/). Se utilizó una vista de semana completa, y se verifica que no haya colisiones de horario al reservar.
+
+- Se modificó de forma general el *CSS* y algunos detalles visuales del sitio, en particular el tema de los colores, dado que se usaban demasiados tonos y esto no resultaba cómodo a la vista ni intuitivo para los usuarios.
+
 ### Propuestas a Futuro:
+- Implementar vinculación con los GG.OO de Beauchef y sistema de sanciones en caso de que no se devuelvan los artículos o se devuelvan en mal estado. Para esto se propone desarrollar un nuevo sistema (administrado por el ***CEI***) donde las personas puedan confirmar su participación en Grupos, para así realizar las sanciones de forma global.
 
-- Implementar vinculación con los GG.OO de Beauchef y sistema de sanciones en caso de que no se devuelvan los artículos o se devuelvan en mal estado.
+- Una vez esté listo el *Quincho*, se debe crear la excepción para reservarlo con un día de anticipación y dejar la reserva pendiente hasta el pago del mismo (o anularla en caso de que este no se realice).
 
-- Implementar un sistema de verificación de que los alumnos realmente pertenecen a la facultad. Para esto, se propone hablar con la SAE durante enero para obtener a principio del siguiente ciclo una lista con los alumnos regulares de la facultad para autorizar sus cuentas.
+- Implementar un sistema de verificación de que los alumnos realmente pertenecen a la facultad. Para esto, se propone hablar con la SAE durante enero para obtener a principios del primer semestre de 2019 una lista con los alumnos regulares de la facultad para autorizar sus cuentas.
 
 - Integrar el sistema al Centro de Estudiantes, haciendo las gestiones con el nuevo CEI 2019 para subir la plataforma a un servidor y otorgarle un dominio, para comenzar con las pruebas del sistema.
