@@ -89,7 +89,9 @@
         <div class="col-12 simpleadmin-lcol">
           <h2> Préstamos No Recibidos </h2>
           <!-- Acá va la tabla con las reservas -->
-          <form method="POST" action="">
+          <form method="POST" action="{% url 'simpleAdminAction' %}">
+
+
             {% csrf_token %}
           <div class="rp-tablecontainer">
           <table class="table">
@@ -125,7 +127,8 @@
           </div>
           <div class="row float-right buttonrow">
           <div>
-            <input type="hidden" name="rp" value="pn"></input>
+            <input type="hidden" name="rp" value="p"></input>
+            <input type="hidden" name="action" value="A"></input>
             <button name="action" type="submit" class="btn btn-success" value="A" >Marcar Recibido</button>
           </div>
           </div>
