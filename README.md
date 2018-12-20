@@ -2,7 +2,7 @@
 
 *Plataforma para gestionar los préstamos de los artículos y espacios gestionados por el Centro de Alumnos de Ingeniería, para la Facultad de Cs. Físicas y Matemáticas, Universidad de Chile.*
 
-
+### Sobre el Proyecto:
 
 ### Dependencias:
 
@@ -12,15 +12,57 @@
 
 Todas estas librerías pueden instalarse automáticamente ejecutando `pip install -r requirements.txt`.
 
-La librería ***django-gm2m*** se utiliza para realizar *reservas* y *préstamos* de *artículos* y *espacios* sin tener que crear modelos especiales (Por ejemplo, *ReservaEspacio*, *ReservaArtículo*, etc.).
+\* La librería ***django-gm2m*** se utiliza para realizar *reservas* y *préstamos* de *artículos* y *espacios* sin tener que crear modelos especiales (Por ejemplo, *ReservaEspacio*, *ReservaArtículo*, etc.). Su documentación se puede encontrar [aquí](https://django-gm2m.readthedocs.io/en/stable/).
 
-La documentación de la librería se puede encontrar [aquí](https://django-gm2m.readthedocs.io/en/stable/).
 
 ### Modelo de Datos:
 
+El ***CEI*** dispone de diversos artículos y espacios para la utilización de los estudiantes dentro de la facultad. Los estudiantes pueden reservar *artículos* (entre los que se encuentran toldos, micrófonos, alargadores, etc.) y además pueden solicitar el uso de *espacios* que el ***CEI*** tiene a disposición: Salas de Reuniones y un Quincho.
 
+El modelo de datos de la aplicación está compuesto por las siguientes instancias:
 
+- **Profile**: Instancia para manejar los  perfiles de los usuarios de la plataforma:
+  - `user`: Relación 1-a-1 con un `User` de *Django*.
+  - `rut`: Rut del perfil.
+  - `mail`
+  - `isAdmin`: Indica si es administrador del sistema.
+  - `hab`: Indica si está habilitado para ingresar al sistema.
+##
+- **Espacio**:
+  - `nombre`
+  - `descripcion`
+  - `image`: Para guardar una imagen representativa del espacio
+  - `estado`: Indica si el espacio está prestado, se encuentra en reparación o está disponible.
+  - `capacidad`
+##
+- **Artículo**:
+  - `nombre`
+  - `image`: Guarda una imagen representativa del artículo.
+  - `descripcion`
+  - `lista_tags`: *Tags* para facilitar la búsqueda del artículo por parte de los estudiantes.
+##
+- **InstanciaArtículo**:
+  - `articulo`: relaciona cada instancia con su artículo respectivo.
+  - `num_articulo`: un identificador para cada artículo entregado por el **CEI**.
+  - `estado`: análogo al estado de los *Espacios*. Opciones disponibles: Disponible, En préstamo, En reparación y Perdido.
+##
+- **Reserva**:
+  - `profile`: Perfil del usuario que hizo la reserva.
+  - `fh_reserva`: Marca la hora en la que se creó la instancia de reserva.
+  - `fh_ini_reserva`
+  - `fh_fin_reserva`
+  - `estado_reserva`: Indica si la reserva aún está Pendiente, está Aceptada o está Rechazada.
+  - `tipo`: Indica si se trata de la reserva de artículos o de un espacio.
+  - `related`: campo que establece una relación *ManyToMany* entre la reserva y los artículos/el espacio reservado. Utiliza la librería `django-gm2m`.
+##
+- **Prestamo**:
+  Análogo a las reservas, cambiando `fh_xxx_reserva` por `fh_xxx_préstamo`, además
+  ahora los posibles `estado_prestamo` son: Vigente, Caducado, Perdido y Recibido.  
+##
 ### Propuestas a Futuro:
 
 - Implementar vinculación con los GG.OO de Beauchef y sistema de sanciones en caso de que no se devuelvan los artículos o se devuelvan en mal estado.
-- Integrar el sistema al Centro de Estudiantes.
+
+- Implementar un sistema de verificación de que los alumnos realmente pertenecen a la facultad. Para esto, se propone hablar con la SAE.
+
+- Integrar el sistema al Centro de Estudiantes, haciendo las gestiones con el nuevo CEI 2019.
